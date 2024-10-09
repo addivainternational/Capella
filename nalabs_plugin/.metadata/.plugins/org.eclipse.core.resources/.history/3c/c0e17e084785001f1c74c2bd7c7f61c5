@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description" uid="_GTMdwIVGEe-_C_ohBdmmJA" selectedViews="_HHvgIIVGEe-_C_ohBdmmJA _HIyB8IVGEe-_C_ohBdmmJA" version="15.4.1.202403191723">
+  <semanticResources>RequirementsTest.afm</semanticResources>
+  <semanticResources>RequirementsTest.capella</semanticResources>
+  <ownedViews xmi:type="viewpoint:DView" uid="_HHvgIIVGEe-_C_ohBdmmJA">
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.polarsys.kitalpha.ad.integration.sirius/description/ad.odesign#//@ownedViewpoints[name='ad']"/>
+  </ownedViews>
+  <ownedViews xmi:type="viewpoint:DView" uid="_HIyB8IVGEe-_C_ohBdmmJA">
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/oa.odesign#//@ownedViewpoints[name='Operational%20Analysis']"/>
+  </ownedViews>
+</viewpoint:DAnalysis>

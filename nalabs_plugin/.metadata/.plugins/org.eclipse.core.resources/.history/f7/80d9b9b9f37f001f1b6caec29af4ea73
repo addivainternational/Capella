@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MyPlugin
+Bundle-SymbolicName: MyPlugin;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.polarsys.capella.core.model.helpers;bundle-version="7.0.0",
+ org.polarsys.capella.core.model.handler;bundle-version="7.0.0"
+Automatic-Module-Name: MyPlugin
+Bundle-ClassPath: c:\usr\lib\*.java
+Bundle-RequiredExecutionEnvironment: JavaSE-19

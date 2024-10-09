@@ -1,0 +1,7 @@
+output.. = bin/
+bin.includes = plugin.xml,\
+               META-INF/,\
+               icons/,\
+               c:\\usr\\lib\\
+jars.compile.order = 
+src.includes = src/

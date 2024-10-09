@@ -1,0 +1,31 @@
+package myplugin.handlers;
+
+import java.lang.foreign.*;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.handlers.HandlerUtil;
+import static se.addiva.nalabs.NalabsLib.*;
+
+public class SampleHandler extends AbstractHandler {
+
+	
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+
+		MemoryAddress result = getHelloWorld();
+        String greeting = result.getUtf8String(0);
+		double y = sqrt(4); 
+        
+		MessageDialog.openInformation(
+				window.getShell(),
+				"MyPlugin",
+				greeting + "\n" + y);
+		
+
+		return null;
+	}
+}

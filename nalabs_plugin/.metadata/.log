@@ -1,0 +1,24 @@
+
+!ENTRY org.eclipse.ant.core 4 0 2024-10-09 08:46:11.033
+!MESSAGE Setting Security Manager is not supported
+
+!ENTRY org.eclipse.ant.core 4 0 2024-10-09 08:46:12.139
+!MESSAGE Setting Security Manager is not supported
+
+!ENTRY org.eclipse.ant.core 4 0 2024-10-09 08:46:12.884
+!MESSAGE Setting Security Manager is not supported
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2024-10-09 08:46:12.961
+!MESSAGE No digest algorithm is available to verify download of org.eclipse.update.feature,MyFeature,1.0.0.202410090846.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2024-10-09 08:46:12.974
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,Nalabs,1.0.0.202410090846.
+
+!ENTRY org.eclipse.ant.core 4 0 2024-10-09 08:46:13.204
+!MESSAGE Setting Security Manager is not supported
+
+!ENTRY org.eclipse.ant.core 4 0 2024-10-09 08:46:13.296
+!MESSAGE Setting Security Manager is not supported
+
+!ENTRY org.eclipse.ant.core 4 0 2024-10-09 08:46:13.459
+!MESSAGE Setting Security Manager is not supported
