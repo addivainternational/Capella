@@ -12,6 +12,7 @@ Repository contents:
 See [NALABS Java Interop.drawio](doc/NALABS%20Java%20Interop.drawio) for a schematic over the component interaction of the system.
 
 TODO: Document further the process from native lib generation to addin build, deploy and install.
+TODO: Checkin Test
 
 
 # Getting Started
