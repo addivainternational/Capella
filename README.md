@@ -1,5 +1,18 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Repository contents:
+- nalabs_plugin
+  - Capella Studio workspace
+    - Nalabs
+      - Capella Addin fro NALABS integration with Capella Requirements
+    - MyFeature
+      - Capella feature project for the Nalabs plugin
+    - UpdateSite
+      - Update site project for the plugin, to build and publish JAR from for install in Capella
+
+See [NALABS Java Interop.drawio](doc/NALABS%20Java%20Interop.drawio) for a schematic over the component interaction of the system.
+
+TODO: Document further the process from native lib generation to addin build, deploy and install.
+
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:

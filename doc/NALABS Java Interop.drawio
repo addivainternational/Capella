@@ -1,0 +1,76 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
+  <diagram name="Page-1" id="MGDGmpZSyVgaTRlbkTtH">
+    <mxGraphModel dx="1263" dy="807" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-2" value="«.NET Assembly»&lt;br&gt;&lt;b&gt;NALABS&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="210" y="50" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-3" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="JlcqS9PgpwNqPmVSO1wy-2">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-4" value="«x64 Native Lib»&lt;br&gt;&lt;b&gt;NALABS&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="100" y="290" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-5" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="JlcqS9PgpwNqPmVSO1wy-4">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-6" value="«Java Interop Shim»&lt;br&gt;&lt;b&gt;NALABS Java Interop&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="210" y="540" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-7" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="JlcqS9PgpwNqPmVSO1wy-6">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-8" value="«Interop Header (C)»&lt;br&gt;&lt;b&gt;NALABS.h&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="310" y="290" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-9" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="JlcqS9PgpwNqPmVSO1wy-8">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-10" value="«Java Interface»&lt;br&gt;&lt;b&gt;NALABS Java Interface&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="210" y="660" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-11" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="JlcqS9PgpwNqPmVSO1wy-10">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-13" value="dotnet publish" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="240" y="200" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-14" value="jextract" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="240" y="450" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-19" value="&lt;br&gt;&lt;b&gt;Capella AddIn&lt;/b&gt;" style="html=1;dropTarget=0;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="210" y="790" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-20" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" vertex="1" parent="JlcqS9PgpwNqPmVSO1wy-19">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-21" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="JlcqS9PgpwNqPmVSO1wy-19" target="JlcqS9PgpwNqPmVSO1wy-10">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="540" y="800" as="sourcePoint" />
+            <mxPoint x="700" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JlcqS9PgpwNqPmVSO1wy-22" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="JlcqS9PgpwNqPmVSO1wy-10" target="JlcqS9PgpwNqPmVSO1wy-6">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="540" y="590" as="sourcePoint" />
+            <mxPoint x="700" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
