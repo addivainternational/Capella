@@ -4,6 +4,10 @@
 
 /nalabs_plugin/UpdateSite/features
 /nalabs_plugin/UpdateSite/plugins
-/NolabsNativeLib/bin
-/NolabsNativeLib/obj
-.vs
+**/Debug
+**/obj
+**/bin
+.DS_Store
+.idea/
+*.DotSettings.user
+**/.vs

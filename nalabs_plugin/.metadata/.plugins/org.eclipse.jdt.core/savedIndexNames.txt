@@ -65,6 +65,7 @@ INDEX VERSION 1.132+C:\Repos\smart_delta\capella\nalabs_plugin\.metadata\.plugin
 3299254786.index
 2096028925.index
 3913408606.index
+1865797976.index
 3351670942.index
 2260765394.index
 3987135874.index
