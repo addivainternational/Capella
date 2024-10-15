@@ -1,6 +1,6 @@
 #encoding=UTF-8
 #version=1
-Nalabs,1.0.0.qualifier,file:/C:/capella-studio-7.0.0/workspace/Nalabs/,4,false
+Nalabs,1.0.0.qualifier,file:/C:/Repos/smart_delta/capella/nalabs_plugin/Nalabs/,4,false
 bcpg,1.72.2,file:/C:/capella-studio-7.0.0/plugins/bcpg_1.72.2.jar,4,false
 bcprov,1.72.0,file:/C:/capella-studio-7.0.0/plugins/bcprov_1.72.0.jar,4,false
 ca.odell.glazedlists,1.11.0.v20221112-0806,file:/C:/capella-studio-7.0.0/plugins/ca.odell.glazedlists_1.11.0.v20221112-0806.jar,4,false

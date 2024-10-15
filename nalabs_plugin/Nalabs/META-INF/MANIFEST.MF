@@ -8,7 +8,9 @@ Require-Bundle: org.eclipse.ui,
  org.polarsys.capella.core.model.handler;bundle-version="7.0.0",
  org.polarsys.kitalpha.vp.requirements.model;bundle-version="0.14.0",
  org.polarsys.kitalpha.vp.requirements;bundle-version="0.14.0",
- org.polarsys.capella.core.model.helpers;bundle-version="7.0.0"
+ org.polarsys.capella.core.model.helpers;bundle-version="7.0.0",
+ org.eclipse.emf;bundle-version="2.9.0",
+ org.eclipse.emf.ecore.edit;bundle-version="2.14.0"
 Automatic-Module-Name: Nalabs
-Bundle-ClassPath: bin/,
+Bundle-ClassPath: bin/, lib/, lib/se.addiva.nalabs.jar, lib/se.addiva.nalabs.interop.jar, 
  .

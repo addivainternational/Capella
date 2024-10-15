@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config date="1728303976068" transient="false" version="3.0">
+<config date="1728997306160" transient="false" version="3.0">
 <site enabled="true" policy="USER-EXCLUDE" updateable="true" url="platform:/base/">
 <feature id="org.polarsys.kitalpha.cadence.examples.feature" url="features/org.polarsys.kitalpha.cadence.examples.feature_7.0.0.202406121252/" version="7.0.0.202406121252">
 </feature>
@@ -309,7 +309,7 @@
 </feature>
 <feature id="org.eclipse.emf.diffmerge.egit.feature.source" url="features/org.eclipse.emf.diffmerge.egit.feature.source_0.15.0.202305040742/" version="0.15.0.202305040742">
 </feature>
-<feature id="MyFeature" url="features/MyFeature_1.0.0.202410071221/" version="1.0.0.202410071221">
+<feature id="MyFeature" url="features/MyFeature_1.0.0.202410151459/" version="1.0.0.202410151459">
 </feature>
 <feature id="org.polarsys.capella.core.ui.wizards.feature.source" url="features/org.polarsys.capella.core.ui.wizards.feature.source_7.0.0.202407091438/" version="7.0.0.202407091438">
 </feature>

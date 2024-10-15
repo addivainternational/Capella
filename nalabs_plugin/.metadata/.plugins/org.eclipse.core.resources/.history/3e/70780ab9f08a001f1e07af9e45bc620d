@@ -1,0 +1,7 @@
+source.. = src/
+output.. = bin/
+bin.includes = plugin.xml,\
+               META-INF/,\
+               .,\
+               icons/\
+               lib/, lib/se.addiva.nalabs.se, lib/se.addiva.nalabs.interop.jar

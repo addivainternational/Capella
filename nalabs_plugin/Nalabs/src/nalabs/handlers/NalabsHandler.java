@@ -1,11 +1,10 @@
 package nalabs.handlers;
 
-import static se.addiva.nalabs.NalabsLib.getHelloWorld;
-import static se.addiva.nalabs.NalabsLib.sqrt;
+import se.addiva.nalabs.*;
 
-import java.lang.foreign.MemoryAddress;
 import java.util.*;
-import java.time.LocalTime;
+import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -17,13 +16,12 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.kitalpha.vp.requirements.Requirements.*;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Module;
+import org.polarsys.kitalpha.vp.requirements.Requirements.Requirement;
 
 public class NalabsHandler extends AbstractHandler {
 
@@ -33,27 +31,109 @@ public class NalabsHandler extends AbstractHandler {
 		// Get Requirements from selection
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		Collection<Requirement> requirements = getRequirements(selection);
-		
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 
-		// TODO: Re map Requirements for transfer to NOLABS lib
-		// TODO: Re map results to Capella requirements, updating or adding a NOLABS Attribute 
+		Collection<Requirement> correctRequirements = getCorrectRequirements(requirements);
+		Collection<Requirement> faultyRequirements = getFaultyRequirements(requirements);
 		
-		for(Requirement r : requirements) {
-			Attribute nalabsAttribute = findAttribute(r.getOwnedAttributes(), "NALABS");
-			if(nalabsAttribute != null) {
-				// Set attribute value
-				setNalabsAttributeValue(nalabsAttribute, "SUCCESS: " + LocalTime.now().toString());
-			} else {
-				if(addNalabsAttribute(r, "SUCCESS: " + LocalTime.now().toString()) == null) {
-					MessageDialog.openInformation(
-							window.getShell(),
-							"NALABS",
-							"NALABS Attribute not found on RequirementType, or RequirementType not set.");
-				};
+		// Re map Requirements for transfer to NOLABS lib, and analyze
+		Collection<se.addiva.nalabs.Requirement> nalabRequirements = analyzeRequirements(correctRequirements);
+		
+		// Re map results to Capella requirements, updating or adding a NOLABS Attribute
+		updateRequirements(correctRequirements, nalabRequirements);
+		notifyFaultyRequirement(faultyRequirements);
+		
+		return null;
+	}
+	
+	private void notifyFaultyRequirement(Collection<Requirement> faultyRequirements) {
+		for(Requirement requirement : faultyRequirements) {
+			updateNalabsAttribute(requirement, "NALABS Error: Unable to analyze requirement. Missing ID and/or Text");
+		}
+	}
+
+	private Collection<Requirement> getFaultyRequirements(Collection<Requirement> requirements) {
+		return requirements
+				.stream()
+				.filter(r -> r.getReqIFIdentifier() == null || r.getReqIFText() == null)
+				.collect(Collectors.toList())
+				;
+	}
+
+	private Collection<Requirement> getCorrectRequirements(Collection<Requirement> requirements) {
+		return requirements
+				.stream()
+				.filter(r -> r.getReqIFIdentifier() != null && r.getReqIFText() != null)
+				.collect(Collectors.toList())
+				;
+	}
+
+	protected void updateRequirements(Collection<Requirement> requirements, Collection<se.addiva.nalabs.Requirement> nalabRequirements) {
+
+		for(Requirement requirement : requirements) {
+			se.addiva.nalabs.Requirement matchingAnalysis = findAnalysisMatch(requirement, nalabRequirements);
+			
+			if(matchingAnalysis != null) {
+				String analysisText = formatNalabsAnalysis(matchingAnalysis);
+				updateNalabsAttribute(requirement, analysisText);
 			}
 		}
-		return null;
+	}
+	
+	private String formatNalabsAnalysis(se.addiva.nalabs.Requirement requirement) {
+		String analysisText = String.format(
+				"%s: NALABS Analysis (%s)\n\tARI: %f\tCONJ: %d\tVAG: %d\tOPT: %d\tSUB: %d\tREF: %d\tWEK: %d\tIMP: %d\tCONT: %d\tIMP2: %d\tREF2: %d",
+				requirement.Id,
+				LocalDateTime.now().toString(),
+                requirement.AriScore,
+                requirement.Conjunctions,
+                requirement.VaguePhrases,
+                requirement.Optionality,
+                requirement.Subjectivity,
+                requirement.References,
+                requirement.Weakness,
+                requirement.Imperatives,
+                requirement.Continuances,
+                requirement.Imperatives2,
+                requirement.References2				
+				);
+		
+		return analysisText;
+	}
+	
+	
+	private se.addiva.nalabs.Requirement findAnalysisMatch(Requirement requirement, Collection<se.addiva.nalabs.Requirement> nalabRequirements) {
+		String id = requirement.getReqIFIdentifier();
+		
+		return nalabRequirements
+			.stream()
+			.filter(req -> req.Id.equalsIgnoreCase(id))
+			.findFirst()
+			.orElse(null);
+	}
+
+	protected void updateNalabsAttribute(Requirement requirement, String value) {
+		Attribute nalabsAttribute = findAttribute(requirement.getOwnedAttributes(), "NALABS");
+		// Set or add NALABS value
+		if(nalabsAttribute != null) {
+			setNalabsAttributeValue(nalabsAttribute, value);
+		} else {
+			addNalabsAttribute(requirement, value);
+		}		
+	}
+	
+	protected Collection<se.addiva.nalabs.Requirement> analyzeRequirements(Collection<Requirement> requirements) {
+		
+		List<se.addiva.nalabs.Requirement> nalabsRequirements =
+				requirements.stream().map(r -> copyRequirement(r)).collect(Collectors.toList());
+		
+		RequirementAnalyzer.analyzeRequirements(nalabsRequirements.toArray(new se.addiva.nalabs.Requirement[0]));
+		
+		return nalabsRequirements;
+	}
+	
+	protected se.addiva.nalabs.Requirement copyRequirement(Requirement source){
+		se.addiva.nalabs.Requirement target = new se.addiva.nalabs.Requirement(source.getReqIFIdentifier(), source.getReqIFText());
+		return target;
 	}
 
 	protected Attribute addNalabsAttribute(Requirement requirement, String value) {
@@ -154,62 +234,4 @@ public class NalabsHandler extends AbstractHandler {
 		
 		return reqs;
 	}
-	
-	/*
-	MemoryAddress result = getHelloWorld();
-    String greeting = result.getUtf8String(0);
-	double y = sqrt(4);
-	*/ 
-    
-	/*
-	MessageDialog.openInformation(
-			window.getShell(),
-			"NALABS",
-			greeting + "\n" + y);
-	*/
-
-	/*
-	String rText = r.getReqIFText();
-	
-	MessageDialog.openInformation(
-			window.getShell(),
-			"ReqIFText",
-			rText);
-
-	EList<Attribute> attributes = r.getOwnedAttributes();
-	Collection<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
-	Collection<Object> attributeValues = new ArrayList<Object>();
-	List<String> attributeIds = new ArrayList<String>();
-
-	
-	
-	for(Attribute a : attributes) {
-		AttributeDefinition ad = a.getDefinition();
-		attributeDefinitions.add(ad);
-		
-		attributeIds.add(ad.getReqIFIdentifier());
-		
-		if(ad.getReqIFIdentifier().equalsIgnoreCase("NALABS")) {
-			EStructuralFeature attributeValueFeature = a.eClass().getEStructuralFeature("value");
-
-			if(attributeValueFeature != null) {
-				Object v = a.eGet(attributeValueFeature);
-				if(v != null) {
-					attributeValues.add(v);
-					setStructuralFeature(a, attributeValueFeature, "SUCCESS: " + LocalTime.now().toString());
-				}
-			}
-		}
-	}
-				
-	MessageDialog.openInformation(
-			window.getShell(),
-			"Attributes",
-			attributes.toString() + 
-			"\n\nDefinitions:\n" + attributeDefinitions.toString() + 
-			"\n\nValues:\n" + attributeValues.toString() +
-			"\n\nIDs:\n" + attributeIds.toString()
-			);
-	 */
-
 }
