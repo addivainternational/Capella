@@ -11,3 +11,4 @@
 .idea/
 *.DotSettings.user
 **/.vs
+**/*.class

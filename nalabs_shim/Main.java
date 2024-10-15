@@ -1,39 +1,46 @@
 import java.lang.foreign.*;
-import static se.addiva.nalabs.NalabsLib.*;
-import se.addiva.nalabs.Requirement;
+import java.lang.reflect.*;
+import java.lang.*;
+import se.addiva.nalabs.*;
 
 /*
-    javac  --enable-preview --release 19 -cp .;se.addiva.nalabs.jar Main.java
+    javac  --enable-preview --release 19 -cp .;se.addiva.nalabs.interop.jar Main.java
+    javac  --enable-preview --release 19 -cp .;se.addiva.nalabs.interop.jar se/addiva/nalabs/RequirementAnalyzer.java se/addiva/nalabs/Requirement.java Main.java
+    java --enable-preview --enable-native-access=ALL-UNNAMED -cp .;se.addiva.nalabs.interop.jar Main
+
+    Packaging the se.addiva.nalabs shim package
+    "C:\Program Files\Java\jdk-19\bin\jar.exe" -c --file se.addiva.nalabs.jar @se.addiva.nalabs.jarlist
 */
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Main Starting");
 
-        try {
-            int numReqs = 5;
-            SegmentAllocator allocator = SegmentAllocator.implicitAllocator();
-            MemorySegment requirements = Requirement.allocateArray(numReqs, allocator);
+        try{
+            Requirement[] requirements = new Requirement[3];
+            requirements[0] = new Requirement("SRS_001", "The user shall be able to connect to their base board");
+            requirements[1] = new Requirement("SRS_009", "The system shall have ESBE logo in the HMI, and may have it in the UI or better, for example on their foot as required. Also see the reference.");
+            requirements[2] = new Requirement("SRS_010", "");
 
-            System.out.println("Initializing array");
+            System.out.println("Analyzing");
+            RequirementAnalyzer.analyzeRequirements(requirements);
 
-            for(int i = 0; i < numReqs; i++){
-                MemorySegment id = allocator.allocateUtf8String("REQ_00" + i + 1);
-                MemorySegment text = allocator.allocateUtf8String("Text REQ_00" + i + 1);
-                
-                Requirement.Id$set(requirements, i, id.address());
-                Requirement.Text$set(requirements, i, text.address());
-            }
-
-            System.out.println("Running Analyzis");
-            MemoryAddress result = analyzeRequirements(requirements, numReqs);
-
-            System.out.println("Reading back data");
-            for(int i = 0; i < numReqs; i++){
-                String id = Requirement.Id$get(requirements, i).getUtf8String(0);
-                String text = Requirement.Text$get(requirements, i).getUtf8String(0);
-                int ari = Requirement.AriScore$get(requirements, i);
-                System.out.printf("Id: %s, Text: '%s', ARI: %d\n", id, text, ari);
+            System.out.println("Results");
+            for (Requirement requirement : requirements) {
+                System.out.printf("Id: %s, Text: '%s'\n\tARI: %f\tCONJ: %d\tVAG: %d\tOPT: %d\tSUB: %d\tREF: %d\tWEK: %d\tIMP: %d\tCON: %d\tIMP2: %d\tREF2: %d\n\n", 
+                requirement.Id, 
+                requirement.Text, 
+                requirement.AriScore,
+                requirement.Conjunctions,
+                requirement.VaguePhrases,
+                requirement.Optionality,
+                requirement.Subjectivity,
+                requirement.References,
+                requirement.Weakness,
+                requirement.Imperatives,
+                requirement.Continuances,
+                requirement.Imperatives2,
+                requirement.References2
+                );
             }
         }
         catch(Exception e){

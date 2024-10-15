@@ -1,13 +1,8 @@
 ﻿namespace Addiva.Nalabs.Interop;
 
-
-public struct Requirement
+public class TextAnalysis
 {
-    public IntPtr Id { get; set; }
-
-    public IntPtr Text { get; set; }
-
-    public double AriScore { get; set; }
+    public double ARI { get; set; }
 
     public int Conjunctions { get; set; }
 
