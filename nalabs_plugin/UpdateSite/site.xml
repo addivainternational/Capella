@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/MyFeature_1.0.0.202410151534.jar" id="MyFeature" version="1.0.0.202410151534"/>
+   <description name="NALABS Update Site">
+      
+   </description>
+   <feature url="features/NALABSFeature_1.0.0.202410160843.jar" id="NALABSFeature" version="1.0.0.202410160843"/>
 </site>

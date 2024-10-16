@@ -68,7 +68,6 @@ public class NalabsHandler extends AbstractHandler {
 	}
 
 	protected void updateRequirements(Collection<Requirement> requirements, Collection<se.addiva.nalabs.Requirement> nalabRequirements) {
-
 		for(Requirement requirement : requirements) {
 			se.addiva.nalabs.Requirement matchingAnalysis = findAnalysisMatch(requirement, nalabRequirements);
 			

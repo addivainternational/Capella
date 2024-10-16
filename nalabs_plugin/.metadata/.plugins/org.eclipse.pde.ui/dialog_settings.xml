@@ -93,4 +93,7 @@
 	</section>
 	<section name="dependenciesView">
 	</section>
+	<section name="pde-form-editor">
+		<item key="org.eclipse.pde.ui.schemaEditor" value="overview"/>
+	</section>
 </section>

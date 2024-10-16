@@ -2,40 +2,71 @@
 <?metadataRepository version='1.2.0'?>
 <repository name='file:/C:/Repos/smart_delta/capella/nalabs_plugin/.metadata/.plugins/org.eclipse.pde.core/tempp2metadata - metadata' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
-    <property name='p2.timestamp' value='1728999286824'/>
+    <property name='p2.timestamp' value='1729061015102'/>
     <property name='p2.compressed' value='false'/>
   </properties>
-  <units size='4'>
-    <unit id='Default' version='1.0.0.2--cw_h--7737A535C5C9A'>
-      <properties size='3'>
-        <property name='org.eclipse.equinox.p2.name' value='Uncategorized'/>
-        <property name='org.eclipse.equinox.p2.description' value='Default category for otherwise uncategorized features'/>
-        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+  <references size='4'>
+    <repository uri='https://www.addiva.se/' url='https://www.addiva.se/' type='1' options='0'/>
+    <repository uri='https://github.com/eduardenoiu/NALABS' url='https://github.com/eduardenoiu/NALABS' type='1' options='0'/>
+    <repository uri='https://www.addiva.se/' url='https://www.addiva.se/' type='0' options='0'/>
+    <repository uri='https://github.com/eduardenoiu/NALABS' url='https://github.com/eduardenoiu/NALABS' type='0' options='0'/>
+  </references>
+  <units size='3'>
+    <unit id='NALABSFeature.feature.group' version='1.0.0.202410160843' singleton='false'>
+      <update id='NALABSFeature.feature.group' range='[0.0.0,1.0.0.202410160843)' severity='0'/>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.name' value='NALABS Requirement Analysis'/>
+        <property name='org.eclipse.equinox.p2.description' value='NALABS (NAtural LAnguage Bad Smells) Requirement Analysis features.'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Addiva AB'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
       </properties>
       <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='Default' version='1.0.0.2--cw_h--7737A535C5C9A'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='NALABSFeature.feature.group' version='1.0.0.202410160843'/>
       </provides>
-      <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='MyFeature.feature.group' range='[1.0.0.202410151534,1.0.0.202410151534]'/>
+      <requires size='10'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.polarsys.capella.core.model.handler' range='7.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.polarsys.capella.core.model.helpers' range='7.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.polarsys.capella.common.model.helpers' range='7.0.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.polarsys.kitalpha.vp.requirements.model' range='0.14.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.polarsys.kitalpha.vp.requirements' range='0.14.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.emf' range='2.9.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.emf.ecore.edit' range='2.14.0'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='Nalabs' range='[1.0.0.202410160843,1.0.0.202410160843]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='NALABSFeature.feature.jar' range='[1.0.0.202410160843,1.0.0.202410160843]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
       </requires>
       <touchpoint id='null' version='0.0.0'/>
+      <licenses size='1'>
+        <license uri='' url=''>
+          Based on Code from the following license:&#xA;&#xA;MIT License&#xA;Copyright (c) 2023 Eduard Paul Enoiu&#xA;Permission is hereby granted, free of charge, to any person obtaining&#xA;a copy&#xA;of this software and associated documentation files (the &quot;Software&quot;),&#xA;to deal&#xA;in the Software without restriction, including without limitation&#xA;the rights&#xA;to use, copy, modify, merge, publish, distribute, sublicense,&#xA;and/or sell&#xA;copies of the Software, and to permit persons to whom the Software&#xA;is&#xA;furnished to do so, subject to the following conditions:&#xA;The above copyright notice and this permission notice shall be&#xA;included in all&#xA;copies or substantial portions of the Software.&#xA;THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&#xA;EXPRESS OR&#xA;IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#xA;FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT&#xA;SHALL THE&#xA;AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES&#xA;OR OTHER&#xA;LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&#xA;ARISING FROM,&#xA;OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&#xA;DEALINGS IN THE&#xA;SOFTWARE.
+        </license>
+      </licenses>
+      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
+        Copyright (c) 2024 Addiva-EEPAB Group&#xA;Copyright (c) 2023 Eduard Paul Enoiu
+      </copyright>
     </unit>
-    <unit id='MyFeature.feature.jar' version='1.0.0.202410151534'>
-      <properties size='3'>
-        <property name='org.eclipse.equinox.p2.name' value='MyFeature'/>
-        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
+    <unit id='NALABSFeature.feature.jar' version='1.0.0.202410160843'>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='NALABS Requirement Analysis'/>
+        <property name='org.eclipse.equinox.p2.description' value='NALABS (NAtural LAnguage Bad Smells) Requirement Analysis features.'/>
         <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Addiva AB'/>
       </properties>
       <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='MyFeature.feature.jar' version='1.0.0.202410151534'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='NALABSFeature.feature.jar' version='1.0.0.202410160843'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
-        <provided namespace='org.eclipse.update.feature' name='MyFeature' version='1.0.0.202410151534'/>
+        <provided namespace='org.eclipse.update.feature' name='NALABSFeature' version='1.0.0.202410160843'/>
       </provides>
       <filter>
         (org.eclipse.update.install.features=true)
       </filter>
       <artifacts size='1'>
-        <artifact classifier='org.eclipse.update.feature' id='MyFeature' version='1.0.0.202410151534'/>
+        <artifact classifier='org.eclipse.update.feature' id='NALABSFeature' version='1.0.0.202410160843'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
@@ -46,23 +77,23 @@
         </instructions>
       </touchpointData>
       <licenses size='1'>
-        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
-          [Enter License Description here.]
+        <license uri='' url=''>
+          Based on Code from the following license:&#xA;&#xA;MIT License&#xA;Copyright (c) 2023 Eduard Paul Enoiu&#xA;Permission is hereby granted, free of charge, to any person obtaining&#xA;a copy&#xA;of this software and associated documentation files (the &quot;Software&quot;),&#xA;to deal&#xA;in the Software without restriction, including without limitation&#xA;the rights&#xA;to use, copy, modify, merge, publish, distribute, sublicense,&#xA;and/or sell&#xA;copies of the Software, and to permit persons to whom the Software&#xA;is&#xA;furnished to do so, subject to the following conditions:&#xA;The above copyright notice and this permission notice shall be&#xA;included in all&#xA;copies or substantial portions of the Software.&#xA;THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&#xA;EXPRESS OR&#xA;IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#xA;FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT&#xA;SHALL THE&#xA;AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES&#xA;OR OTHER&#xA;LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&#xA;ARISING FROM,&#xA;OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&#xA;DEALINGS IN THE&#xA;SOFTWARE.
         </license>
       </licenses>
       <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
-        [Enter Copyright Description here.]
+        Copyright (c) 2024 Addiva-EEPAB Group&#xA;Copyright (c) 2023 Eduard Paul Enoiu
       </copyright>
     </unit>
-    <unit id='Nalabs' version='1.0.0.202410151534'>
-      <update id='Nalabs' range='[0.0.0,1.0.0.202410151534)' severity='0'/>
+    <unit id='Nalabs' version='1.0.0.202410160843'>
+      <update id='Nalabs' range='[0.0.0,1.0.0.202410160843)' severity='0'/>
       <properties size='1'>
         <property name='org.eclipse.equinox.p2.name' value='Nalabs'/>
       </properties>
       <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='Nalabs' version='1.0.0.202410151534'/>
-        <provided namespace='osgi.bundle' name='Nalabs' version='1.0.0.202410151534'/>
-        <provided namespace='osgi.identity' name='Nalabs' version='1.0.0.202410151534'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='Nalabs' version='1.0.0.202410160843'/>
+        <provided namespace='osgi.bundle' name='Nalabs' version='1.0.0.202410160843'/>
+        <provided namespace='osgi.identity' name='Nalabs' version='1.0.0.202410160843'>
           <properties size='1'>
             <property name='type' value='osgi.bundle'/>
           </properties>
@@ -80,48 +111,16 @@
         <required namespace='osgi.bundle' name='org.eclipse.emf.ecore.edit' range='2.14.0'/>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='Nalabs' version='1.0.0.202410151534'/>
+        <artifact classifier='osgi.bundle' id='Nalabs' version='1.0.0.202410160843'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: Nalabs;singleton:=true&#xA;Bundle-Version: 1.0.0.202410151534
+            Bundle-SymbolicName: Nalabs;singleton:=true&#xA;Bundle-Version: 1.0.0.202410160843
           </instruction>
         </instructions>
       </touchpointData>
-    </unit>
-    <unit id='MyFeature.feature.group' version='1.0.0.202410151534' singleton='false'>
-      <update id='MyFeature.feature.group' range='[0.0.0,1.0.0.202410151534)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='MyFeature'/>
-        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
-        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
-        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='MyFeature.feature.group' version='1.0.0.202410151534'/>
-      </provides>
-      <requires size='5'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui' range='0.0.0'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.polarsys.capella.core.model.helpers' range='7.0.0'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.polarsys.capella.core.model.handler' range='7.0.0'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='Nalabs' range='[1.0.0.202410151534,1.0.0.202410151534]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='MyFeature.feature.jar' range='[1.0.0.202410151534,1.0.0.202410151534]'>
-          <filter>
-            (org.eclipse.update.install.features=true)
-          </filter>
-        </required>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
-      <licenses size='1'>
-        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
-          [Enter License Description here.]
-        </license>
-      </licenses>
-      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
-        [Enter Copyright Description here.]
-      </copyright>
     </unit>
   </units>
 </repository>
