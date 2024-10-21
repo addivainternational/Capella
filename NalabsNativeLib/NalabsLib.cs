@@ -6,7 +6,7 @@ namespace Addiva.Nalabs.Interop
     /// 
     /// </summary>
     /// <remarks>
-    /// dotnet publish --runtime win-x64 --configuration release --self-contained false
+    /// dotnet publish --runtime win-x64 --configuration release --self-contained false --force
     /// "c:\Program Files\jextract-19\bin\jextract.bat" --source --output jsrc --target-package se.addiva.nalabs.interop -l NalabsNativelib --header-class-name NalabsLib nalabslib.h
     /// "C:\Program Files\Java\jdk-19\bin\javac.exe" --release 19 --enable-preview .\jsrc\se\addiva\nalabs\interop\*.java
     /// "C:\Program Files\Java\jdk-19\bin\jar.exe" -c --file se.addiva.nalabs.interop.jar -C jsrc/ .
