@@ -23,6 +23,11 @@ import org.polarsys.kitalpha.vp.requirements.Requirements.*;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Module;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Requirement;
 
+//import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+
 public class NalabsHandler extends AbstractHandler {
 
 	@Override
@@ -30,6 +35,7 @@ public class NalabsHandler extends AbstractHandler {
 		
 		// Get Requirements from selection
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
+
 		Collection<Requirement> requirements = getRequirements(selection);
 
 		Collection<Requirement> correctRequirements = getCorrectRequirements(requirements);
@@ -41,6 +47,14 @@ public class NalabsHandler extends AbstractHandler {
 		// Re map results to Capella requirements, updating or adding a NOLABS Attribute
 		updateRequirements(correctRequirements, nalabRequirements);
 		notifyFaultyRequirement(faultyRequirements);
+		
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        try {
+        	RequirementsTableView reqView = (RequirementsTableView) page.showView("nqdin29hbfwpifgpnpw09fgew30"); // Use the ID of your view
+            reqView.setRequirementData(nalabRequirements);
+        } catch (PartInitException e) {
+            e.printStackTrace();
+        }
 		
 		return null;
 	}
@@ -125,7 +139,7 @@ public class NalabsHandler extends AbstractHandler {
 		List<se.addiva.nalabs.Requirement> nalabsRequirements =
 				requirements.stream().map(r -> copyRequirement(r)).collect(Collectors.toList());
 		
-		RequirementAnalyzer.analyzeRequirements(nalabsRequirements.toArray(new se.addiva.nalabs.Requirement[0]));
+		RequirementAnalyzer.analyzeRequirements(nalabsRequirements.toArray(new se.addiva.nalabs.Requirement[requirements.size()]));
 		
 		return nalabsRequirements;
 	}
