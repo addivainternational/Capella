@@ -1,7 +1,0 @@
-output.. = bin/
-bin.includes = plugin.xml,\
-               META-INF/,\
-               icons/,\
-               OSGI-INF/l10n/bundle.properties,\
-               content.xml
-jars.compile.order = src/

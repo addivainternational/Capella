@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;MyPlugin/myplugin.cmd1.exsd&apos;" deleteContents="false" description="Delete resource &apos;MyPlugin/myplugin.cmd1.exsd&apos;" element1="/MyPlugin/myplugin.cmd1.exsd" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1727089122350"/>
-</session>
