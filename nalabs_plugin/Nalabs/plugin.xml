@@ -46,5 +46,12 @@
          </menu>
       </menuContribution>
    </extension>
+   <extension point="org.eclipse.ui.views">
+	    <view
+	        id="nqdin29hbfwpifgpnpw09fgew30"
+	        name="Requirements"
+	        class="nalabs.views.RequirementsTableView">
+	    </view>
+	</extension>
 
 </plugin>
