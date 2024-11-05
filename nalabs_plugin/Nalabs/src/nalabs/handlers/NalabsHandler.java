@@ -1,6 +1,6 @@
 package nalabs.handlers;
 
-import nalabs.views.RequirementsTableView;
+import nalabs.views.MainView;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,7 +53,7 @@ public class NalabsHandler extends AbstractHandler {
 		
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         try {
-        	RequirementsTableView reqView = (RequirementsTableView) page.showView("nqdin29hbfwpifgpnpw09fgew30"); // Use the ID of your view
+        	MainView reqView = (MainView) page.showView("nqdin29hbfwpifgpnpw09fgew30"); // Use the ID of your view
             reqView.setRequirementData(nalabRequirements);
         } catch (PartInitException e) {
             e.printStackTrace();

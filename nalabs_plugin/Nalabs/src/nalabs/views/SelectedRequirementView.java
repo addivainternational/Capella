@@ -7,16 +7,24 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 
-public class RequirementContentView {
+public class SelectedRequirementView {
     
 	private se.addiva.nalabs.Requirement requirement;
+	private Composite composite;
 	private Label labelTitle;
     private Text requirementText;
 
-    public RequirementContentView(Composite parent) {
+    public SelectedRequirementView(Composite parent) {
     	
+    	composite = parent;
+    	
+    	GridData requirementViewerData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		parent.setLayout(new GridLayout());
+		parent.setLayoutData(requirementViewerData);
+		
     	labelTitle = new Label(parent, SWT.TITLE | SWT.BOLD);
     	labelTitle.setText("Requirement");
     	GridData labelGridData = new GridData();
@@ -28,6 +36,10 @@ public class RequirementContentView {
     	textGridData.widthHint = 500; 
     	textGridData.heightHint = 40; 
     	requirementText.setLayoutData(textGridData);
+    }
+    
+    public Composite getComposite() {
+    	return composite;
     }
     
     public void setRequirement(se.addiva.nalabs.Requirement requirement) {

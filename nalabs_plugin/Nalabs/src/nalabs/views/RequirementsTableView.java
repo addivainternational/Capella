@@ -5,51 +5,35 @@ import java.util.Collection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 import org.eclipse.swt.layout.*;
-import org.eclipse.swt.layout.GridLayout;
 
-public class RequirementsTableView extends ViewPart {
-
-	public static final String ID = "nqdin29hbfwpifgpnpw09fgew30"; // Unique ID for your view
+public class RequirementsTableView {
 
 	private Collection<se.addiva.nalabs.Requirement> nalabRequirements;
 	private TableViewer tableViewer;
-	private RequirementContentView requirementViewer;
+	private SelectedRequirementView selectedRequirementView;
 
-	@Override
-	public void createPartControl(Composite parent) {
-		createTableViewer(parent);
-	}
-
-	private void createTableViewer(Composite parent) {
-
-		// Create layout and composites
-		parent.setLayout(new GridLayout(2, false));
-
-		Composite tableViewerComposite = new Composite(parent, SWT.BORDER | SWT.FILL);
-		Composite requirementViewerComposite = new Composite(parent, SWT.BORDER | SWT.FILL);
-
+	public RequirementsTableView(Composite parent, SelectedRequirementView requirementView) {
+		
+		selectedRequirementView = requirementView;
 		GridData tableViewerData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		GridData requirementViewerData = new GridData(SWT.FILL, SWT.FILL, true, true);
-
-		tableViewerComposite.setLayout(new GridLayout());
-		tableViewerComposite.setLayoutData(tableViewerData);
-		requirementViewerComposite.setLayout(new GridLayout());
-		requirementViewerComposite.setLayoutData(requirementViewerData);
-
+		parent.setLayout(new GridLayout());
+		parent.setLayoutData(tableViewerData);
+		
 		parent.addListener(SWT.Resize, arg0 -> {
 			org.eclipse.swt.graphics.Point size = parent.getSize();
-
+			Composite requirementViewerComposite = requirementView.getComposite();
+			GridData requirementViewerData = (GridData) requirementViewerComposite.getLayoutData();
 			tableViewerData.widthHint = (int) (size.x * 0.6);
 			requirementViewerData.widthHint = size.x - tableViewerData.widthHint;
 			tableViewer.getTable().setLayoutData(tableViewerData);
@@ -57,15 +41,33 @@ public class RequirementsTableView extends ViewPart {
 		});
 
 		// Create requirements table
-		tableViewer = new TableViewer(tableViewerComposite, SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		createColumns();
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-
-		// Create view for selected requirement
-		requirementViewer = new RequirementContentView(requirementViewerComposite);
+	}
+	
+	public void setFocus() {
+		tableViewer.getControl().setFocus();
+	}
+	
+	public void setRequirementData(Collection<se.addiva.nalabs.Requirement> requirements) {
+		nalabRequirements = requirements;
+		tableViewer.setInput(nalabRequirements);
+		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
+				se.addiva.nalabs.Requirement requirement = (se.addiva.nalabs.Requirement) structuredSelection
+						.getFirstElement();
+				selectedRequirementView.setRequirement(requirement);
+			}
+		});
+		if (nalabRequirements.size() > 0) {
+			tableViewer.setSelection(new StructuredSelection(tableViewer.getElementAt(0)),true);
+		}
 	}
 
 	private TableViewerColumn createTableViewerColumn(String title, int bound) {
@@ -214,29 +216,4 @@ public class RequirementsTableView extends ViewPart {
 			}
 		});
 	}
-
-	@Override
-	public void setFocus() {
-		tableViewer.getControl().setFocus();
-	}
-
-	public void setRequirementData(Collection<se.addiva.nalabs.Requirement> requirements) {
-		nalabRequirements = requirements;
-		tableViewer.setInput(nalabRequirements);
-
-		if (nalabRequirements.size() > 0) {
-			requirementViewer.setRequirement((se.addiva.nalabs.Requirement) nalabRequirements.toArray()[0]);
-		}
-
-		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
-				se.addiva.nalabs.Requirement requirement = (se.addiva.nalabs.Requirement) structuredSelection
-						.getFirstElement();
-				requirementViewer.setRequirement(requirement);
-			}
-		});
-	}
-
 }
