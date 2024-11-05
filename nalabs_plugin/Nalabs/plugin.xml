@@ -50,7 +50,7 @@
 	    <view
 	        id="nqdin29hbfwpifgpnpw09fgew30"
 	        name="Requirements"
-	        class="nalabs.handlers.RequirementsTableView">
+	        class="nalabs.views.RequirementsTableView">
 	    </view>
 	</extension>
 

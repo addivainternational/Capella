@@ -1,6 +1,6 @@
 package nalabs.handlers;
 
-import se.addiva.nalabs.*;
+import nalabs.views.RequirementsTableView;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,6 +27,9 @@ import org.polarsys.kitalpha.vp.requirements.Requirements.Requirement;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NalabsHandler extends AbstractHandler {
 
@@ -134,12 +137,35 @@ public class NalabsHandler extends AbstractHandler {
 		}		
 	}
 	
-	protected Collection<se.addiva.nalabs.Requirement> analyzeRequirements(Collection<Requirement> requirements) {
+	protected Collection<se.addiva.nalabs.Requirement> analyzeRequirements(Collection<Requirement> requirements) throws IllegalFormatException {
 		
 		List<se.addiva.nalabs.Requirement> nalabsRequirements =
 				requirements.stream().map(r -> copyRequirement(r)).collect(Collectors.toList());
 		
-		RequirementAnalyzer.analyzeRequirements(nalabsRequirements.toArray(new se.addiva.nalabs.Requirement[requirements.size()]));
+		for (se.addiva.nalabs.Requirement requirement : nalabsRequirements)
+        {
+			Pattern pattern = Pattern.compile("<p>(.*?)</p>", Pattern.DOTALL);
+			Matcher matcher = pattern.matcher(requirement.Text);
+			if (!matcher.find()) {
+				throw new IllegalArgumentException("The requirement text does not contain the <p> html tag");
+			}
+			String textString = matcher.group(1);
+	        
+			nalabs.core.TextAnalysis analysis = nalabs.core.TextAnalyzer.AnalyzeText(textString);
+
+			requirement.Text = textString;
+            requirement.AriScore = analysis.ARI;
+            requirement.Conjunctions = analysis.conjunctions;
+            requirement.VaguePhrases = analysis.vaguePhrases;
+            requirement.Optionality = analysis.optionality;
+            requirement.Subjectivity = analysis.subjectivity;
+            requirement.References = analysis.references;
+            requirement.Weakness = analysis.weakness;
+            requirement.Imperatives = analysis.imperatives;
+            requirement.Continuances = analysis.continuances;
+            requirement.Imperatives2 = analysis.imperatives2;
+            requirement.References2 = analysis.references2;
+        }
 		
 		return nalabsRequirements;
 	}
