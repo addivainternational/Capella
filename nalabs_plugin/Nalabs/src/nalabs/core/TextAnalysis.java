@@ -3,23 +3,23 @@ package nalabs.core;
 public class TextAnalysis {
     public double ARI;
 
-    public int conjunctions;
+    public AnalyzeResult conjunctions;
 
-    public int vaguePhrases;
+    public AnalyzeResult vaguePhrases;
 
-    public int optionality;
+    public AnalyzeResult optionality;
 
-    public int subjectivity;
+    public AnalyzeResult subjectivity;
 
-    public int references;
+    public AnalyzeResult references;
 
-    public int weakness;
+    public AnalyzeResult weakness;
 
-    public int imperatives;
+    public AnalyzeResult imperatives;
 
-    public int continuances;
+    public AnalyzeResult continuances;
 
-    public int imperatives2;
+    public AnalyzeResult imperatives2;
 
-    public int references2;
+    public AnalyzeResult references2;
 }

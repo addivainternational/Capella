@@ -1,6 +1,7 @@
 package nalabs.core;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ public abstract class MetricBase implements IMetric {
     }
 
     @Override
-    public int analyze(String text) {
+    public AnalyzeResult analyze(String text) {
         if (pattern == null) {
             // Join all keywords for the regex
             String joinedKeywords = String.join("|", getKeywords());
@@ -41,10 +42,24 @@ public abstract class MetricBase implements IMetric {
 
         Matcher matcher = pattern.matcher(text);
         int count = 0;
+        HashMap<String, Integer> smellsMap = new HashMap<>();
         while (matcher.find()) {
-            count++;
+        	String matchedString = matcher.group(); 
+        	if (!smellsMap.containsKey(matchedString)) {
+        		smellsMap.put(matchedString, 1);
+        	} else {
+        		smellsMap.put(matchedString, smellsMap.get(matchedString) + 1);
+        	}
+        	count++;
         }
+        
+        int counts = smellsMap.size();
 
-        return count;
+        return new AnalyzeResult() {
+        	{
+        		totalCount = counts;
+        		smells = smellsMap;
+        	}
+        };
     }
 }

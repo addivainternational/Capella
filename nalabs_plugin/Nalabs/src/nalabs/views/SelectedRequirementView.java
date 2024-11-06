@@ -5,14 +5,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
 
 public class SelectedRequirementView {
     
-	private se.addiva.nalabs.Requirement requirement;
+	private nalabs.core.Requirement requirement;
 	private Composite composite;
 	private Label labelTitle;
     private Text requirementText;
@@ -42,7 +40,7 @@ public class SelectedRequirementView {
     	return composite;
     }
     
-    public void setRequirement(se.addiva.nalabs.Requirement requirement) {
+    public void setRequirement(nalabs.core.Requirement requirement) {
     	this.requirement = requirement; 
     	requirementText.setText(this.requirement.Text);
     }
