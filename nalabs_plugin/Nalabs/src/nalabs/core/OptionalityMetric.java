@@ -16,4 +16,9 @@ public class OptionalityMetric extends MetricBase {
     public OptionalityMetric()
     {
     }
+    
+    @Override
+    public String metricDescription() {
+    	return "Optionality";
+    }
 }

@@ -19,9 +19,10 @@ import org.eclipse.swt.layout.*;
 
 public class RequirementsTableView {
 
-	private Collection<se.addiva.nalabs.Requirement> nalabRequirements;
+	private Collection<nalabs.core.Requirement> nalabRequirements;
 	private TableViewer tableViewer;
 	private SelectedRequirementView selectedRequirementView;
+	private ISelectionChangedListener selectionChangedListener = null;
 
 	public RequirementsTableView(Composite parent, SelectedRequirementView requirementView) {
 		
@@ -53,18 +54,22 @@ public class RequirementsTableView {
 		tableViewer.getControl().setFocus();
 	}
 	
-	public void setRequirementData(Collection<se.addiva.nalabs.Requirement> requirements) {
+	public void setRequirementData(Collection<nalabs.core.Requirement> requirements) {
+		if (selectionChangedListener != null) {
+			tableViewer.removeSelectionChangedListener(selectionChangedListener);
+		}
 		nalabRequirements = requirements;
 		tableViewer.setInput(nalabRequirements);
-		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+		selectionChangedListener = new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
-				se.addiva.nalabs.Requirement requirement = (se.addiva.nalabs.Requirement) structuredSelection
+				nalabs.core.Requirement requirement = (nalabs.core.Requirement) structuredSelection
 						.getFirstElement();
 				selectedRequirementView.setRequirement(requirement);
 			}
-		});
+		};
+		tableViewer.addSelectionChangedListener(selectionChangedListener);
 		if (nalabRequirements.size() > 0) {
 			tableViewer.setSelection(new StructuredSelection(tableViewer.getElementAt(0)),true);
 		}
@@ -83,15 +88,15 @@ public class RequirementsTableView {
 	private void createColumns() {
 		// Define column names and widths
 		String[] titles = { "Id", "Text", "Ari Score", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
-				"References", "Weakness", "Imperatives", "Continuances", "Imperatives2", "References2" };
-		int[] bounds = { 50, 400, 80, 100, 100, 80, 80, 80, 80, 80, 100, 80, 80 };
+				"References", "References2", "Weakness", "Imperatives", "Continuances" };
+		int[] bounds = { 50, 400, 80, 100, 100, 80, 80, 80, 80, 80, 100, 80 };
 
 		// Id
 		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0]);
 		colId.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
 				return r.Id;
 			}
 		});
@@ -101,7 +106,7 @@ public class RequirementsTableView {
 		colText.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
 				return r.Text;
 			}
 		});
@@ -111,8 +116,8 @@ public class RequirementsTableView {
 		colAriScore.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.AriScore);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return String.format("%.2f", r.AriScore);
 			}
 		});
 
@@ -121,8 +126,8 @@ public class RequirementsTableView {
 		colConjunctions.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.Conjunctions);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.Conjunctions.totalCount);
 			}
 		});
 
@@ -131,8 +136,8 @@ public class RequirementsTableView {
 		colVaguePhrases.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.VaguePhrases);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.VaguePhrases.totalCount);
 			}
 		});
 
@@ -141,8 +146,8 @@ public class RequirementsTableView {
 		colOptionality.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.Optionality);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.Optionality.totalCount);
 			}
 		});
 
@@ -151,8 +156,8 @@ public class RequirementsTableView {
 		colSubjectivity.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.Subjectivity);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.Subjectivity.totalCount);
 			}
 		});
 
@@ -161,8 +166,18 @@ public class RequirementsTableView {
 		colReferences.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.References);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.References.totalCount);
+			}
+		});
+		
+		// References2
+		TableViewerColumn colReferences2 = createTableViewerColumn(titles[11], bounds[11]);
+		colReferences2.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.References2.totalCount);
 			}
 		});
 
@@ -171,8 +186,8 @@ public class RequirementsTableView {
 		colWeakness.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.Weakness);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.Weakness.totalCount);
 			}
 		});
 
@@ -181,8 +196,8 @@ public class RequirementsTableView {
 		colImperatives.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.Imperatives);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.Imperatives.totalCount);
 			}
 		});
 
@@ -191,28 +206,8 @@ public class RequirementsTableView {
 		colContinuances.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.Continuances);
-			}
-		});
-
-		// Imperatives2
-		TableViewerColumn colImperatives2 = createTableViewerColumn(titles[11], bounds[11]);
-		colImperatives2.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.Imperatives2);
-			}
-		});
-
-		// References2
-		TableViewerColumn colReferences2 = createTableViewerColumn(titles[12], bounds[12]);
-		colReferences2.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				se.addiva.nalabs.Requirement r = (se.addiva.nalabs.Requirement) element;
-				return Double.toString(r.References2);
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.Continuances.totalCount);
 			}
 		});
 	}

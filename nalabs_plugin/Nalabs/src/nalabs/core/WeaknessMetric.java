@@ -17,4 +17,9 @@ public class WeaknessMetric extends MetricBase {
     public WeaknessMetric()
     {
     }
+    
+    @Override
+    public String metricDescription() {
+    	return "Weakness";
+    }
 }
