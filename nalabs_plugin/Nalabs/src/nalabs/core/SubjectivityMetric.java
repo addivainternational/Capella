@@ -17,4 +17,9 @@ public class SubjectivityMetric extends MetricBase {
     public SubjectivityMetric()
     {
     }
+    
+    @Override
+    public String metricDescription() {
+    	return "Subjectivity";
+    }
 }

@@ -2,6 +2,8 @@ package nalabs.core;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,21 +29,24 @@ public abstract class MetricBase implements IMetric {
 
     @Override
     public AnalyzeResult analyze(String text) {
+    	
         if (pattern == null) {
-            // Join all keywords for the regex
-            String joinedKeywords = String.join("|", getKeywords());
+            // Put word boundaries on all keywords (expressions), then join them
+        	String[] tempKeywords = getKeywords();
+        	List<String> modKeywords = new ArrayList<String>();
+        	for (String tempKeyword : tempKeywords) {
+        		modKeywords.add("\\b" + tempKeyword + "\\b");
+        	}
+            String joinedKeywords = String.join("|", modKeywords);
 
             // Replace literal . with escaped \. since . means match any character in the input.
             joinedKeywords = joinedKeywords.replace(".", "\\.");
 
-            // Replace spaces with \s+ to allow one or more spaces in the text for the phrases
-            joinedKeywords = joinedKeywords.replaceAll("\\s+", "\\\\s+");
-
-            pattern = Pattern.compile("\\b" + joinedKeywords + "\\b", Pattern.CASE_INSENSITIVE);
+            pattern = Pattern.compile(joinedKeywords, Pattern.CASE_INSENSITIVE);
         }
 
+        // Match the patterns and create hashmap for existing smells
         Matcher matcher = pattern.matcher(text);
-        int count = 0;
         HashMap<String, Integer> smellsMap = new HashMap<>();
         while (matcher.find()) {
         	String matchedString = matcher.group(); 
@@ -50,15 +55,15 @@ public abstract class MetricBase implements IMetric {
         	} else {
         		smellsMap.put(matchedString, smellsMap.get(matchedString) + 1);
         	}
-        	count++;
         }
         
-        int counts = smellsMap.size();
+        String d = this.metricDescription();
 
         return new AnalyzeResult() {
         	{
-        		totalCount = counts;
+        		totalCount = smellsMap.size();
         		smells = smellsMap;
+        		description = d;
         	}
         };
     }

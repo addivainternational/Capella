@@ -19,7 +19,5 @@ public class TextAnalysis {
 
     public AnalyzeResult continuances;
 
-    public AnalyzeResult imperatives2;
-
     public AnalyzeResult references2;
 }

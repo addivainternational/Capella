@@ -7,4 +7,6 @@ public interface IMetric {
     AnalyzeResult analyze(String text);
 
     String[] getDefaultKeywords();
+    
+    String metricDescription();
 }

@@ -16,4 +16,9 @@ public class ContinuancesMetric extends MetricBase {
     public ContinuancesMetric()
     {
     }
+    
+    @Override
+    public String metricDescription() {
+    	return "Continuance";
+    }
 }

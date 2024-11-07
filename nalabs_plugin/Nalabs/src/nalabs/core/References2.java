@@ -19,4 +19,9 @@ public class References2 extends MetricBase {
     public References2()
     {
     }
+    
+    @Override
+    public String metricDescription() {
+    	return "Reference #2";
+    }
 }

@@ -19,4 +19,9 @@ public class NVMetric extends MetricBase {
     public NVMetric()
     {
     }
+    
+    @Override
+    public String metricDescription() {
+    	return "Vagueness";
+    }
 }

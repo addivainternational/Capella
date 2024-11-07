@@ -21,6 +21,10 @@ public class Requirement {
     public AnalyzeResult Weakness;
     public AnalyzeResult Imperatives;
     public AnalyzeResult Continuances;
-    public AnalyzeResult Imperatives2;
     public AnalyzeResult References2;
+    
+    public AnalyzeResult[] getResults() {
+    	return new AnalyzeResult[] { Conjunctions, VaguePhrases, Optionality, Subjectivity, References, 
+    			Weakness, Imperatives, Continuances, References2 };
+    }
 }

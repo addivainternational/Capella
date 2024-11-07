@@ -12,7 +12,6 @@ public class TextAnalyzer
     private static WeaknessMetric WeaknessMetric = new WeaknessMetric();
     private static ImperativesMetric ImperativesMetric = new ImperativesMetric();
     private static ContinuancesMetric ContinuancesMetric = new ContinuancesMetric();
-    private static Imperatives2 Imperatives2Metric = new Imperatives2();
     private static References2 References2Metric = new References2();
 
     public static nalabs.core.TextAnalysis AnalyzeText(String text) {
@@ -28,7 +27,6 @@ public class TextAnalyzer
 	        	weakness = WeaknessMetric.analyze(text);
 	        	imperatives = ImperativesMetric.analyze(text);
 	        	continuances = ContinuancesMetric.analyze(text);
-	        	imperatives2 = Imperatives2Metric.analyze(text);
 	        	references2 = References2Metric.analyze(text);
     		}
         };

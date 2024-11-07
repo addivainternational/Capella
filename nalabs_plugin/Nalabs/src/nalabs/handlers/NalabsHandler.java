@@ -97,7 +97,7 @@ public class NalabsHandler extends AbstractHandler {
 	
 	private String formatNalabsAnalysis(nalabs.core.Requirement requirement) {
 		String analysisText = String.format(
-				"%s: NALABS Analysis (%s)\n\tARI: %f\tCONJ: %d\tVAG: %d\tOPT: %d\tSUB: %d\tREF: %d\tWEK: %d\tIMP: %d\tCONT: %d\tIMP2: %d\tREF2: %d",
+				"%s: NALABS Analysis (%s)\n\tARI: %f\tCONJ: %d\tVAG: %d\tOPT: %d\tSUB: %d\tREF: %d\tWEK: %d\tIMP: %d\tCONT: %d\tREF2: %d",
 				requirement.Id,
 				LocalDateTime.now().toString(),
                 requirement.AriScore,
@@ -109,7 +109,6 @@ public class NalabsHandler extends AbstractHandler {
                 requirement.Weakness.totalCount,
                 requirement.Imperatives.totalCount,
                 requirement.Continuances.totalCount,
-                requirement.Imperatives2.totalCount,
                 requirement.References2.totalCount				
 				);
 		
@@ -159,7 +158,7 @@ public class NalabsHandler extends AbstractHandler {
             		analysis.optionality.totalCount + analysis.subjectivity.totalCount + 
             		analysis.references.totalCount + analysis.weakness.totalCount + 
             		analysis.imperatives.totalCount + analysis.continuances.totalCount + 
-            		analysis.imperatives2.totalCount + analysis.references2.totalCount;
+            		analysis.references2.totalCount;
             requirement.Conjunctions = analysis.conjunctions;
             requirement.VaguePhrases = analysis.vaguePhrases;
             requirement.Optionality = analysis.optionality;
@@ -168,7 +167,6 @@ public class NalabsHandler extends AbstractHandler {
             requirement.Weakness = analysis.weakness;
             requirement.Imperatives = analysis.imperatives;
             requirement.Continuances = analysis.continuances;
-            requirement.Imperatives2 = analysis.imperatives2;
             requirement.References2 = analysis.references2;
         }
 		

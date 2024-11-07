@@ -88,8 +88,8 @@ public class RequirementsTableView {
 	private void createColumns() {
 		// Define column names and widths
 		String[] titles = { "Id", "Text", "Ari Score", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
-				"References", "Weakness", "Imperatives", "Continuances", "Imperatives2", "References2" };
-		int[] bounds = { 50, 400, 80, 100, 100, 80, 80, 80, 80, 80, 100, 80, 80 };
+				"References", "References2", "Weakness", "Imperatives", "Continuances" };
+		int[] bounds = { 50, 400, 80, 100, 100, 80, 80, 80, 80, 80, 100, 80 };
 
 		// Id
 		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0]);
@@ -170,6 +170,16 @@ public class RequirementsTableView {
 				return Integer.toString(r.References.totalCount);
 			}
 		});
+		
+		// References2
+		TableViewerColumn colReferences2 = createTableViewerColumn(titles[11], bounds[11]);
+		colReferences2.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
+				return Integer.toString(r.References2.totalCount);
+			}
+		});
 
 		// Weakness
 		TableViewerColumn colWeakness = createTableViewerColumn(titles[8], bounds[8]);
@@ -198,26 +208,6 @@ public class RequirementsTableView {
 			public String getText(Object element) {
 				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
 				return Integer.toString(r.Continuances.totalCount);
-			}
-		});
-
-		// Imperatives2
-		TableViewerColumn colImperatives2 = createTableViewerColumn(titles[11], bounds[11]);
-		colImperatives2.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
-				return Integer.toString(r.Imperatives2.totalCount);
-			}
-		});
-
-		// References2
-		TableViewerColumn colReferences2 = createTableViewerColumn(titles[12], bounds[12]);
-		colReferences2.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				nalabs.core.Requirement r = (nalabs.core.Requirement) element;
-				return Integer.toString(r.References2.totalCount);
 			}
 		});
 	}

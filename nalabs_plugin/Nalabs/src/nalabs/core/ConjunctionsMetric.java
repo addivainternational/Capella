@@ -18,4 +18,9 @@ public class ConjunctionsMetric extends MetricBase {
     public ConjunctionsMetric()
     {
     }
+    
+    @Override
+    public String metricDescription() {
+    	return "Conjunction";
+    }
 }
