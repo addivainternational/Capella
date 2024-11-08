@@ -22,6 +22,6 @@ public class NVMetric extends MetricBase {
     
     @Override
     public String metricDescription() {
-    	return "Vagueness";
+    	return "Vague Phrase";
     }
 }

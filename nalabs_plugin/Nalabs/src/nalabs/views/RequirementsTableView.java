@@ -23,22 +23,17 @@ public class RequirementsTableView {
 	private TableViewer tableViewer;
 	private SelectedRequirementView selectedRequirementView;
 	private ISelectionChangedListener selectionChangedListener = null;
+	private GridData tableViewerData;
 
 	public RequirementsTableView(Composite parent, SelectedRequirementView requirementView) {
 		
 		selectedRequirementView = requirementView;
-		GridData tableViewerData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		tableViewerData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		parent.setLayout(new GridLayout());
 		parent.setLayoutData(tableViewerData);
 		
 		parent.addListener(SWT.Resize, arg0 -> {
-			org.eclipse.swt.graphics.Point size = parent.getSize();
-			Composite requirementViewerComposite = requirementView.getComposite();
-			GridData requirementViewerData = (GridData) requirementViewerComposite.getLayoutData();
-			tableViewerData.widthHint = (int) (size.x * 0.6);
-			requirementViewerData.widthHint = size.x - tableViewerData.widthHint;
-			tableViewer.getTable().setLayoutData(tableViewerData);
-			requirementViewerComposite.setLayoutData(requirementViewerData);
+			resizeListener(parent);
 		});
 
 		// Create requirements table
@@ -48,6 +43,19 @@ public class RequirementsTableView {
 		table.setLinesVisible(true);
 		createColumns();
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		
+		// Handle initial sizing
+		resizeListener(parent);
+	}
+	
+	private void resizeListener(Composite parent) {
+		org.eclipse.swt.graphics.Point size = parent.getSize();
+		Composite requirementViewerComposite = selectedRequirementView.getComposite();
+		GridData requirementViewerData = (GridData) requirementViewerComposite.getLayoutData();
+		tableViewerData.widthHint = (int) (size.x * 0.6);
+		requirementViewerData.widthHint = size.x - tableViewerData.widthHint;
+		tableViewer.getTable().setLayoutData(tableViewerData);
+		requirementViewerComposite.setLayoutData(requirementViewerData);
 	}
 	
 	public void setFocus() {
