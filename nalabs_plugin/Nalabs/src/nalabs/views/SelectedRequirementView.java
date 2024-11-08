@@ -15,14 +15,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import nalabs.core.*;
+import se.addiva.nalabs_core.*;
 
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 
 public class SelectedRequirementView {
 
-	private nalabs.core.Requirement requirement;
+	private se.addiva.nalabs_core.Requirement requirement;
 	private Composite composite;
 	private Label labelTitle;
 	private Text requirementText;
@@ -79,7 +79,7 @@ public class SelectedRequirementView {
 		return composite;
 	}
 
-	public void setRequirement(nalabs.core.Requirement requirement) {
+	public void setRequirement(se.addiva.nalabs_core.Requirement requirement) {
 		this.requirement = requirement;
 		requirementText.setText(this.requirement.Text);
 		List<SmellEntry> entries = new ArrayList<SmellEntry>();

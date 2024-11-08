@@ -8,8 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="lib" path="bin" sourcepath="bin"/>
-	<classpathentry kind="lib" path="lib/se.addiva.nalabs.jar"/>
-	<classpathentry kind="lib" path="lib/se.addiva.nalabs.interop.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.5.5.jar"/>
+	<classpathentry kind="lib" path="/nalabs_core/se.addiva.nalabs_core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
