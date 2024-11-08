@@ -45,7 +45,7 @@ public class NalabsHandler extends AbstractHandler {
 		Collection<Requirement> faultyRequirements = getFaultyRequirements(requirements);
 		
 		// Re map Requirements for transfer to NOLABS lib, and analyze
-		Collection<nalabs.core.Requirement> nalabRequirements = analyzeRequirements(correctRequirements);
+		Collection<se.addiva.nalabs_core.Requirement> nalabRequirements = analyzeRequirements(correctRequirements);
 		
 		// Re map results to Capella requirements, updating or adding a NOLABS Attribute
 //		updateRequirements(correctRequirements, nalabRequirements);
@@ -84,9 +84,9 @@ public class NalabsHandler extends AbstractHandler {
 				;
 	}
 
-	protected void updateRequirements(Collection<Requirement> requirements, Collection<nalabs.core.Requirement> nalabRequirements) {
+	protected void updateRequirements(Collection<Requirement> requirements, Collection<se.addiva.nalabs_core.Requirement> nalabRequirements) {
 		for(Requirement requirement : requirements) {
-			nalabs.core.Requirement matchingAnalysis = findAnalysisMatch(requirement, nalabRequirements);
+			se.addiva.nalabs_core.Requirement matchingAnalysis = findAnalysisMatch(requirement, nalabRequirements);
 			
 			if(matchingAnalysis != null) {
 				String analysisText = formatNalabsAnalysis(matchingAnalysis);
@@ -95,7 +95,7 @@ public class NalabsHandler extends AbstractHandler {
 		}
 	}
 	
-	private String formatNalabsAnalysis(nalabs.core.Requirement requirement) {
+	private String formatNalabsAnalysis(se.addiva.nalabs_core.Requirement requirement) {
 		String analysisText = String.format(
 				"%s: NALABS Analysis (%s)\n\tARI: %f\tCONJ: %d\tVAG: %d\tOPT: %d\tSUB: %d\tREF: %d\tWEK: %d\tIMP: %d\tCONT: %d\tREF2: %d",
 				requirement.Id,
@@ -116,7 +116,7 @@ public class NalabsHandler extends AbstractHandler {
 	}
 	
 	
-	private nalabs.core.Requirement findAnalysisMatch(Requirement requirement, Collection<nalabs.core.Requirement> nalabRequirements) {
+	private se.addiva.nalabs_core.Requirement findAnalysisMatch(Requirement requirement, Collection<se.addiva.nalabs_core.Requirement> nalabRequirements) {
 		String id = requirement.getReqIFIdentifier();
 		
 		return nalabRequirements
@@ -136,12 +136,12 @@ public class NalabsHandler extends AbstractHandler {
 		}		
 	}
 	
-	protected Collection<nalabs.core.Requirement> analyzeRequirements(Collection<Requirement> requirements) throws IllegalFormatException {
+	protected Collection<se.addiva.nalabs_core.Requirement> analyzeRequirements(Collection<Requirement> requirements) throws IllegalFormatException {
 		
-		List<nalabs.core.Requirement> nalabsRequirements =
+		List<se.addiva.nalabs_core.Requirement> nalabsRequirements =
 				requirements.stream().map(r -> copyRequirement(r)).collect(Collectors.toList());
 		
-		for (nalabs.core.Requirement requirement : nalabsRequirements)
+		for (se.addiva.nalabs_core.Requirement requirement : nalabsRequirements)
         {
 			Pattern pattern = Pattern.compile("<p>(.*?)</p>", Pattern.DOTALL);
 			Matcher matcher = pattern.matcher(requirement.Text);
@@ -150,7 +150,7 @@ public class NalabsHandler extends AbstractHandler {
 			}
 			String textString = matcher.group(1);
 	        
-			nalabs.core.TextAnalysis analysis = nalabs.core.TextAnalyzer.AnalyzeText(textString);
+			se.addiva.nalabs_core.TextAnalysis analysis = se.addiva.nalabs_core.TextAnalyzer.AnalyzeText(textString);
 
 			requirement.Text = textString;
             requirement.AriScore = analysis.ARI;
@@ -173,8 +173,8 @@ public class NalabsHandler extends AbstractHandler {
 		return nalabsRequirements;
 	}
 	
-	protected nalabs.core.Requirement copyRequirement(Requirement source){
-		nalabs.core.Requirement target = new nalabs.core.Requirement(source.getReqIFIdentifier(), source.getReqIFText());
+	protected se.addiva.nalabs_core.Requirement copyRequirement(Requirement source){
+		se.addiva.nalabs_core.Requirement target = new se.addiva.nalabs_core.Requirement(source.getReqIFIdentifier(), source.getReqIFText());
 		return target;
 	}
 

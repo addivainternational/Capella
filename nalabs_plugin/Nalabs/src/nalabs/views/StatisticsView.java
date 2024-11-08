@@ -1,6 +1,6 @@
 package nalabs.views;
 
-import nalabs.core.AnalyzeResult;
+import se.addiva.nalabs_core.AnalyzeResult;
 
 import java.util.Collection;
 
@@ -59,10 +59,10 @@ public class StatisticsView {
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 	}
 	
-	public void setRequirementData(Collection<nalabs.core.Requirement> requirements) {
+	public void setRequirementData(Collection<se.addiva.nalabs_core.Requirement> requirements) {
 
         HashMap<String, Integer> smellCountMap = new HashMap<String, Integer>();
-		for (nalabs.core.Requirement requirement : requirements) {
+		for (se.addiva.nalabs_core.Requirement requirement : requirements) {
 			for (AnalyzeResult result : requirement.getResults()) {
 				String type = result.description;
 				Integer v = smellCountMap.get(type);

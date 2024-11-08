@@ -59,7 +59,7 @@ public class MainView extends ViewPart {
 		requirementsTableView.setFocus();
 	}
 
-	public void setRequirementData(Collection<nalabs.core.Requirement> requirements) {
+	public void setRequirementData(Collection<se.addiva.nalabs_core.Requirement> requirements) {
 		statisticsView.setRequirementData(requirements);
 		requirementsTableView.setRequirementData(requirements);
 	}
