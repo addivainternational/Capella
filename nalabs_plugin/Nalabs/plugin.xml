@@ -49,7 +49,7 @@
    <extension point="org.eclipse.ui.views">
 	    <view
 	        id="nqdin29hbfwpifgpnpw09fgew30"
-	        name="Requirements"
+	        name="Requirement Smell Detector"
 	        class="nalabs.views.MainView">
 	    </view>
 	</extension>
