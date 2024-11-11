@@ -180,7 +180,7 @@ public class RequirementsTableView {
 		});
 		
 		// References2
-		TableViewerColumn colReferences2 = createTableViewerColumn(titles[11], bounds[11]);
+		TableViewerColumn colReferences2 = createTableViewerColumn(titles[8], bounds[8]);
 		colReferences2.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -190,7 +190,7 @@ public class RequirementsTableView {
 		});
 
 		// Weakness
-		TableViewerColumn colWeakness = createTableViewerColumn(titles[8], bounds[8]);
+		TableViewerColumn colWeakness = createTableViewerColumn(titles[9], bounds[9]);
 		colWeakness.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -200,7 +200,7 @@ public class RequirementsTableView {
 		});
 
 		// Imperatives
-		TableViewerColumn colImperatives = createTableViewerColumn(titles[9], bounds[9]);
+		TableViewerColumn colImperatives = createTableViewerColumn(titles[10], bounds[10]);
 		colImperatives.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -210,7 +210,7 @@ public class RequirementsTableView {
 		});
 
 		// Continuances
-		TableViewerColumn colContinuances = createTableViewerColumn(titles[10], bounds[10]);
+		TableViewerColumn colContinuances = createTableViewerColumn(titles[11], bounds[11]);
 		colContinuances.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
