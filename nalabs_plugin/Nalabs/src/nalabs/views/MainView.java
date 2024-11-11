@@ -39,7 +39,7 @@ public class MainView extends ViewPart {
 		lowerComposite.setLayout(new GridLayout());
 		lowerComposite.setLayoutData(lowerCompositeData);
 
-		statisticsComposite = new Composite(upperComposite, SWT.EMBEDDED | SWT.BORDER | SWT.FILL);
+		statisticsComposite = new Composite(upperComposite, SWT.BORDER | SWT.FILL);
 		requirementViewerComposite = new Composite(upperComposite, SWT.BORDER | SWT.FILL);
 		Composite tableViewerComposite = new Composite(lowerComposite, SWT.BORDER | SWT.FILL);
 		

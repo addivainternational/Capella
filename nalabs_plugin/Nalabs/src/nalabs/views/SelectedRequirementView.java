@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -25,7 +26,7 @@ public class SelectedRequirementView {
 	private se.addiva.nalabs_core.Requirement requirement;
 	private Composite composite;
 	private Label labelTitle;
-	private Text requirementText;
+	private Label requirementText;
 	private TableViewer smellsTable;
 
 	public SelectedRequirementView(Composite parent) {
@@ -35,7 +36,9 @@ public class SelectedRequirementView {
 
 		Composite basicInfoComposite = new Composite(composite, SWT.FILL);
 		GridData basicInfoCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		basicInfoComposite.setLayout(new GridLayout());
+		GridLayout basicInfoCompositeLayout = new GridLayout();
+		basicInfoCompositeLayout.marginLeft = 15;
+		basicInfoComposite.setLayout(basicInfoCompositeLayout);
 		basicInfoComposite.setLayoutData(basicInfoCompositeData);
 
 		Composite smellsTableComposite = new Composite(composite, SWT.FILL);
@@ -51,12 +54,14 @@ public class SelectedRequirementView {
 		});
 
 		labelTitle = new Label(basicInfoComposite, SWT.TITLE | SWT.BOLD);
-		labelTitle.setText("Requirement");
 		GridData labelGridData = new GridData();
-		labelGridData.widthHint = 100;
-		labelGridData.heightHint = 20;
+		labelGridData.widthHint = 200;
+		labelGridData.heightHint = 30;
 		labelTitle.setLayoutData(labelGridData);
-		requirementText = new Text(basicInfoComposite, SWT.WRAP);
+		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD).setHeight(12);
+		labelTitle.setFont(boldDescriptor.createFont(labelTitle.getDisplay()));
+		labelTitle.setText("Selected Requirement");
+		requirementText = new Label(basicInfoComposite, SWT.LEFT | SWT.TOP);
 		GridData textGridData = new GridData();
 		textGridData.widthHint = 500;
 		textGridData.heightHint = 40;
