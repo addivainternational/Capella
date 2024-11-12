@@ -21,4 +21,9 @@ public class OptionalityMetric extends MetricBase {
     public String metricDescription() {
     	return "Optionality";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.Critical;
+	}
 }

@@ -24,4 +24,9 @@ public class NVMetric extends MetricBase {
     public String metricDescription() {
     	return "Vague Phrase";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.Critical;
+	}
 }

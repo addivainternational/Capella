@@ -1,6 +1,6 @@
 ﻿package se.addiva.nalabs_core;
 
-public class ReferencesInternal extends MetricBase {
+public class ReferenceInternal extends MetricBase {
 	@Override
     public String[] getDefaultKeywords() {
         return new String[] {
@@ -8,12 +8,12 @@ public class ReferencesInternal extends MetricBase {
         };
     }
 	
-	public ReferencesInternal(String[] keys)
+	public ReferenceInternal(String[] keys)
     {
     	setKeywords(keys);
     }
 
-    public ReferencesInternal()
+    public ReferenceInternal()
     {
     }
     
@@ -21,4 +21,9 @@ public class ReferencesInternal extends MetricBase {
     public String metricDescription() {
     	return "Internal Reference";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.High;
+	}
 }

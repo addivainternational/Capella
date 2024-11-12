@@ -11,7 +11,7 @@ public class TextAnalysis {
 
     public AnalyzeResult subjectivity;
 
-    public AnalyzeResult references;
+    public AnalyzeResult referenceInternal;
 
     public AnalyzeResult weakness;
 
@@ -19,5 +19,5 @@ public class TextAnalysis {
 
     public AnalyzeResult continuances;
 
-    public AnalyzeResult references2;
+    public AnalyzeResult referenceExternal;
 }

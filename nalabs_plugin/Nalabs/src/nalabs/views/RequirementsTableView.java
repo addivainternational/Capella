@@ -170,22 +170,22 @@ public class RequirementsTableView {
 		});
 
 		// References
-		TableViewerColumn colReferences = createTableViewerColumn(titles[7], bounds[7]);
-		colReferences.setLabelProvider(new ColumnLabelProvider() {
+		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[7], bounds[7]);
+		colReferencesInternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
-				return Integer.toString(r.References.totalCount);
+				return Integer.toString(r.ReferencesInternal.totalCount);
 			}
 		});
 		
 		// References2
-		TableViewerColumn colReferences2 = createTableViewerColumn(titles[8], bounds[8]);
-		colReferences2.setLabelProvider(new ColumnLabelProvider() {
+		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[8], bounds[8]);
+		colReferencesExternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
-				return Integer.toString(r.References2.totalCount);
+				return Integer.toString(r.ReferencesExternal.totalCount);
 			}
 		});
 

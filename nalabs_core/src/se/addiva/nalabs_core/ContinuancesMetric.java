@@ -21,4 +21,9 @@ public class ContinuancesMetric extends MetricBase {
     public String metricDescription() {
     	return "Continuance";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.Moderate;
+	}
 }

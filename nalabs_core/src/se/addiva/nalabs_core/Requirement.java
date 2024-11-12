@@ -17,14 +17,14 @@ public class Requirement {
     public AnalyzeResult VaguePhrases;
     public AnalyzeResult Optionality;
     public AnalyzeResult Subjectivity;
-    public AnalyzeResult References;
+    public AnalyzeResult ReferencesInternal;
     public AnalyzeResult Weakness;
     public AnalyzeResult Imperatives;
     public AnalyzeResult Continuances;
-    public AnalyzeResult References2;
+    public AnalyzeResult ReferencesExternal;
     
     public AnalyzeResult[] getResults() {
-    	return new AnalyzeResult[] { Conjunctions, VaguePhrases, Optionality, Subjectivity, References, 
-    			Weakness, Imperatives, Continuances, References2 };
+    	return new AnalyzeResult[] { Conjunctions, VaguePhrases, Optionality, Subjectivity, ReferencesInternal, 
+    			Weakness, Imperatives, Continuances, ReferencesExternal };
     }
 }
