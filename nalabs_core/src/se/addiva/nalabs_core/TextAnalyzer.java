@@ -8,11 +8,11 @@ public class TextAnalyzer
     private static NVMetric NVMetric = new NVMetric();
     private static OptionalityMetric OptionalityMetric = new OptionalityMetric();
     private static SubjectivityMetric SubjectivityMetric = new SubjectivityMetric();
-    private static ReferencesMetric ReferencesMetric = new ReferencesMetric();
+    private static ReferencesInternal ReferencesMetric = new ReferencesInternal();
     private static WeaknessMetric WeaknessMetric = new WeaknessMetric();
     private static ImperativesMetric ImperativesMetric = new ImperativesMetric();
     private static ContinuancesMetric ContinuancesMetric = new ContinuancesMetric();
-    private static References2 References2Metric = new References2();
+    private static ReferenceExternal References2Metric = new ReferenceExternal();
 
     public static se.addiva.nalabs_core.TextAnalysis AnalyzeText(String text) {
     	

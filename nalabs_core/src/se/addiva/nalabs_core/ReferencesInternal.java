@@ -1,6 +1,6 @@
 ﻿package se.addiva.nalabs_core;
 
-public class ReferencesMetric extends MetricBase {
+public class ReferencesInternal extends MetricBase {
 	@Override
     public String[] getDefaultKeywords() {
         return new String[] {
@@ -8,17 +8,17 @@ public class ReferencesMetric extends MetricBase {
         };
     }
 	
-	public ReferencesMetric(String[] keys)
+	public ReferencesInternal(String[] keys)
     {
     	setKeywords(keys);
     }
 
-    public ReferencesMetric()
+    public ReferencesInternal()
     {
     }
     
     @Override
     public String metricDescription() {
-    	return "Reference #1";
+    	return "Internal Reference";
     }
 }

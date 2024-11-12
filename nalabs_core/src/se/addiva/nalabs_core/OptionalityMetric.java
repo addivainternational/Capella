@@ -4,7 +4,7 @@ public class OptionalityMetric extends MetricBase {
 	@Override
     public String[] getDefaultKeywords() {
         return new String[] {
-        		"can", "may", "optionally"
+        		"can", "optionally"
         };
     }
 
