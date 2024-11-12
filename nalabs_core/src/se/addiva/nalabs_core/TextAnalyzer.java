@@ -8,11 +8,11 @@ public class TextAnalyzer
     private static NVMetric NVMetric = new NVMetric();
     private static OptionalityMetric OptionalityMetric = new OptionalityMetric();
     private static SubjectivityMetric SubjectivityMetric = new SubjectivityMetric();
-    private static ReferencesInternal ReferencesMetric = new ReferencesInternal();
+    private static ReferenceInternal ReferenceInternal = new ReferenceInternal();
     private static WeaknessMetric WeaknessMetric = new WeaknessMetric();
     private static ImperativesMetric ImperativesMetric = new ImperativesMetric();
     private static ContinuancesMetric ContinuancesMetric = new ContinuancesMetric();
-    private static ReferenceExternal References2Metric = new ReferenceExternal();
+    private static ReferenceExternal ReferenceExternal = new ReferenceExternal();
 
     public static se.addiva.nalabs_core.TextAnalysis AnalyzeText(String text) {
     	
@@ -23,11 +23,11 @@ public class TextAnalyzer
 	        	vaguePhrases = NVMetric.analyze(text);
 	        	optionality = OptionalityMetric.analyze(text);
 	        	subjectivity = SubjectivityMetric.analyze(text);
-	        	references = ReferencesMetric.analyze(text);
+	        	referenceInternal = ReferenceInternal.analyze(text);
 	        	weakness = WeaknessMetric.analyze(text);
 	        	imperatives = ImperativesMetric.analyze(text);
 	        	continuances = ContinuancesMetric.analyze(text);
-	        	references2 = References2Metric.analyze(text);
+	        	referenceExternal = ReferenceExternal.analyze(text);
     		}
         };
 

@@ -21,4 +21,9 @@ public class ImperativesMetric extends MetricBase {
     public String metricDescription() {
     	return "Imperative";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.Moderate;
+	}
 }

@@ -96,6 +96,7 @@ public class SelectedRequirementView {
 							description = entry.getKey();
 							count = entry.getValue();
 							type = result.description;
+							severityLevel = result.severityLevel.toString();
 						}
 					});
 				}
@@ -116,8 +117,8 @@ public class SelectedRequirementView {
 
 	private void createSmellsTableColumns() {
 		// Define column names and widths
-		String[] titles = { "Smell", "#Count", "Type" };
-		int[] bounds = { 200, 20, 100 };
+		String[] titles = { "Smell", "#Count", "Type", "Severity Level" };
+		int[] bounds = { 200, 20, 100, 100 };
 
 		// Description
 		TableViewerColumn colDescription = createSmellsTableViewerColumn(titles[0], bounds[0]);
@@ -146,6 +147,16 @@ public class SelectedRequirementView {
 			public String getText(Object element) {
 				SmellEntry e = (SmellEntry) element;
 				return e.type;
+			}
+		});
+		
+		// Severity Level
+		TableViewerColumn colSeverityLevel = createSmellsTableViewerColumn(titles[3], bounds[3]);
+		colSeverityLevel.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				SmellEntry e = (SmellEntry) element;
+				return e.severityLevel;
 			}
 		});
 	}

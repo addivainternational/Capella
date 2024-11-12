@@ -21,4 +21,9 @@ public class WeaknessMetric extends MetricBase {
     public String metricDescription() {
     	return "Weakness";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.High;
+	}
 }

@@ -9,4 +9,6 @@ public interface IMetric {
     String[] getDefaultKeywords();
     
     String metricDescription();
+    
+    SeverityLevel getSeverityLevel();
 }

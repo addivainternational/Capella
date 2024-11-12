@@ -22,4 +22,9 @@ public class SubjectivityMetric extends MetricBase {
     public String metricDescription() {
     	return "Subjectivity";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.Moderate;
+	}
 }

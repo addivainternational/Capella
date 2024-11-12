@@ -58,12 +58,14 @@ public abstract class MetricBase implements IMetric {
         }
         
         String d = this.metricDescription();
+        SeverityLevel sl = this.getSeverityLevel();
 
         return new AnalyzeResult() {
         	{
         		totalCount = smellsMap.size();
         		smells = smellsMap;
         		description = d;
+        		severityLevel = sl;
         	}
         };
     }

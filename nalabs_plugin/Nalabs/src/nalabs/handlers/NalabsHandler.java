@@ -48,7 +48,6 @@ public class NalabsHandler extends AbstractHandler {
 		Collection<se.addiva.nalabs_core.Requirement> nalabRequirements = analyzeRequirements(correctRequirements);
 		
 		// Re map results to Capella requirements, updating or adding a NOLABS Attribute
-//		updateRequirements(correctRequirements, nalabRequirements);
 //		notifyFaultyRequirement(faultyRequirements);
 		
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -84,48 +83,6 @@ public class NalabsHandler extends AbstractHandler {
 				;
 	}
 
-	protected void updateRequirements(Collection<Requirement> requirements, Collection<se.addiva.nalabs_core.Requirement> nalabRequirements) {
-		for(Requirement requirement : requirements) {
-			se.addiva.nalabs_core.Requirement matchingAnalysis = findAnalysisMatch(requirement, nalabRequirements);
-			
-			if(matchingAnalysis != null) {
-				String analysisText = formatNalabsAnalysis(matchingAnalysis);
-				updateNalabsAttribute(requirement, analysisText);
-			}
-		}
-	}
-	
-	private String formatNalabsAnalysis(se.addiva.nalabs_core.Requirement requirement) {
-		String analysisText = String.format(
-				"%s: NALABS Analysis (%s)\n\tARI: %f\tCONJ: %d\tVAG: %d\tOPT: %d\tSUB: %d\tREF: %d\tWEK: %d\tIMP: %d\tCONT: %d\tREF2: %d",
-				requirement.Id,
-				LocalDateTime.now().toString(),
-                requirement.AriScore,
-                requirement.Conjunctions.totalCount,
-                requirement.VaguePhrases.totalCount,
-                requirement.Optionality.totalCount,
-                requirement.Subjectivity.totalCount,
-                requirement.References.totalCount,
-                requirement.Weakness.totalCount,
-                requirement.Imperatives.totalCount,
-                requirement.Continuances.totalCount,
-                requirement.References2.totalCount				
-				);
-		
-		return analysisText;
-	}
-	
-	
-	private se.addiva.nalabs_core.Requirement findAnalysisMatch(Requirement requirement, Collection<se.addiva.nalabs_core.Requirement> nalabRequirements) {
-		String id = requirement.getReqIFIdentifier();
-		
-		return nalabRequirements
-			.stream()
-			.filter(req -> req.Id.equalsIgnoreCase(id))
-			.findFirst()
-			.orElse(null);
-	}
-
 	protected void updateNalabsAttribute(Requirement requirement, String value) {
 		Attribute nalabsAttribute = findAttribute(requirement.getOwnedAttributes(), "NALABS");
 		// Set or add NALABS value
@@ -156,18 +113,18 @@ public class NalabsHandler extends AbstractHandler {
             requirement.AriScore = analysis.ARI;
             requirement.TotalSmells = analysis.conjunctions.totalCount + analysis.vaguePhrases.totalCount + 
             		analysis.optionality.totalCount + analysis.subjectivity.totalCount + 
-            		analysis.references.totalCount + analysis.weakness.totalCount + 
+            		analysis.referenceInternal.totalCount + analysis.weakness.totalCount + 
             		analysis.imperatives.totalCount + analysis.continuances.totalCount + 
-            		analysis.references2.totalCount;
+            		analysis.referenceExternal.totalCount;
             requirement.Conjunctions = analysis.conjunctions;
             requirement.VaguePhrases = analysis.vaguePhrases;
             requirement.Optionality = analysis.optionality;
             requirement.Subjectivity = analysis.subjectivity;
-            requirement.References = analysis.references;
+            requirement.ReferencesInternal = analysis.referenceInternal;
             requirement.Weakness = analysis.weakness;
             requirement.Imperatives = analysis.imperatives;
             requirement.Continuances = analysis.continuances;
-            requirement.References2 = analysis.references2;
+            requirement.ReferencesExternal = analysis.referenceExternal;
         }
 		
 		return nalabsRequirements;

@@ -24,4 +24,9 @@ public class ReferenceExternal extends MetricBase {
     public String metricDescription() {
     	return "External Reference";
     }
+    
+    @Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.High;
+	}
 }

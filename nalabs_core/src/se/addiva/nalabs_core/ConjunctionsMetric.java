@@ -23,4 +23,9 @@ public class ConjunctionsMetric extends MetricBase {
     public String metricDescription() {
     	return "Conjunction";
     }
+
+	@Override
+	public SeverityLevel getSeverityLevel() {
+		return SeverityLevel.Low;
+	}
 }
