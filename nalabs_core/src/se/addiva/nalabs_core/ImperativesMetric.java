@@ -4,7 +4,7 @@ public class ImperativesMetric extends MetricBase {
 	@Override
     public String[] getDefaultKeywords() {
         return new String[] {
-        		"is required to", "are applicable", "are to", "responsible for", "should", "could", "would", "can", "may"
+        		"is required to", "are applicable", "are to", "responsible for", "should", "would"
         };
     }
 	

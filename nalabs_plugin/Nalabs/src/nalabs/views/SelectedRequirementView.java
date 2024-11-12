@@ -55,7 +55,7 @@ public class SelectedRequirementView {
 
 		labelTitle = new Label(basicInfoComposite, SWT.TITLE | SWT.BOLD);
 		GridData labelGridData = new GridData();
-		labelGridData.widthHint = 200;
+		labelGridData.widthHint = 220;
 		labelGridData.heightHint = 30;
 		labelTitle.setLayoutData(labelGridData);
 		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD).setHeight(12);

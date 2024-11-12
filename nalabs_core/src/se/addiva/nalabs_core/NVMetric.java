@@ -6,7 +6,7 @@ public class NVMetric extends MetricBase {
         return new String[] {
         		"may", "could", "has to", "have to", "might", "will", "should have", "must have", "all the other",
                 "all other", "based on", "some", "appropriate", "as a", "as an",
-                "a minimum", "up to", "adequate", "as applicable", "be able to", "be capable", "but not limited to",
+                "a minimum", "up to", "adequate", "as applicable", "be able to", "be capable of", "but not limited to",
                 "capability of", "capability to", "effective", "normal"
         };
     }
