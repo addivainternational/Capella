@@ -1,6 +1,8 @@
 package nalabs.views;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.function.Function;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -9,10 +11,17 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import se.addiva.nalabs_core.Requirement;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 import org.eclipse.swt.layout.*;
@@ -83,13 +92,31 @@ public class RequirementsTableView {
 		}
 	}
 
-	private TableViewerColumn createTableViewerColumn(String title, int bound) {
+	private <T> TableViewerColumn createTableViewerColumn(String title, int bound, Function<se.addiva.nalabs_core.Requirement, T> valueProvider, 
+            Comparator<T> comparator) {
 		TableViewerColumn viewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn column = viewerColumn.getColumn();
 		column.setText(title);
 		column.setWidth(bound);
 		column.setResizable(true);
 		column.setMoveable(true);
+		column.addSelectionListener(new SelectionAdapter() {
+            private boolean ascending = true;
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+            	tableViewer.setComparator(new ViewerComparator() {
+                    @Override
+                    public int compare(Viewer v, Object e1, Object e2) {
+                        T value1 = valueProvider.apply((se.addiva.nalabs_core.Requirement) e1);
+                        T value2 = valueProvider.apply((se.addiva.nalabs_core.Requirement) e2);
+                        return ascending ? comparator.compare(value1, value2) : comparator.compare(value2, value1);
+                    }
+                });
+                ascending = !ascending;
+                tableViewer.refresh();
+            }
+        });
 		return viewerColumn;
 	}
 
@@ -97,10 +124,10 @@ public class RequirementsTableView {
 		// Define column names and widths
 		String[] titles = { "Id", "Text", "Ari Score", "Word Count", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
 				"References", "References2", "Weakness", "Imperatives", "Continuances" };
-		int[] bounds = { 50, 400, 80, 100, 100, 100, 80, 80, 80, 80, 80, 100, 100 };
-
+		int[] bounds = { 50, 400, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 		// Id
-		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0]);
+		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0], (se.addiva.nalabs_core.Requirement req) -> req.Id, 
+				Comparator.comparing(reqId -> reqId));
 		colId.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -110,7 +137,8 @@ public class RequirementsTableView {
 		});
 
 		// Text
-		TableViewerColumn colText = createTableViewerColumn(titles[1], bounds[1]);
+		TableViewerColumn colText = createTableViewerColumn(titles[1], bounds[1], (se.addiva.nalabs_core.Requirement req) -> req.Text, 
+				Comparator.comparing(reqText -> reqText));
 		colText.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -120,7 +148,8 @@ public class RequirementsTableView {
 		});
 
 		// AriScore
-		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2]);
+		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2], (se.addiva.nalabs_core.Requirement req) -> req.AriScore, 
+				Comparator.comparingDouble(reqAriScore -> reqAriScore));
 		colAriScore.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -130,7 +159,8 @@ public class RequirementsTableView {
 		});
 		
 		// Word Count
-		TableViewerColumn colWordCount = createTableViewerColumn(titles[3], bounds[3]);
+		TableViewerColumn colWordCount = createTableViewerColumn(titles[3], bounds[3], (se.addiva.nalabs_core.Requirement req) -> req.WordCount.totalCount, 
+				Comparator.comparingInt(reqWordCount -> reqWordCount));
 		colWordCount.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -140,7 +170,8 @@ public class RequirementsTableView {
 		});
 
 		// Conjunctions
-		TableViewerColumn colConjunctions = createTableViewerColumn(titles[4], bounds[4]);
+		TableViewerColumn colConjunctions = createTableViewerColumn(titles[4], bounds[4], (se.addiva.nalabs_core.Requirement req) -> req.Conjunctions.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colConjunctions.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -150,7 +181,8 @@ public class RequirementsTableView {
 		});
 
 		// VaguePhrases
-		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[5], bounds[5]);
+		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[5], bounds[5], (se.addiva.nalabs_core.Requirement req) -> req.VaguePhrases.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colVaguePhrases.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -160,7 +192,8 @@ public class RequirementsTableView {
 		});
 
 		// Optionality
-		TableViewerColumn colOptionality = createTableViewerColumn(titles[6], bounds[6]);
+		TableViewerColumn colOptionality = createTableViewerColumn(titles[6], bounds[6], (se.addiva.nalabs_core.Requirement req) -> req.Optionality.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colOptionality.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -170,7 +203,8 @@ public class RequirementsTableView {
 		});
 
 		// Subjectivity
-		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[7], bounds[7]);
+		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[7], bounds[7], (se.addiva.nalabs_core.Requirement req) -> req.Subjectivity.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colSubjectivity.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -179,8 +213,9 @@ public class RequirementsTableView {
 			}
 		});
 
-		// References
-		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[8], bounds[8]);
+		// References Internal
+		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[8], bounds[8], (se.addiva.nalabs_core.Requirement req) -> req.ReferencesInternal.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colReferencesInternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -189,8 +224,9 @@ public class RequirementsTableView {
 			}
 		});
 		
-		// References2
-		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[9], bounds[9]);
+		// References External
+		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[9], bounds[9], (se.addiva.nalabs_core.Requirement req) -> req.ReferencesExternal.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colReferencesExternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -200,7 +236,8 @@ public class RequirementsTableView {
 		});
 
 		// Weakness
-		TableViewerColumn colWeakness = createTableViewerColumn(titles[10], bounds[10]);
+		TableViewerColumn colWeakness = createTableViewerColumn(titles[10], bounds[10], (se.addiva.nalabs_core.Requirement req) -> req.Weakness.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colWeakness.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -210,7 +247,8 @@ public class RequirementsTableView {
 		});
 
 		// Imperatives
-		TableViewerColumn colImperatives = createTableViewerColumn(titles[11], bounds[11]);
+		TableViewerColumn colImperatives = createTableViewerColumn(titles[11], bounds[11], (se.addiva.nalabs_core.Requirement req) -> req.Imperatives.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colImperatives.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -220,7 +258,8 @@ public class RequirementsTableView {
 		});
 
 		// Continuances
-		TableViewerColumn colContinuances = createTableViewerColumn(titles[12], bounds[12]);
+		TableViewerColumn colContinuances = createTableViewerColumn(titles[12], bounds[12], (se.addiva.nalabs_core.Requirement req) -> req.Continuances.totalCount, 
+				Comparator.comparingInt(c -> c));
 		colContinuances.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
