@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 
 import se.addiva.nalabs_core.*;
 
@@ -25,8 +24,10 @@ public class SelectedRequirementView {
 
 	private se.addiva.nalabs_core.Requirement requirement;
 	private Composite composite;
-	private Label labelTitle;
 	private Label requirementText;
+	private Label ariScoreValue;
+	private Label wordCountValue;
+	private Label nSmellsValue;
 	private TableViewer smellsTable;
 
 	public SelectedRequirementView(Composite parent) {
@@ -36,7 +37,7 @@ public class SelectedRequirementView {
 
 		Composite basicInfoComposite = new Composite(composite, SWT.FILL);
 		GridData basicInfoCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		GridLayout basicInfoCompositeLayout = new GridLayout();
+		GridLayout basicInfoCompositeLayout = new GridLayout(2, false);
 		basicInfoCompositeLayout.marginLeft = 15;
 		basicInfoComposite.setLayout(basicInfoCompositeLayout);
 		basicInfoComposite.setLayoutData(basicInfoCompositeData);
@@ -53,19 +54,65 @@ public class SelectedRequirementView {
 			smellsTable.getTable().setLayoutData(smellsTableCompositeData);
 		});
 
-		labelTitle = new Label(basicInfoComposite, SWT.TITLE | SWT.BOLD);
+		// Requirement text
+		Label labelTitle = new Label(basicInfoComposite, SWT.BOTTOM);
 		GridData labelGridData = new GridData();
 		labelGridData.widthHint = 220;
 		labelGridData.heightHint = 30;
 		labelTitle.setLayoutData(labelGridData);
-		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD).setHeight(12);
+		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD);
 		labelTitle.setFont(boldDescriptor.createFont(labelTitle.getDisplay()));
 		labelTitle.setText("Selected Requirement");
-		requirementText = new Label(basicInfoComposite, SWT.LEFT | SWT.TOP);
+		requirementText = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData textGridData = new GridData();
 		textGridData.widthHint = 500;
-		textGridData.heightHint = 40;
+		textGridData.heightHint = 30;
 		requirementText.setLayoutData(textGridData);
+		
+		// ARI Score
+		Label ariScoreTitle = new Label(basicInfoComposite, SWT.BOTTOM);
+		GridData ariScoreTitleData = new GridData();
+		ariScoreTitleData.widthHint = 220;
+		ariScoreTitleData.heightHint = 30;
+		ariScoreTitle.setLayoutData(ariScoreTitleData);
+		FontDescriptor boldAriScoreTitleDescriptor = FontDescriptor.createFrom(ariScoreTitle.getFont()).setStyle(SWT.BOLD);
+		ariScoreTitle.setFont(boldAriScoreTitleDescriptor.createFont(ariScoreTitle.getDisplay()));
+		ariScoreTitle.setText("ARI Score");
+		ariScoreValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
+		GridData ariScoreValueGridData = new GridData();
+		ariScoreValueGridData.widthHint = 100;
+		ariScoreValueGridData.heightHint = 30;
+		ariScoreValue.setLayoutData(ariScoreValueGridData);
+		
+		// Word Count
+		Label wordCountTitle = new Label(basicInfoComposite, SWT.BOTTOM);
+		GridData wordCountTitleData = new GridData();
+		wordCountTitleData.widthHint = 220;
+		wordCountTitleData.heightHint = 30;
+		wordCountTitle.setLayoutData(wordCountTitleData);
+		FontDescriptor boldWordCountTitleDescriptor = FontDescriptor.createFrom(wordCountTitle.getFont()).setStyle(SWT.BOLD);
+		wordCountTitle.setFont(boldWordCountTitleDescriptor.createFont(wordCountTitle.getDisplay()));
+		wordCountTitle.setText("Word Count");
+		wordCountValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
+		GridData wordCountValueGridData = new GridData();
+		wordCountValueGridData.widthHint = 100;
+		wordCountValueGridData.heightHint = 30;
+		wordCountValue.setLayoutData(wordCountValueGridData);
+		
+		// Number of Smells
+		Label nSmellsTitle = new Label(basicInfoComposite, SWT.BOTTOM);
+		GridData nSmellsTitleData = new GridData();
+		nSmellsTitleData.widthHint = 220;
+		nSmellsTitleData.heightHint = 30;
+		nSmellsTitle.setLayoutData(nSmellsTitleData);
+		FontDescriptor boldnSmellsTitleDescriptor = FontDescriptor.createFrom(nSmellsTitle.getFont()).setStyle(SWT.BOLD);
+		nSmellsTitle.setFont(boldnSmellsTitleDescriptor.createFont(nSmellsTitle.getDisplay()));
+		nSmellsTitle.setText("Number of Smells");
+		nSmellsValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
+		GridData nSmellsValueGridData = new GridData();
+		nSmellsValueGridData.widthHint = 100;
+		nSmellsValueGridData.heightHint = 30;
+		nSmellsValue.setLayoutData(nSmellsValueGridData);
 
 		// Create smells table
 		smellsTable = new TableViewer(smellsTableComposite);
@@ -87,8 +134,10 @@ public class SelectedRequirementView {
 	public void setRequirement(se.addiva.nalabs_core.Requirement requirement) {
 		this.requirement = requirement;
 		requirementText.setText(this.requirement.Text);
+		ariScoreValue.setText(String.format("%.2f", requirement.AriScore));
+		wordCountValue.setText(Integer.toString(this.requirement.WordCount.totalCount));
 		List<SmellEntry> entries = new ArrayList<SmellEntry>();
-		for (AnalyzeResult result : this.requirement.getResults()) {
+		for (AnalyzeResult result : this.requirement.getSmellResults()) {
 			if (result.totalCount > 0) {
 				for (HashMap.Entry<String, Integer> entry : result.smells.entrySet()) {
 					entries.add(new SmellEntry() {
@@ -102,6 +151,7 @@ public class SelectedRequirementView {
 				}
 			}
 		}
+		nSmellsValue.setText(Integer.toString(entries.size()));
 		smellsTable.setInput(entries);
 	}
 
