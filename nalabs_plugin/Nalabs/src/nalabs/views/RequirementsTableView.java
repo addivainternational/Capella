@@ -1,8 +1,11 @@
 package nalabs.views;
 
+import se.addiva.nalabs_core.*;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -13,14 +16,16 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-
-import se.addiva.nalabs_core.Requirement;
+import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 
@@ -28,7 +33,7 @@ import org.eclipse.swt.layout.*;
 
 public class RequirementsTableView {
 
-	private Collection<se.addiva.nalabs_core.Requirement> nalabRequirements;
+	private Collection<Requirement> nalabRequirements;
 	private TableViewer tableViewer;
 	private SelectedRequirementView selectedRequirementView;
 	private ISelectionChangedListener selectionChangedListener = null;
@@ -44,6 +49,11 @@ public class RequirementsTableView {
 		parent.addListener(SWT.Resize, arg0 -> {
 			resizeListener(parent);
 		});
+		
+		// Text searcher component
+        Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+        searchText.setMessage("Search requirement text...");
+        searchText.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, true, false));
 
 		// Create requirements table
 		tableViewer = new TableViewer(parent, SWT.FULL_SELECTION);
@@ -52,6 +62,17 @@ public class RequirementsTableView {
 		table.setLinesVisible(true);
 		createColumns();
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		
+		RequirementTextFilter requirementTextFilter = new RequirementTextFilter(searchText::getText);
+        tableViewer.addFilter(requirementTextFilter);
+        
+        searchText.addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent e) {
+                tableViewer.refresh();
+                tableViewer.setSelection(new StructuredSelection(tableViewer.getElementAt(0)),true);
+            }
+        });
 		
 		// Handle initial sizing
 		resizeListener(parent);
@@ -71,7 +92,7 @@ public class RequirementsTableView {
 		tableViewer.getControl().setFocus();
 	}
 	
-	public void setRequirementData(Collection<se.addiva.nalabs_core.Requirement> requirements) {
+	public void setRequirementData(Collection<Requirement> requirements) {
 		if (selectionChangedListener != null) {
 			tableViewer.removeSelectionChangedListener(selectionChangedListener);
 		}
@@ -81,7 +102,7 @@ public class RequirementsTableView {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
-				se.addiva.nalabs_core.Requirement requirement = (se.addiva.nalabs_core.Requirement) structuredSelection
+				Requirement requirement = (Requirement) structuredSelection
 						.getFirstElement();
 				selectedRequirementView.setRequirement(requirement);
 			}
@@ -92,7 +113,7 @@ public class RequirementsTableView {
 		}
 	}
 
-	private <T> TableViewerColumn createTableViewerColumn(String title, int bound, Function<se.addiva.nalabs_core.Requirement, T> valueProvider, 
+	private <T> TableViewerColumn createTableViewerColumn(String title, int bound, Function<Requirement, T> valueProvider, 
             Comparator<T> comparator) {
 		TableViewerColumn viewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn column = viewerColumn.getColumn();
@@ -108,8 +129,8 @@ public class RequirementsTableView {
             	tableViewer.setComparator(new ViewerComparator() {
                     @Override
                     public int compare(Viewer v, Object e1, Object e2) {
-                        T value1 = valueProvider.apply((se.addiva.nalabs_core.Requirement) e1);
-                        T value2 = valueProvider.apply((se.addiva.nalabs_core.Requirement) e2);
+                        T value1 = valueProvider.apply((Requirement) e1);
+                        T value2 = valueProvider.apply((Requirement) e2);
                         return ascending ? comparator.compare(value1, value2) : comparator.compare(value2, value1);
                     }
                 });
@@ -126,146 +147,161 @@ public class RequirementsTableView {
 				"References", "References2", "Weakness", "Imperatives", "Continuances" };
 		int[] bounds = { 50, 400, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 		// Id
-		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0], (se.addiva.nalabs_core.Requirement req) -> req.Id, 
+		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0], (Requirement req) -> req.Id, 
 				Comparator.comparing(reqId -> reqId));
 		colId.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return r.Id;
 			}
 		});
 
 		// Text
-		TableViewerColumn colText = createTableViewerColumn(titles[1], bounds[1], (se.addiva.nalabs_core.Requirement req) -> req.Text, 
+		TableViewerColumn colText = createTableViewerColumn(titles[1], bounds[1], (Requirement req) -> req.Text, 
 				Comparator.comparing(reqText -> reqText));
 		colText.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return r.Text;
 			}
 		});
 
 		// AriScore
-		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2], (se.addiva.nalabs_core.Requirement req) -> req.AriScore, 
+		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2], (Requirement req) -> req.AriScore, 
 				Comparator.comparingDouble(reqAriScore -> reqAriScore));
 		colAriScore.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return String.format("%.2f", r.AriScore);
 			}
 		});
 		
 		// Word Count
-		TableViewerColumn colWordCount = createTableViewerColumn(titles[3], bounds[3], (se.addiva.nalabs_core.Requirement req) -> req.WordCount.totalCount, 
+		TableViewerColumn colWordCount = createTableViewerColumn(titles[3], bounds[3], (Requirement req) -> req.WordCount.totalCount, 
 				Comparator.comparingInt(reqWordCount -> reqWordCount));
 		colWordCount.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.WordCount.totalCount);
 			}
 		});
 
 		// Conjunctions
-		TableViewerColumn colConjunctions = createTableViewerColumn(titles[4], bounds[4], (se.addiva.nalabs_core.Requirement req) -> req.Conjunctions.totalCount, 
+		TableViewerColumn colConjunctions = createTableViewerColumn(titles[4], bounds[4], (Requirement req) -> req.Conjunctions.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colConjunctions.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.Conjunctions.totalCount);
 			}
 		});
 
 		// VaguePhrases
-		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[5], bounds[5], (se.addiva.nalabs_core.Requirement req) -> req.VaguePhrases.totalCount, 
+		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[5], bounds[5], (Requirement req) -> req.VaguePhrases.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colVaguePhrases.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.VaguePhrases.totalCount);
 			}
 		});
 
 		// Optionality
-		TableViewerColumn colOptionality = createTableViewerColumn(titles[6], bounds[6], (se.addiva.nalabs_core.Requirement req) -> req.Optionality.totalCount, 
+		TableViewerColumn colOptionality = createTableViewerColumn(titles[6], bounds[6], (Requirement req) -> req.Optionality.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colOptionality.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.Optionality.totalCount);
 			}
 		});
 
 		// Subjectivity
-		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[7], bounds[7], (se.addiva.nalabs_core.Requirement req) -> req.Subjectivity.totalCount, 
+		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[7], bounds[7], (Requirement req) -> req.Subjectivity.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colSubjectivity.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.Subjectivity.totalCount);
 			}
 		});
 
 		// References Internal
-		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[8], bounds[8], (se.addiva.nalabs_core.Requirement req) -> req.ReferencesInternal.totalCount, 
+		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[8], bounds[8], (Requirement req) -> req.ReferencesInternal.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colReferencesInternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.ReferencesInternal.totalCount);
 			}
 		});
 		
 		// References External
-		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[9], bounds[9], (se.addiva.nalabs_core.Requirement req) -> req.ReferencesExternal.totalCount, 
+		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[9], bounds[9], (Requirement req) -> req.ReferencesExternal.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colReferencesExternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.ReferencesExternal.totalCount);
 			}
 		});
 
 		// Weakness
-		TableViewerColumn colWeakness = createTableViewerColumn(titles[10], bounds[10], (se.addiva.nalabs_core.Requirement req) -> req.Weakness.totalCount, 
+		TableViewerColumn colWeakness = createTableViewerColumn(titles[10], bounds[10], (Requirement req) -> req.Weakness.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colWeakness.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.Weakness.totalCount);
 			}
 		});
 
 		// Imperatives
-		TableViewerColumn colImperatives = createTableViewerColumn(titles[11], bounds[11], (se.addiva.nalabs_core.Requirement req) -> req.Imperatives.totalCount, 
+		TableViewerColumn colImperatives = createTableViewerColumn(titles[11], bounds[11], (Requirement req) -> req.Imperatives.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colImperatives.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.Imperatives.totalCount);
 			}
 		});
 
 		// Continuances
-		TableViewerColumn colContinuances = createTableViewerColumn(titles[12], bounds[12], (se.addiva.nalabs_core.Requirement req) -> req.Continuances.totalCount, 
+		TableViewerColumn colContinuances = createTableViewerColumn(titles[12], bounds[12], (Requirement req) -> req.Continuances.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colContinuances.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				Requirement r = (Requirement) element;
 				return Integer.toString(r.Continuances.totalCount);
 			}
 		});
 	}
+	
+	static class RequirementTextFilter extends ViewerFilter {
+        private final Supplier<String> searchTextSupplier;
+
+        public RequirementTextFilter(Supplier<String> searchTextSupplier) {
+            this.searchTextSupplier = searchTextSupplier;
+        }
+
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+            Requirement requirement = (Requirement) element;
+            String searchText = searchTextSupplier.get().toLowerCase();
+            return searchText.isEmpty() || requirement.Text.toLowerCase().contains(searchText);
+        }
+    }
 }

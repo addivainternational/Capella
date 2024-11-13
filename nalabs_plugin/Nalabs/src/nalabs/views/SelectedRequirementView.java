@@ -22,7 +22,7 @@ import org.eclipse.swt.layout.GridLayout;
 
 public class SelectedRequirementView {
 
-	private se.addiva.nalabs_core.Requirement requirement;
+	private Requirement requirement;
 	private Composite composite;
 	private Label requirementText;
 	private Label ariScoreValue;
@@ -131,8 +131,11 @@ public class SelectedRequirementView {
 		return composite;
 	}
 
-	public void setRequirement(se.addiva.nalabs_core.Requirement requirement) {
+	public void setRequirement(Requirement requirement) {
 		this.requirement = requirement;
+		if (this.requirement == null) {
+			return;
+		}
 		requirementText.setText(this.requirement.Text);
 		ariScoreValue.setText(String.format("%.2f", requirement.AriScore));
 		wordCountValue.setText(Integer.toString(this.requirement.WordCount.totalCount));

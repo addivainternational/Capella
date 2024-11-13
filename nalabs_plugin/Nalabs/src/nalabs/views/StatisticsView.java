@@ -1,6 +1,6 @@
 package nalabs.views;
 
-import se.addiva.nalabs_core.AnalyzeResult;
+import se.addiva.nalabs_core.*;
 
 import java.util.Collection;
 
@@ -188,13 +188,13 @@ public class StatisticsView {
 		chartComposite.setLayoutData(chartData);
 	}
 	
-	public void setRequirementData(Collection<se.addiva.nalabs_core.Requirement> requirements) {
+	public void setRequirementData(Collection<Requirement> requirements) {
 
 		int nRequirements = requirements.size();
 		
         HashMap<String, Integer> smellCountTypeMap = new HashMap<String, Integer>();
         HashMap<String, Integer> smellCountMapAggregated = new HashMap<String, Integer>();
-		for (se.addiva.nalabs_core.Requirement requirement : requirements) {
+		for (Requirement requirement : requirements) {
 			for (AnalyzeResult result : requirement.getSmellResults()) {
 				String type = result.description;
 				Integer v = smellCountTypeMap.get(type);
