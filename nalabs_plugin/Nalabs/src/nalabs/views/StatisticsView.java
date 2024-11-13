@@ -35,13 +35,12 @@ public class StatisticsView {
 	private Composite composite;
 	private Composite titleComposite;
 	private Composite chartComposite;
+	private Composite generalInfoComposite;
 	private Label labelTitle;
 	private Label nRequirementsCountLabel;
 	private Label nSmellsCountLabel;
 	private Label mostCommonSmellTypeTextLabel;
-	private Label mostCommonSmellTypeCountLabel;
 	private Label mostCommonSmellTextLabel;
-	private Label mostCommonSmellCountLabel;
 	private JFreeChart chart = null;
 	
 	public StatisticsView(Composite parent) {
@@ -72,7 +71,7 @@ public class StatisticsView {
 		lowerSplitComposite.setLayoutData(lowerSplitCompositeData);
 		lowerSplitComposite.setLayout(lowerSplitCompositeLayout);
 		
-		Composite generalInfoComposite = new Composite(lowerSplitComposite, SWT.FILL);
+		generalInfoComposite = new Composite(lowerSplitComposite, SWT.FILL);
 		GridData generalInfoCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		GridLayout generalInfoCompositeLayout = new GridLayout();
 		generalInfoComposite.setLayoutData(generalInfoCompositeData);
@@ -83,6 +82,8 @@ public class StatisticsView {
 		GridData nRequirementsTextLabelData = new GridData();
 		nRequirementsTextLabel.setLayoutData(nRequirementsTextLabelData);
 		nRequirementsTextLabel.setText("Number of Requirements");
+		FontDescriptor boldnRequirementsTextLabelDescriptor = FontDescriptor.createFrom(nRequirementsTextLabel.getFont()).setStyle(SWT.BOLD);
+		nRequirementsTextLabel.setFont(boldnRequirementsTextLabelDescriptor.createFont(nRequirementsTextLabel.getDisplay()));
 		nRequirementsCountLabel = new Label(generalInfoComposite, SWT.NONE);
 		GridData nRequirementsCountLabelData = new GridData();
 		nRequirementsCountLabelData.heightHint = 20;
@@ -92,8 +93,11 @@ public class StatisticsView {
 		// Number of smells
 		Label nSmellsTextLabel = new Label(generalInfoComposite, SWT.NONE);
 		GridData nSmellsTextLabelData = new GridData();
+		nSmellsTextLabelData.verticalIndent = 10;
 		nSmellsTextLabel.setLayoutData(nSmellsTextLabelData);
 		nSmellsTextLabel.setText("Number of Smells");
+		FontDescriptor boldnSmellsTextLabelDescriptor = FontDescriptor.createFrom(nSmellsTextLabel.getFont()).setStyle(SWT.BOLD);
+		nSmellsTextLabel.setFont(boldnSmellsTextLabelDescriptor.createFont(nSmellsTextLabel.getDisplay()));
 		nSmellsCountLabel = new Label(generalInfoComposite, SWT.NONE);
 		GridData nSmellsCountLabelData = new GridData();
 		nSmellsCountLabelData.heightHint = 20;
@@ -103,40 +107,34 @@ public class StatisticsView {
 		// Most common smell type(s)
 		Label mostCommonSmellTypeLabel = new Label(generalInfoComposite, SWT.NONE);
 		GridData mostCommonSmellTypeLabelData = new GridData();
+		mostCommonSmellTypeLabelData.verticalIndent = 10;
 		mostCommonSmellTypeLabel.setLayoutData(mostCommonSmellTypeLabelData);
 		mostCommonSmellTypeLabel.setText("Most Common Smell Type(s)");
-		Composite mostCommonSmellTypeInfoComposite = new Composite(generalInfoComposite, SWT.NONE);
-		GridLayout mostCommonSmellTypeInfoGridLayout = new GridLayout(2, false);
-		mostCommonSmellTypeCountLabel = new Label(mostCommonSmellTypeInfoComposite, SWT.NONE);
-		GridData mostCommonSmellTypeCountLabelData = new GridData();
-		mostCommonSmellTypeCountLabelData.heightHint = 20;
-		mostCommonSmellTypeCountLabelData.widthHint = 30;
-		mostCommonSmellTypeCountLabel.setLayoutData(mostCommonSmellTypeCountLabelData);
-		mostCommonSmellTypeTextLabel = new Label(mostCommonSmellTypeInfoComposite, SWT.NONE);
+		FontDescriptor boldMostCommonSmellTypeLabelDescriptor = FontDescriptor.createFrom(mostCommonSmellTypeLabel.getFont()).setStyle(SWT.BOLD);
+		mostCommonSmellTypeLabel.setFont(boldMostCommonSmellTypeLabelDescriptor.createFont(mostCommonSmellTypeLabel.getDisplay()));
+		mostCommonSmellTypeTextLabel = new Label(generalInfoComposite, SWT.NONE);
 		GridData mostCommonSmellTypeTextLabelData = new GridData();
 		mostCommonSmellTypeTextLabelData.heightHint = 20;
 		mostCommonSmellTypeTextLabelData.widthHint = 140;
+		mostCommonSmellTypeTextLabelData.verticalAlignment = SWT.CENTER;
+		mostCommonSmellTypeTextLabelData.verticalIndent = 5;
 		mostCommonSmellTypeTextLabel.setLayoutData(mostCommonSmellTypeTextLabelData);
-		mostCommonSmellTypeInfoComposite.setLayout(mostCommonSmellTypeInfoGridLayout);
 		
 		// Most common smell(s)
 		Label mostCommonSmellLabel = new Label(generalInfoComposite, SWT.NONE);
 		GridData mostCommonSmellLabelData = new GridData();
 		mostCommonSmellLabel.setLayoutData(mostCommonSmellLabelData);
+		mostCommonSmellLabelData.verticalIndent = 10;
 		mostCommonSmellLabel.setText("Most Common Smell(s)");
-		Composite mostCommonSmellInfoComposite = new Composite(generalInfoComposite, SWT.NONE);
-		GridLayout mostCommonSmellInfoGridLayout = new GridLayout(2, false);
-		mostCommonSmellCountLabel = new Label(mostCommonSmellInfoComposite, SWT.NONE);
-		GridData mostCommonSmellCountLabelData = new GridData();
-		mostCommonSmellCountLabelData.heightHint = 20;
-		mostCommonSmellCountLabelData.widthHint = 30;
-		mostCommonSmellCountLabel.setLayoutData(mostCommonSmellCountLabelData);
-		mostCommonSmellTextLabel = new Label(mostCommonSmellInfoComposite, SWT.NONE);
+		FontDescriptor boldMostCommonSmellLabelDescriptor = FontDescriptor.createFrom(mostCommonSmellLabel.getFont()).setStyle(SWT.BOLD);
+		mostCommonSmellLabel.setFont(boldMostCommonSmellLabelDescriptor.createFont(mostCommonSmellLabel.getDisplay()));
+		mostCommonSmellTextLabel = new Label(generalInfoComposite, SWT.NONE);
 		GridData mostCommonSmellTextLabelData = new GridData();
 		mostCommonSmellTextLabelData.heightHint = 20;
 		mostCommonSmellTextLabelData.widthHint = 140;
+		mostCommonSmellTextLabelData.verticalAlignment = SWT.CENTER;
+		mostCommonSmellTextLabelData.verticalIndent = 5;
 		mostCommonSmellTextLabel.setLayoutData(mostCommonSmellTextLabelData);
-		mostCommonSmellInfoComposite.setLayout(mostCommonSmellInfoGridLayout);
 		
 		chartComposite = new Composite(lowerSplitComposite, SWT.EMBEDDED | SWT.FILL);
 		GridData chartCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -174,6 +172,20 @@ public class StatisticsView {
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setRange(0, 10);
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        
+        parent.addListener(SWT.Resize, arg0 -> {
+			resizeListener(parent);
+		});
+	}
+	
+	private void resizeListener(Composite parent) {
+		org.eclipse.swt.graphics.Point size = parent.getSize();
+		GridData generalInfoData = (GridData) generalInfoComposite.getLayoutData();
+		GridData chartData = (GridData) chartComposite.getLayoutData();
+		generalInfoData.widthHint = (int) (size.x * 0.3);
+		chartData.widthHint = size.x - generalInfoData.widthHint;
+		generalInfoComposite.setLayoutData(generalInfoData);
+		chartComposite.setLayoutData(chartData);
 	}
 	
 	public void setRequirementData(Collection<se.addiva.nalabs_core.Requirement> requirements) {
@@ -183,7 +195,7 @@ public class StatisticsView {
         HashMap<String, Integer> smellCountTypeMap = new HashMap<String, Integer>();
         HashMap<String, Integer> smellCountMapAggregated = new HashMap<String, Integer>();
 		for (se.addiva.nalabs_core.Requirement requirement : requirements) {
-			for (AnalyzeResult result : requirement.getResults()) {
+			for (AnalyzeResult result : requirement.getSmellResults()) {
 				String type = result.description;
 				Integer v = smellCountTypeMap.get(type);
 				smellCountTypeMap.put(type, v == null ? result.totalCount : v + result.totalCount);
@@ -240,17 +252,13 @@ public class StatisticsView {
         
         if (mostCommonSmellTypeValue > 0) {
 	        mostCommonSmellTypeTextLabel.setText(String.join(", ", mostCommonSmellTypes));
-	        mostCommonSmellTypeCountLabel.setText(Integer.toString(mostCommonSmellTypeValue));
         } else {
         	mostCommonSmellTypeTextLabel.setText("None");
-	        mostCommonSmellTypeCountLabel.setText("-");
         }
         
         if (mostCommonSmellValue > 0) {
-        	mostCommonSmellCountLabel.setText(Integer.toString(mostCommonSmellValue));
         	mostCommonSmellTextLabel.setText(String.join(", ", mostCommonSmells));
         } else {
-        	mostCommonSmellCountLabel.setText("-");
         	mostCommonSmellTextLabel.setText("None");
         }
         

@@ -111,6 +111,7 @@ public class NalabsHandler extends AbstractHandler {
 
 			requirement.Text = textString;
             requirement.AriScore = analysis.ARI;
+            requirement.WordCount = analysis.wordCount;
             requirement.TotalSmells = analysis.conjunctions.totalCount + analysis.vaguePhrases.totalCount + 
             		analysis.optionality.totalCount + analysis.subjectivity.totalCount + 
             		analysis.referenceInternal.totalCount + analysis.weakness.totalCount + 

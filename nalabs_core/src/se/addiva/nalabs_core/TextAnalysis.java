@@ -2,6 +2,8 @@ package se.addiva.nalabs_core;
 
 public class TextAnalysis {
     public double ARI;
+    
+    public WordCountResult wordCount;
 
     public AnalyzeResult conjunctions;
 

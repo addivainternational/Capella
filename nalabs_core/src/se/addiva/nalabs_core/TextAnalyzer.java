@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class TextAnalyzer
 {
+	private static WordCountMetric WordCountMetric = new WordCountMetric();
     private static ConjunctionsMetric ConjunctionsMetric = new ConjunctionsMetric();
     private static NVMetric NVMetric = new NVMetric();
     private static OptionalityMetric OptionalityMetric = new OptionalityMetric();
@@ -19,6 +20,7 @@ public class TextAnalyzer
     	se.addiva.nalabs_core.TextAnalysis analysis = new se.addiva.nalabs_core.TextAnalysis() {
     		{
 	            ARI = CalculateARIScore(text);
+	            wordCount = WordCountMetric.getWordCount(text);
 	            conjunctions = ConjunctionsMetric.analyze(text);
 	        	vaguePhrases = NVMetric.analyze(text);
 	        	optionality = OptionalityMetric.analyze(text);

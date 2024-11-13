@@ -95,9 +95,9 @@ public class RequirementsTableView {
 
 	private void createColumns() {
 		// Define column names and widths
-		String[] titles = { "Id", "Text", "Ari Score", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
+		String[] titles = { "Id", "Text", "Ari Score", "Word Count", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
 				"References", "References2", "Weakness", "Imperatives", "Continuances" };
-		int[] bounds = { 50, 400, 80, 100, 100, 80, 80, 80, 80, 80, 100, 80 };
+		int[] bounds = { 50, 400, 80, 100, 100, 100, 80, 80, 80, 80, 80, 100, 100 };
 
 		// Id
 		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0]);
@@ -128,9 +128,19 @@ public class RequirementsTableView {
 				return String.format("%.2f", r.AriScore);
 			}
 		});
+		
+		// Word Count
+		TableViewerColumn colWordCount = createTableViewerColumn(titles[3], bounds[3]);
+		colWordCount.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				se.addiva.nalabs_core.Requirement r = (se.addiva.nalabs_core.Requirement) element;
+				return Integer.toString(r.WordCount.totalCount);
+			}
+		});
 
 		// Conjunctions
-		TableViewerColumn colConjunctions = createTableViewerColumn(titles[3], bounds[3]);
+		TableViewerColumn colConjunctions = createTableViewerColumn(titles[4], bounds[4]);
 		colConjunctions.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -140,7 +150,7 @@ public class RequirementsTableView {
 		});
 
 		// VaguePhrases
-		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[4], bounds[4]);
+		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[5], bounds[5]);
 		colVaguePhrases.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -150,7 +160,7 @@ public class RequirementsTableView {
 		});
 
 		// Optionality
-		TableViewerColumn colOptionality = createTableViewerColumn(titles[5], bounds[5]);
+		TableViewerColumn colOptionality = createTableViewerColumn(titles[6], bounds[6]);
 		colOptionality.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -160,7 +170,7 @@ public class RequirementsTableView {
 		});
 
 		// Subjectivity
-		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[6], bounds[6]);
+		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[7], bounds[7]);
 		colSubjectivity.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -170,7 +180,7 @@ public class RequirementsTableView {
 		});
 
 		// References
-		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[7], bounds[7]);
+		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[8], bounds[8]);
 		colReferencesInternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -180,7 +190,7 @@ public class RequirementsTableView {
 		});
 		
 		// References2
-		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[8], bounds[8]);
+		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[9], bounds[9]);
 		colReferencesExternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -190,7 +200,7 @@ public class RequirementsTableView {
 		});
 
 		// Weakness
-		TableViewerColumn colWeakness = createTableViewerColumn(titles[9], bounds[9]);
+		TableViewerColumn colWeakness = createTableViewerColumn(titles[10], bounds[10]);
 		colWeakness.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -200,7 +210,7 @@ public class RequirementsTableView {
 		});
 
 		// Imperatives
-		TableViewerColumn colImperatives = createTableViewerColumn(titles[10], bounds[10]);
+		TableViewerColumn colImperatives = createTableViewerColumn(titles[11], bounds[11]);
 		colImperatives.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -210,7 +220,7 @@ public class RequirementsTableView {
 		});
 
 		// Continuances
-		TableViewerColumn colContinuances = createTableViewerColumn(titles[11], bounds[11]);
+		TableViewerColumn colContinuances = createTableViewerColumn(titles[12], bounds[12]);
 		colContinuances.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {

@@ -12,6 +12,7 @@ public class Requirement {
     public String Id;
     public String Text;
     public double AriScore;
+    public WordCountResult WordCount;
     public int TotalSmells;
     public AnalyzeResult Conjunctions;
     public AnalyzeResult VaguePhrases;
@@ -23,7 +24,7 @@ public class Requirement {
     public AnalyzeResult Continuances;
     public AnalyzeResult ReferencesExternal;
     
-    public AnalyzeResult[] getResults() {
+    public AnalyzeResult[] getSmellResults() {
     	return new AnalyzeResult[] { Conjunctions, VaguePhrases, Optionality, Subjectivity, ReferencesInternal, 
     			Weakness, Imperatives, Continuances, ReferencesExternal };
     }

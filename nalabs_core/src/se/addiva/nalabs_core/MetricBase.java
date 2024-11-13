@@ -8,8 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class MetricBase implements IMetric {
-    private String[] keywords = null;
-    private Pattern pattern;
+    protected String[] keywords = null;
+    protected Pattern pattern;
 
     public abstract String[] getDefaultKeywords();
 
