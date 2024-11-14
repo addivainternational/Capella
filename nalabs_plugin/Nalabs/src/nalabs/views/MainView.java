@@ -1,5 +1,7 @@
 package nalabs.views;
 
+import se.addiva.nalabs_core.*;
+
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
@@ -59,7 +61,7 @@ public class MainView extends ViewPart {
 		requirementsTableView.setFocus();
 	}
 
-	public void setRequirementData(Collection<se.addiva.nalabs_core.Requirement> requirements) {
+	public void setRequirementData(Collection<Requirement> requirements) {
 		statisticsView.setRequirementData(requirements);
 		requirementsTableView.setRequirementData(requirements);
 	}
