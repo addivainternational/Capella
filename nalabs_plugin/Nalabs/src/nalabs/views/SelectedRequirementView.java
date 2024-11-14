@@ -7,13 +7,22 @@ import java.util.List;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 import se.addiva.nalabs_core.*;
 
@@ -148,7 +157,7 @@ public class SelectedRequirementView {
 							description = entry.getKey();
 							count = entry.getValue();
 							type = result.description;
-							severityLevel = result.severityLevel.toString();
+							severityLevel = result.severityLevel;
 						}
 					});
 				}
@@ -209,8 +218,13 @@ public class SelectedRequirementView {
 			@Override
 			public String getText(Object element) {
 				SmellEntry e = (SmellEntry) element;
-				return e.severityLevel;
+				return e.severityLevel.toString();
 			}
+			@Override
+		    public Color getBackground(Object element) {
+				SmellEntry e = (SmellEntry) element;
+				return nalabs.helpers.Util.getSeverityColor(e.severityLevel);
+		    }
 		});
 	}
 }
