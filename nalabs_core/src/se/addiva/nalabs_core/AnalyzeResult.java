@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class AnalyzeResult {
 	public int totalCount;
-	public HashMap<String, Integer> smells;
+	public HashMap<String, SmellMatch> smells;
 	public String description;
 	public SeverityLevel severityLevel;
 }
