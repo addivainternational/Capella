@@ -23,6 +23,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+
+import nalabs.helpers.Util;
+
 import org.eclipse.swt.widgets.Button;
 
 import org.eclipse.swt.custom.StyleRange;
@@ -151,9 +154,9 @@ public class SelectedRequirementView {
 		if (this.requirement == null) {
 			return;
 		}
-		requirementText.setText(this.requirement.Text);
-		ariScoreValue.setText(String.format("%.2f", requirement.AriScore));
-		wordCountValue.setText(Integer.toString(this.requirement.WordCount.totalCount));
+		requirementText.setText(this.requirement.text);
+		ariScoreValue.setText(String.format("%.2f", requirement.ariScore));
+		wordCountValue.setText(Integer.toString(this.requirement.wordCount.totalCount));
 		List<SmellEntry> entries = new ArrayList<SmellEntry>();
 		for (AnalyzeResult result : this.requirement.getSmellResults()) {
 			if (result.totalCount > 0) {
@@ -185,7 +188,7 @@ public class SelectedRequirementView {
 	}
 	
 	private void setSmellMatchHighlightState(SmellMatch smellMatch, boolean on) {
-		Color color = on ? new Color(Display.getCurrent(), 7, 246, 242) : Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
+		Color color = on ? Util.getSmellColor() : Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 		setSmellBackgroundInRequirementText(smellMatch, color);
 	}
 	
@@ -199,6 +202,7 @@ public class SelectedRequirementView {
 	        styleRange.start = startIndex; 
 	        styleRange.length = endIndex - startIndex;
 	        styleRange.background = backgroundColor;
+	        styleRange.fontStyle = SWT.ITALIC;
 
 	        // Apply the style to the StyledText widget
 	        requirementText.setStyleRange(styleRange);

@@ -22,6 +22,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -143,149 +144,176 @@ public class RequirementsTableView {
 
 	private void createColumns() {
 		// Define column names and widths
-		String[] titles = { "Id", "Text", "Ari Score", "Word Count", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
+		String[] titles = { "Id", "Text", "Ari Score", "Word Count", "Total Smells", "Severity", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
 				"References", "References2", "Weakness", "Imperatives", "Continuances" };
-		int[] bounds = { 50, 400, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		int[] bounds = { 50, 400, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 		// Id
-		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0], (Requirement req) -> req.Id, 
+		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0], (Requirement req) -> req.id, 
 				Comparator.comparing(reqId -> reqId));
 		colId.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return r.Id;
+				return r.id;
 			}
 		});
 
 		// Text
-		TableViewerColumn colText = createTableViewerColumn(titles[1], bounds[1], (Requirement req) -> req.Text, 
+		TableViewerColumn colText = createTableViewerColumn(titles[1], bounds[1], (Requirement req) -> req.text, 
 				Comparator.comparing(reqText -> reqText));
 		colText.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return r.Text;
+				return r.text;
 			}
 		});
 
 		// AriScore
-		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2], (Requirement req) -> req.AriScore, 
+		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2], (Requirement req) -> req.ariScore, 
 				Comparator.comparingDouble(reqAriScore -> reqAriScore));
 		colAriScore.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return String.format("%.2f", r.AriScore);
+				return String.format("%.2f", r.ariScore);
 			}
 		});
 		
 		// Word Count
-		TableViewerColumn colWordCount = createTableViewerColumn(titles[3], bounds[3], (Requirement req) -> req.WordCount.totalCount, 
+		TableViewerColumn colWordCount = createTableViewerColumn(titles[3], bounds[3], (Requirement req) -> req.wordCount.totalCount, 
 				Comparator.comparingInt(reqWordCount -> reqWordCount));
 		colWordCount.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.WordCount.totalCount);
+				return Integer.toString(r.wordCount.totalCount);
 			}
+		});
+		
+		// Total smells 
+		TableViewerColumn colTotalSmells = createTableViewerColumn(titles[4], bounds[4], (Requirement req) -> req.totalSmells, 
+				Comparator.comparingInt(c -> c));
+		colTotalSmells.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Requirement r = (Requirement) element;
+				return Integer.toString(r.totalSmells);
+			}
+		});
+		
+		// Severity
+		TableViewerColumn colSeverity = createTableViewerColumn(titles[5], bounds[5], (Requirement req) -> req.severityLevel, 
+				Comparator.comparing(c -> c));
+		colSeverity.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Requirement r = (Requirement) element;
+				return r.severityLevel.toString();
+			}
+			@Override
+		    public Color getBackground(Object element) {
+				Requirement e = (Requirement) element;
+				return nalabs.helpers.Util.getSeverityColor(e.severityLevel);
+		    }
 		});
 
 		// Conjunctions
-		TableViewerColumn colConjunctions = createTableViewerColumn(titles[4], bounds[4], (Requirement req) -> req.Conjunctions.totalCount, 
+		TableViewerColumn colConjunctions = createTableViewerColumn(titles[6], bounds[6], (Requirement req) -> req.conjunctions.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colConjunctions.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.Conjunctions.totalCount);
+				return Integer.toString(r.conjunctions.totalCount);
 			}
 		});
 
 		// VaguePhrases
-		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[5], bounds[5], (Requirement req) -> req.VaguePhrases.totalCount, 
+		TableViewerColumn colVaguePhrases = createTableViewerColumn(titles[7], bounds[7], (Requirement req) -> req.vaguePhrases.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colVaguePhrases.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.VaguePhrases.totalCount);
+				return Integer.toString(r.vaguePhrases.totalCount);
 			}
 		});
 
 		// Optionality
-		TableViewerColumn colOptionality = createTableViewerColumn(titles[6], bounds[6], (Requirement req) -> req.Optionality.totalCount, 
+		TableViewerColumn colOptionality = createTableViewerColumn(titles[8], bounds[8], (Requirement req) -> req.optionality.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colOptionality.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.Optionality.totalCount);
+				return Integer.toString(r.optionality.totalCount);
 			}
 		});
 
 		// Subjectivity
-		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[7], bounds[7], (Requirement req) -> req.Subjectivity.totalCount, 
+		TableViewerColumn colSubjectivity = createTableViewerColumn(titles[9], bounds[9], (Requirement req) -> req.subjectivity.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colSubjectivity.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.Subjectivity.totalCount);
+				return Integer.toString(r.subjectivity.totalCount);
 			}
 		});
 
 		// References Internal
-		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[8], bounds[8], (Requirement req) -> req.ReferencesInternal.totalCount, 
+		TableViewerColumn colReferencesInternal = createTableViewerColumn(titles[10], bounds[10], (Requirement req) -> req.referencesInternal.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colReferencesInternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.ReferencesInternal.totalCount);
+				return Integer.toString(r.referencesInternal.totalCount);
 			}
 		});
 		
 		// References External
-		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[9], bounds[9], (Requirement req) -> req.ReferencesExternal.totalCount, 
+		TableViewerColumn colReferencesExternal = createTableViewerColumn(titles[11], bounds[11], (Requirement req) -> req.referencesExternal.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colReferencesExternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.ReferencesExternal.totalCount);
+				return Integer.toString(r.referencesExternal.totalCount);
 			}
 		});
 
 		// Weakness
-		TableViewerColumn colWeakness = createTableViewerColumn(titles[10], bounds[10], (Requirement req) -> req.Weakness.totalCount, 
+		TableViewerColumn colWeakness = createTableViewerColumn(titles[12], bounds[12], (Requirement req) -> req.weakness.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colWeakness.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.Weakness.totalCount);
+				return Integer.toString(r.weakness.totalCount);
 			}
 		});
 
 		// Imperatives
-		TableViewerColumn colImperatives = createTableViewerColumn(titles[11], bounds[11], (Requirement req) -> req.Imperatives.totalCount, 
+		TableViewerColumn colImperatives = createTableViewerColumn(titles[13], bounds[13], (Requirement req) -> req.imperatives.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colImperatives.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.Imperatives.totalCount);
+				return Integer.toString(r.imperatives.totalCount);
 			}
 		});
 
 		// Continuances
-		TableViewerColumn colContinuances = createTableViewerColumn(titles[12], bounds[12], (Requirement req) -> req.Continuances.totalCount, 
+		TableViewerColumn colContinuances = createTableViewerColumn(titles[14], bounds[14], (Requirement req) -> req.continuances.totalCount, 
 				Comparator.comparingInt(c -> c));
 		colContinuances.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Requirement r = (Requirement) element;
-				return Integer.toString(r.Continuances.totalCount);
+				return Integer.toString(r.continuances.totalCount);
 			}
 		});
 	}
@@ -301,7 +329,7 @@ public class RequirementsTableView {
         public boolean select(Viewer viewer, Object parentElement, Object element) {
             Requirement requirement = (Requirement) element;
             String searchText = searchTextSupplier.get().toLowerCase();
-            return searchText.isEmpty() || requirement.Text.toLowerCase().contains(searchText);
+            return searchText.isEmpty() || requirement.text.toLowerCase().contains(searchText);
         }
     }
 }

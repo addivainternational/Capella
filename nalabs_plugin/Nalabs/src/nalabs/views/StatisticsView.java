@@ -17,6 +17,8 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
@@ -28,6 +30,8 @@ import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.awt.Color;
+import java.awt.SystemColor;
 import java.util.ArrayList;
 
 public class StatisticsView {
@@ -262,7 +266,18 @@ public class StatisticsView {
         	mostCommonSmellTextLabel.setText("None");
         }
         
-        chart.getCategoryPlot().setDataset(dataset);
+        CategoryPlot categoryPlot = chart.getCategoryPlot();
+        categoryPlot.setDataset(dataset);
+        categoryPlot.setBackgroundPaint(SystemColor.inactiveCaption);
+        ((BarRenderer)categoryPlot.getRenderer()).setBarPainter(new StandardBarPainter());
+        BarRenderer r = (BarRenderer)chart.getCategoryPlot().getRenderer();
+        org.eclipse.swt.graphics.Color smellColor = nalabs.helpers.Util.getSmellColor();
+        int red = smellColor.getRed();
+        int green = smellColor.getGreen();
+        int blue = smellColor.getBlue();
+        Color awtColor = new java.awt.Color(red, green, blue);
+        r.setSeriesPaint(0, awtColor);
+        
         NumberAxis rangeAxis = (NumberAxis) ((CategoryPlot)chart.getPlot()).getRangeAxis();
         rangeAxis.setRange(0, axisMax);
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());

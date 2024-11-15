@@ -101,7 +101,7 @@ public class NalabsHandler extends AbstractHandler {
 		for (se.addiva.nalabs_core.Requirement requirement : nalabsRequirements)
         {
 			Pattern pattern = Pattern.compile("<p>(.*?)</p>", Pattern.DOTALL);
-			Matcher matcher = pattern.matcher(requirement.Text);
+			Matcher matcher = pattern.matcher(requirement.text);
 			if (!matcher.find()) {
 				throw new IllegalArgumentException("The requirement text does not contain the <p> html tag");
 			}
@@ -109,23 +109,24 @@ public class NalabsHandler extends AbstractHandler {
 	        
 			se.addiva.nalabs_core.TextAnalysis analysis = se.addiva.nalabs_core.TextAnalyzer.AnalyzeText(textString);
 
-			requirement.Text = textString;
-            requirement.AriScore = analysis.ARI;
-            requirement.WordCount = analysis.wordCount;
-            requirement.TotalSmells = analysis.conjunctions.totalCount + analysis.vaguePhrases.totalCount + 
-            		analysis.optionality.totalCount + analysis.subjectivity.totalCount + 
-            		analysis.referenceInternal.totalCount + analysis.weakness.totalCount + 
-            		analysis.imperatives.totalCount + analysis.continuances.totalCount + 
-            		analysis.referenceExternal.totalCount;
-            requirement.Conjunctions = analysis.conjunctions;
-            requirement.VaguePhrases = analysis.vaguePhrases;
-            requirement.Optionality = analysis.optionality;
-            requirement.Subjectivity = analysis.subjectivity;
-            requirement.ReferencesInternal = analysis.referenceInternal;
-            requirement.Weakness = analysis.weakness;
-            requirement.Imperatives = analysis.imperatives;
-            requirement.Continuances = analysis.continuances;
-            requirement.ReferencesExternal = analysis.referenceExternal;
+			requirement.text = textString;
+            requirement.ariScore = analysis.ARI;
+            requirement.wordCount = analysis.wordCount;
+            analysis.forEachSmellTypeResult(c -> requirement.totalSmells += c.totalCount);
+            analysis.forEachSmellTypeResult(c -> {
+            	if (c.totalCount > 0 && c.severityLevel.compareTo(requirement.severityLevel) > 0) {
+            		requirement.severityLevel = c.severityLevel;
+            	}
+            });
+            requirement.conjunctions = analysis.conjunctions;
+            requirement.vaguePhrases = analysis.vaguePhrases;
+            requirement.optionality = analysis.optionality;
+            requirement.subjectivity = analysis.subjectivity;
+            requirement.referencesInternal = analysis.referenceInternal;
+            requirement.weakness = analysis.weakness;
+            requirement.imperatives = analysis.imperatives;
+            requirement.continuances = analysis.continuances;
+            requirement.referencesExternal = analysis.referenceExternal;
         }
 		
 		return nalabsRequirements;
