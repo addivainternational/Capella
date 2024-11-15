@@ -200,7 +200,7 @@ public class StatisticsView {
 				Integer v = smellCountTypeMap.get(type);
 				smellCountTypeMap.put(type, v == null ? result.totalCount : v + result.totalCount);
 				result.smells.forEach((key, value) -> 
-					smellCountMapAggregated.merge(key, value, Integer::sum)
+					smellCountMapAggregated.merge(key, value.getCount(), Integer::sum)
 		        );
 			}
 		}

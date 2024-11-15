@@ -23,6 +23,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Button;
+
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 import se.addiva.nalabs_core.*;
 
@@ -33,7 +39,7 @@ public class SelectedRequirementView {
 
 	private Requirement requirement;
 	private Composite composite;
-	private Label requirementText;
+	private StyledText requirementText;
 	private Label ariScoreValue;
 	private Label wordCountValue;
 	private Label nSmellsValue;
@@ -72,7 +78,7 @@ public class SelectedRequirementView {
 		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD);
 		labelTitle.setFont(boldDescriptor.createFont(labelTitle.getDisplay()));
 		labelTitle.setText("Selected Requirement");
-		requirementText = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
+		requirementText = new StyledText(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData textGridData = new GridData();
 		textGridData.widthHint = 500;
 		textGridData.heightHint = 30;
@@ -151,11 +157,11 @@ public class SelectedRequirementView {
 		List<SmellEntry> entries = new ArrayList<SmellEntry>();
 		for (AnalyzeResult result : this.requirement.getSmellResults()) {
 			if (result.totalCount > 0) {
-				for (HashMap.Entry<String, Integer> entry : result.smells.entrySet()) {
+				for (HashMap.Entry<String, SmellMatch> entry : result.smells.entrySet()) {
 					entries.add(new SmellEntry() {
 						{
 							description = entry.getKey();
-							count = entry.getValue();
+							smellMatch = entry.getValue();
 							type = result.description;
 							severityLevel = result.severityLevel;
 						}
@@ -165,6 +171,38 @@ public class SelectedRequirementView {
 		}
 		nSmellsValue.setText(Integer.toString(entries.size()));
 		smellsTable.setInput(entries);
+		setAllSmellMatchHighlightStates(true);
+	}
+	
+	private void setAllSmellMatchHighlightStates(boolean on) {
+		for (AnalyzeResult result : this.requirement.getSmellResults()) {
+			if (result.totalCount > 0) {
+				for (HashMap.Entry<String, SmellMatch> entry : result.smells.entrySet()) {
+					setSmellMatchHighlightState(entry.getValue(), on);
+				}
+			}
+		}
+	}
+	
+	private void setSmellMatchHighlightState(SmellMatch smellMatch, boolean on) {
+		Color color = on ? new Color(Display.getCurrent(), 7, 246, 242) : Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
+		setSmellBackgroundInRequirementText(smellMatch, color);
+	}
+	
+	private void setSmellBackgroundInRequirementText(SmellMatch smellMatch, Color backgroundColor) {
+		smellMatch.forEach(smellMatchPosition -> {
+			int startIndex = smellMatchPosition.getStartIndex();
+			int endIndex = smellMatchPosition.getEndIndex();
+			
+			// Set styles for part of the text
+	        StyleRange styleRange = new StyleRange();
+	        styleRange.start = startIndex; 
+	        styleRange.length = endIndex - startIndex;
+	        styleRange.background = backgroundColor;
+
+	        // Apply the style to the StyledText widget
+	        requirementText.setStyleRange(styleRange);
+		});
 	}
 
 	private TableViewerColumn createSmellsTableViewerColumn(String title, int bound) {
@@ -198,7 +236,7 @@ public class SelectedRequirementView {
 			@Override
 			public String getText(Object element) {
 				SmellEntry e = (SmellEntry) element;
-				return Integer.toString(e.count);
+				return Integer.toString(e.smellMatch.getCount());
 			}
 		});
 		

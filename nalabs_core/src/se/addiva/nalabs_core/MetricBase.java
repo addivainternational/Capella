@@ -47,13 +47,16 @@ public abstract class MetricBase implements IMetric {
 
         // Match the patterns and create hashmap for existing smells
         Matcher matcher = pattern.matcher(text);
-        HashMap<String, Integer> smellsMap = new HashMap<>();
+        HashMap<String, SmellMatch> smellsMap = new HashMap<>();
         while (matcher.find()) {
+        	int startIndex = matcher.start();
+        	int endIndex = matcher.end();
         	String matchedString = matcher.group(); 
         	if (!smellsMap.containsKey(matchedString)) {
-        		smellsMap.put(matchedString, 1);
+        		smellsMap.put(matchedString, new SmellMatch(startIndex, endIndex));
         	} else {
-        		smellsMap.put(matchedString, smellsMap.get(matchedString) + 1);
+        		SmellMatch oldSmellMatch = smellsMap.get(matchedString);
+        		oldSmellMatch.Add(startIndex, endIndex);
         	}
         }
         
