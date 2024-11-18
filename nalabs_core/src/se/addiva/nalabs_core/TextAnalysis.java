@@ -1,5 +1,7 @@
 package se.addiva.nalabs_core;
 
+import java.util.function.Consumer;
+
 public class TextAnalysis {
     public double ARI;
     
@@ -22,4 +24,16 @@ public class TextAnalysis {
     public AnalyzeResult continuances;
 
     public AnalyzeResult referenceExternal;
+    
+    public void forEachSmellTypeResult(Consumer<AnalyzeResult> method) {
+    	method.accept(conjunctions);
+    	method.accept(vaguePhrases);
+    	method.accept(optionality);
+    	method.accept(subjectivity);
+    	method.accept(referenceInternal);
+    	method.accept(weakness);
+    	method.accept(imperatives);
+    	method.accept(continuances);
+    	method.accept(referenceExternal);
+    }
 }

@@ -5,27 +5,28 @@ public class Requirement {
     public Requirement(){}
 
     public Requirement(String id, String text){
-        Id = id;
-        Text = text;
+        this.id = id;
+        this.text = text;
     }
 
-    public String Id;
-    public String Text;
-    public double AriScore;
-    public WordCountResult WordCount;
-    public int TotalSmells;
-    public AnalyzeResult Conjunctions;
-    public AnalyzeResult VaguePhrases;
-    public AnalyzeResult Optionality;
-    public AnalyzeResult Subjectivity;
-    public AnalyzeResult ReferencesInternal;
-    public AnalyzeResult Weakness;
-    public AnalyzeResult Imperatives;
-    public AnalyzeResult Continuances;
-    public AnalyzeResult ReferencesExternal;
+    public String id;
+    public String text;
+    public double ariScore;
+    public WordCountResult wordCount;
+    public int totalSmells = 0;
+    public SeverityLevel severityLevel = SeverityLevel.None;
+    public AnalyzeResult conjunctions;
+    public AnalyzeResult vaguePhrases;
+    public AnalyzeResult optionality;
+    public AnalyzeResult subjectivity;
+    public AnalyzeResult referencesInternal;
+    public AnalyzeResult weakness;
+    public AnalyzeResult imperatives;
+    public AnalyzeResult continuances;
+    public AnalyzeResult referencesExternal;
     
     public AnalyzeResult[] getSmellResults() {
-    	return new AnalyzeResult[] { Conjunctions, VaguePhrases, Optionality, Subjectivity, ReferencesInternal, 
-    			Weakness, Imperatives, Continuances, ReferencesExternal };
+    	return new AnalyzeResult[] { conjunctions, vaguePhrases, optionality, subjectivity, referencesInternal, 
+    			weakness, imperatives, continuances, referencesExternal };
     }
 }

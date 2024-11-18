@@ -17,8 +17,13 @@ public class Util {
 			case Moderate:
 				return Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
 			case Low:
+				return new Color(Display.getCurrent(), 255, 255, 224);
 			default:
-				return Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
+				return Display.getCurrent().getSystemColor(SWT.COLOR_WHITE); 
 		}
+	}
+	
+	public static Color getSmellColor() {
+		return new Color(Display.getCurrent(), 210, 105, 30);	// GOLD 255, 215, 0
 	}
 }
