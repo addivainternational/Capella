@@ -18,8 +18,13 @@ public class ImperativesMetric extends MetricBase {
     }
 	
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Imperative";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Words indicating mandatory requirements";
     }
     
     @Override

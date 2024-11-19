@@ -21,8 +21,13 @@ public class ReferenceExternal extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "External Reference";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "References to external documents or sections";
     }
     
     @Override

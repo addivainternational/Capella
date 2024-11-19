@@ -20,8 +20,13 @@ public class ConjunctionsMetric extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Conjunction";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Complexity metrics based on sentence structure";
     }
 
 	@Override

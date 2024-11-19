@@ -18,8 +18,13 @@ public class OptionalityMetric extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Optionality";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Terms suggesting optional implementation";
     }
     
     @Override

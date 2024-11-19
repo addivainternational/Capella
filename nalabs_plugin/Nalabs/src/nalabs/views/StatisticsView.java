@@ -197,15 +197,17 @@ public class StatisticsView {
 		int nRequirements = requirements.size();
 		
         HashMap<String, Integer> smellCountTypeMap = new HashMap<String, Integer>();
+        HashMap<String, String> smellTypeDescriptionMap = new HashMap<String, String>();
         HashMap<String, Integer> smellCountMapAggregated = new HashMap<String, Integer>();
 		for (Requirement requirement : requirements) {
 			for (AnalyzeResult result : requirement.getSmellResults()) {
-				String type = result.description;
+				String type = result.type;
 				Integer v = smellCountTypeMap.get(type);
 				smellCountTypeMap.put(type, v == null ? result.totalCount : v + result.totalCount);
 				result.smells.forEach((key, value) -> 
 					smellCountMapAggregated.merge(key, value.getCount(), Integer::sum)
 		        );
+				smellTypeDescriptionMap.put(type, result.typeDescription);
 			}
 		}
         
@@ -227,11 +229,15 @@ public class StatisticsView {
         }
         
         List<String> mostCommonSmellTypes = new ArrayList<String>();
+        List<String> mostCommonSmellTypeDescriptions = new ArrayList<String>();
         if (mostCommonSmellTypeValue > 0) {
         	for (Map.Entry<String, Integer> entry : smellCountTypeMap.entrySet()) {
             	int value = entry.getValue();
             	if (value == mostCommonSmellTypeValue) {
-            		mostCommonSmellTypes.add(entry.getKey());
+            		String key = entry.getKey();
+            		mostCommonSmellTypes.add(key);
+            		String description = smellTypeDescriptionMap.get(key);
+            		mostCommonSmellTypeDescriptions.add(key + " - " + description);
             	}
             }
         }
@@ -256,6 +262,7 @@ public class StatisticsView {
         
         if (mostCommonSmellTypeValue > 0) {
 	        mostCommonSmellTypeTextLabel.setText(String.join(", ", mostCommonSmellTypes));
+	        mostCommonSmellTypeTextLabel.setToolTipText(String.join("\n", mostCommonSmellTypeDescriptions));
         } else {
         	mostCommonSmellTypeTextLabel.setText("None");
         }

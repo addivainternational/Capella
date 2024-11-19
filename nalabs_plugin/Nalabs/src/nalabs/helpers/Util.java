@@ -17,7 +17,7 @@ public class Util {
 			case Moderate:
 				return Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
 			case Low:
-				return new Color(Display.getCurrent(), 255, 255, 224);
+				return new Color(Display.getCurrent(), 255, 255, 181);
 			default:
 				return Display.getCurrent().getSystemColor(SWT.COLOR_WHITE); 
 		}
