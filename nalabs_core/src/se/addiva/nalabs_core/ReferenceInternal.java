@@ -18,8 +18,13 @@ public class ReferenceInternal extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Internal Reference";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Example or reference based language that makes actual intent incomplete or unclear";
     }
     
     @Override

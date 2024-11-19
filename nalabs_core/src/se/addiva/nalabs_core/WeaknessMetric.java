@@ -18,8 +18,13 @@ public class WeaknessMetric extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Weakness";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Weak or non-committal language";
     }
     
     @Override

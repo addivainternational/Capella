@@ -7,16 +7,20 @@ import java.util.List;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -35,6 +39,7 @@ import org.eclipse.swt.events.SelectionEvent;
 
 import se.addiva.nalabs_core.*;
 
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 
@@ -133,7 +138,9 @@ public class SelectedRequirementView {
 		nSmellsValue.setLayoutData(nSmellsValueGridData);
 
 		// Create smells table
-		smellsTable = new TableViewer(smellsTableComposite);
+		smellsTable = new TableViewer(smellsTableComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		ColumnViewerToolTipSupport.enableFor(smellsTable, ToolTip.NO_RECREATE);
+		
 		Table table = smellsTable.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -143,6 +150,8 @@ public class SelectedRequirementView {
 		GridData smellsTableData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		parent.setLayout(new GridLayout());
 		parent.setLayoutData(smellsTableData);
+		
+		addCustomTooltipSupport(smellsTable);
 	}
 
 	public Composite getComposite() {
@@ -165,7 +174,8 @@ public class SelectedRequirementView {
 						{
 							description = entry.getKey();
 							smellMatch = entry.getValue();
-							type = result.description;
+							type = result.type;
+							typeDescription = result.typeDescription;
 							severityLevel = result.severityLevel;
 						}
 					});
@@ -269,4 +279,57 @@ public class SelectedRequirementView {
 		    }
 		});
 	}
+	
+	private static void addCustomTooltipSupport(TableViewer viewer) {
+		
+        Table table = viewer.getTable();
+        final Shell tooltipShell = new Shell(table.getShell(), SWT.ON_TOP | SWT.NO_FOCUS | SWT.TOOL);
+        tooltipShell.setLayout(new FillLayout());
+        final Label tooltipLabel = new Label(tooltipShell, SWT.NONE);
+
+        table.addListener(SWT.MouseHover, event -> {
+        	Point point = new Point(event.x, event.y);
+            final TableItem item = table.getItem(point);
+            int columnIndex = getColumnIndex(table, event.x);
+            if (columnIndex == 2) {
+                Object data = item.getData();
+                if (data instanceof SmellEntry) {
+                	SmellEntry entry = (SmellEntry) data;
+
+                	String tooltipText = entry.typeDescription;
+
+                	tooltipLabel.setText(tooltipText);
+                    tooltipShell.pack();
+
+                    // Display tooltip near the mouse pointer
+                    tooltipShell.setLocation(Display.getCurrent().map(table, null, event.x + 15, event.y + 10));
+                    tooltipShell.setVisible(true);
+                }
+            } else {
+                table.setToolTipText(null);
+            }
+        });
+        
+        table.addListener(SWT.MouseMove, event -> {
+            if (tooltipShell.isVisible()) {
+                TableItem item = table.getItem(table.toControl(event.x, event.y));
+                if (item == null) {
+                    tooltipShell.setVisible(false);
+                }
+            }
+        });
+
+        table.addListener(SWT.MouseExit, event -> tooltipShell.setVisible(false));
+    }
+	
+	private static int getColumnIndex(Table table, int mouseX) {
+        int cumulativeWidth = 0;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            cumulativeWidth += table.getColumn(i).getWidth();
+            if (mouseX < cumulativeWidth) {
+                return i;
+            }
+        }
+        return -1; // No column found
+    }
 }

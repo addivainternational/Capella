@@ -21,8 +21,13 @@ public class NVMetric extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Vague Phrase";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Unclear terms open to interpretation";
     }
     
     @Override

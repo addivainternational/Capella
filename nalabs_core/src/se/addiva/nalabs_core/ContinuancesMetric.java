@@ -18,8 +18,13 @@ public class ContinuancesMetric extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Continuance";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Phrases that specify further details, often after an imperative";
     }
     
     @Override

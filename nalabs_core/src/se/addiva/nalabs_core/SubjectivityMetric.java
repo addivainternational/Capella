@@ -19,8 +19,13 @@ public class SubjectivityMetric extends MetricBase {
     }
     
     @Override
-    public String metricDescription() {
+    public String getType() {
     	return "Subjectivity";
+    }
+    
+    @Override
+    public String getTypeDescription() {
+    	return "Personal opinions or subjective judgments";
     }
     
     @Override
