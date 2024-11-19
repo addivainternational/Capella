@@ -199,10 +199,10 @@ public class SelectedRequirementView {
 	
 	private void setSmellMatchHighlightState(SmellMatch smellMatch, boolean on) {
 		Color color = on ? Util.getSmellColor() : Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
-		setSmellBackgroundInRequirementText(smellMatch, color);
+		setSmellHighlightColorInRequirementText(smellMatch, color);
 	}
 	
-	private void setSmellBackgroundInRequirementText(SmellMatch smellMatch, Color backgroundColor) {
+	private void setSmellHighlightColorInRequirementText(SmellMatch smellMatch, Color color) {
 		smellMatch.forEach(smellMatchPosition -> {
 			int startIndex = smellMatchPosition.getStartIndex();
 			int endIndex = smellMatchPosition.getEndIndex();
@@ -211,8 +211,8 @@ public class SelectedRequirementView {
 	        StyleRange styleRange = new StyleRange();
 	        styleRange.start = startIndex; 
 	        styleRange.length = endIndex - startIndex;
-	        styleRange.background = backgroundColor;
-	        styleRange.fontStyle = SWT.ITALIC;
+	        styleRange.foreground = color;
+	        styleRange.fontStyle = SWT.BOLD;
 
 	        // Apply the style to the StyledText widget
 	        requirementText.setStyleRange(styleRange);
