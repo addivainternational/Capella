@@ -144,8 +144,8 @@ public class RequirementsTableView {
 
 	private void createColumns() {
 		// Define column names and widths
-		String[] titles = { "Id", "Text", "Ari Score", "Word Count", "Total Smells", "Severity", "Conjunctions", "Vague Phrases", "Optionality", "Subjectivity",
-				"References", "References2", "Weakness", "Imperatives", "Continuances" };
+		String[] titles = { "Id", "Text", "Ari Score", "Word Count", "Total Smells", "Severity", "#Conjunctions", "#Vague Phrases", "#Optionalities", "#Subjectivities",
+				"#Internal References", "#External References", "#Weaknesses", "#Imperatives", "#Continuances" };
 		int[] bounds = { 50, 400, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 		// Id
 		TableViewerColumn colId = createTableViewerColumn(titles[0], bounds[0], (Requirement req) -> req.id, 
