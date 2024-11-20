@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -80,6 +81,14 @@ public class StatisticsView {
 		GridLayout generalInfoCompositeLayout = new GridLayout();
 		generalInfoComposite.setLayoutData(generalInfoCompositeData);
 		generalInfoComposite.setLayout(generalInfoCompositeLayout);
+
+		Button button = new Button(parent, SWT.PUSH);
+        button.setText("Smell Type Info");
+
+        button.addListener(SWT.Selection, e -> {
+        	SmellTypeInfoView smellTypeInfo = new SmellTypeInfoView(generalInfoComposite.getShell());
+    		if (smellTypeInfo.open() == SmellTypeInfoView.OK) {}
+        });
 		
 		// Number of requirements
 		Label nRequirementsTextLabel = new Label(generalInfoComposite, SWT.NONE);

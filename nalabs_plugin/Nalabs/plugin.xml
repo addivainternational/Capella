@@ -53,5 +53,16 @@
 	        class="nalabs.views.MainView">
 	    </view>
 	</extension>
+	
+	<extension point="org.eclipse.ui.views"> 
+	  <view class="nalabs.views.SmellTypeInfoView" id="uy9ywrhsdif9er9y9p" name="Help" restorable="true" />
+	</extension>
+
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="*">
+			<view id="uy9ywrhsdif9er9y9p" visible="false" standalone="true"
+				relative="org.eclipse.ui.views.ResourceNavigator" relationship="bottom" /> 
+		</perspectiveExtension>
+	</extension>
 
 </plugin>
