@@ -8,8 +8,10 @@ import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -227,9 +229,9 @@ public class SelectedRequirementView {
 		TableViewerColumn colDescription = createSmellsTableViewerColumn(titles[0], bounds[0]);
 		colDescription.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				SmellEntry e = (SmellEntry) element;
-				return e.description;
+			public void update(ViewerCell cell) {
+				SmellEntry e = (SmellEntry) cell.getElement();
+				cell.setText(e.description);
 			}
 		});
 
@@ -237,9 +239,9 @@ public class SelectedRequirementView {
 		TableViewerColumn colCount = createSmellsTableViewerColumn(titles[1], bounds[1]);
 		colCount.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				SmellEntry e = (SmellEntry) element;
-				return Integer.toString(e.smellMatch.getCount());
+			public void update(ViewerCell cell) {
+				SmellEntry e = (SmellEntry) cell.getElement();
+				cell.setText(Integer.toString(e.smellMatch.getCount()));
 			}
 		});
 		
@@ -247,25 +249,26 @@ public class SelectedRequirementView {
 		TableViewerColumn colType = createSmellsTableViewerColumn(titles[2], bounds[2]);
 		colType.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				SmellEntry e = (SmellEntry) element;
-				return e.type;
+			public void update(ViewerCell cell) {
+				SmellEntry e = (SmellEntry) cell.getElement();
+				cell.setText(e.type);
 			}
 		});
 		
 		// Severity Level
 		TableViewerColumn colSeverityLevel = createSmellsTableViewerColumn(titles[3], bounds[3]);
-		colSeverityLevel.setLabelProvider(new ColumnLabelProvider() {
+		colSeverityLevel.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				SmellEntry e = (SmellEntry) element;
-				return e.severityLevel.toString();
+			public void update(ViewerCell cell) {
+				SmellEntry e = (SmellEntry) cell.getElement();
+				cell.setText(e.severityLevel.toString());
+				cell.setBackground(nalabs.helpers.Util.getSeverityColor(e.severityLevel));
+				if (e.severityLevel == SeverityLevel.Critical) {
+					cell.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+				} else {
+					cell.setForeground(null);
+				}
 			}
-			@Override
-		    public Color getBackground(Object element) {
-				SmellEntry e = (SmellEntry) element;
-				return nalabs.helpers.Util.getSeverityColor(e.severityLevel);
-		    }
 		});
 	}
 	

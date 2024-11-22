@@ -8,13 +8,16 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
@@ -23,10 +26,14 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.custom.StyleRange;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 
@@ -152,9 +159,9 @@ public class RequirementsTableView {
 				Comparator.comparing(reqId -> reqId));
 		colId.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return r.id;
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(r.id);
 			}
 		});
 
@@ -163,9 +170,9 @@ public class RequirementsTableView {
 				Comparator.comparing(reqText -> reqText));
 		colText.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return r.text;
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(r.text);
 			}
 		});
 
@@ -174,9 +181,9 @@ public class RequirementsTableView {
 				Comparator.comparingDouble(reqAriScore -> reqAriScore));
 		colAriScore.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return String.format("%.2f", r.ariScore);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(String.format("%.2f", r.ariScore));
 			}
 		});
 		
@@ -185,9 +192,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(reqWordCount -> reqWordCount));
 		colWordCount.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.wordCount.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.wordCount.totalCount));
 			}
 		});
 		
@@ -196,26 +203,27 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colTotalSmells.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.totalSmells);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.totalSmells));
 			}
 		});
 		
 		// Severity
 		TableViewerColumn colSeverity = createTableViewerColumn(titles[5], bounds[5], (Requirement req) -> req.severityLevel, 
 				Comparator.comparing(c -> c));
-		colSeverity.setLabelProvider(new ColumnLabelProvider() {
+		colSeverity.setLabelProvider(new StyledCellLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return r.severityLevel.toString();
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(r.severityLevel.toString());
+				cell.setBackground(nalabs.helpers.Util.getSeverityColor(r.severityLevel));
+				if (r.severityLevel == SeverityLevel.Critical) {
+					cell.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+				} else {
+					cell.setForeground(null);
+				}
 			}
-			@Override
-		    public Color getBackground(Object element) {
-				Requirement e = (Requirement) element;
-				return nalabs.helpers.Util.getSeverityColor(e.severityLevel);
-		    }
 		});
 
 		// Conjunctions
@@ -223,9 +231,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colConjunctions.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.conjunctions.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.conjunctions.totalCount));
 			}
 		});
 
@@ -234,9 +242,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colVaguePhrases.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.vaguePhrases.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.vaguePhrases.totalCount));
 			}
 		});
 
@@ -245,9 +253,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colOptionality.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.optionality.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.optionality.totalCount));
 			}
 		});
 
@@ -256,9 +264,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colSubjectivity.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.subjectivity.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.subjectivity.totalCount));
 			}
 		});
 
@@ -267,9 +275,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colReferencesInternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.referencesInternal.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.referencesInternal.totalCount));
 			}
 		});
 		
@@ -278,9 +286,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colReferencesExternal.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.referencesExternal.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.referencesExternal.totalCount));
 			}
 		});
 
@@ -289,9 +297,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colWeakness.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.weakness.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.weakness.totalCount));
 			}
 		});
 
@@ -300,9 +308,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colImperatives.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.imperatives.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.imperatives.totalCount));
 			}
 		});
 
@@ -311,9 +319,9 @@ public class RequirementsTableView {
 				Comparator.comparingInt(c -> c));
 		colContinuances.setLabelProvider(new ColumnLabelProvider() {
 			@Override
-			public String getText(Object element) {
-				Requirement r = (Requirement) element;
-				return Integer.toString(r.continuances.totalCount);
+			public void update(ViewerCell cell) {
+				Requirement r = (Requirement) cell.getElement();
+				cell.setText(Integer.toString(r.continuances.totalCount));
 			}
 		});
 	}
