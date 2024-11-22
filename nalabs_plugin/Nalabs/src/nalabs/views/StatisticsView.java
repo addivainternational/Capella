@@ -22,12 +22,8 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
-import org.jfree.chart.title.LegendTitle;
-import org.jfree.chart.ui.HorizontalAlignment;
-import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
@@ -164,6 +160,7 @@ public class StatisticsView {
                 true, 
                 true,
                 false);
+		requirementsChart.setBackgroundPaint(Color.WHITE);
 		@SuppressWarnings("unchecked")
         PiePlot<String> piePlot = (PiePlot<String>)requirementsChart.getPlot();
 		piePlot.setLabelGenerator(new StandardPieSectionLabelGenerator(
@@ -201,13 +198,14 @@ public class StatisticsView {
                 true,
                 false
         );
-        smellsChart.getPlot().setBackgroundPaint(null);
+        smellsChart.setBackgroundPaint(Color.WHITE);
         ChartPanel smellsChartPanel = new ChartPanel(smellsChart);
         java.awt.Frame smellsFrame = SWT_AWT.new_Frame(smellsChartComposite);
         smellsFrame.add(smellsChartPanel);
         
         // Customize
         CategoryPlot plot = (CategoryPlot) smellsChart.getPlot();
+        plot.setBackgroundAlpha(0.3f);
         CategoryAxis domainAxis = plot.getDomainAxis();
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.toRadians(30)));
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
