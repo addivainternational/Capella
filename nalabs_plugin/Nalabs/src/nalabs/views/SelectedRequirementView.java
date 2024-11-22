@@ -201,8 +201,7 @@ public class SelectedRequirementView {
 	        StyleRange styleRange = new StyleRange();
 	        styleRange.start = startIndex; 
 	        styleRange.length = endIndex - startIndex;
-	        styleRange.foreground = color;
-	        styleRange.fontStyle = SWT.BOLD;
+	        styleRange.background = color;
 
 	        // Apply the style to the StyledText widget
 	        requirementText.setStyleRange(styleRange);

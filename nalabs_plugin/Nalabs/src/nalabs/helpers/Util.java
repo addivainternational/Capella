@@ -34,4 +34,8 @@ public class Util {
         int blue = color.getBlue();
         return new java.awt.Color(red, green, blue);
 	}
+	
+	public static SeverityLevel[] getOrderedSeverityLevels() {
+		return new SeverityLevel[] { SeverityLevel.Critical, SeverityLevel.High, SeverityLevel.Moderate, SeverityLevel.Low, SeverityLevel.None };
+	}
 }

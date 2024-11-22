@@ -22,12 +22,16 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.ui.HorizontalAlignment;
+import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,6 +41,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.awt.Color;
 import java.awt.SystemColor;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class StatisticsView {
@@ -144,7 +149,7 @@ public class StatisticsView {
         });
 		
 		// Requirements chart composite
-		requirementsChartComposite = new Composite(rightComposite, SWT.EMBEDDED | SWT.FILL);
+		requirementsChartComposite = new Composite(rightComposite, SWT.EMBEDDED | SWT.FILL | SWT.LEFT);
 		GridData requirementsChartData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		FillLayout requirementsChartLayout = new FillLayout();
 		requirementsChartLayout.marginHeight = 10;
@@ -154,17 +159,30 @@ public class StatisticsView {
 		
 		// Requirements chart
 		requirementsChart = ChartFactory.createPieChart(
-                "Requirements", 
+                "Requirement Severity", 
                 null, 
                 true, 
                 true,
                 false);
+		@SuppressWarnings("unchecked")
+        PiePlot<String> piePlot = (PiePlot<String>)requirementsChart.getPlot();
+		piePlot.setLabelGenerator(new StandardPieSectionLabelGenerator(
+            "{0} {2}",
+            new DecimalFormat("0"), 
+            new DecimalFormat("0.0%")         // Format for percentage
+        ));
+
+        // Optional: Customize font, colors, etc.
+		piePlot.setLabelFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 12));
+	        
+		requirementsChart.getPlot().setBackgroundPaint(null);
+		requirementsChart.getPlot().setOutlinePaint(new Color(0,0,0,0));
         ChartPanel requirementsChartPanel = new ChartPanel(requirementsChart); 
         java.awt.Frame requirementsFrame = SWT_AWT.new_Frame(requirementsChartComposite);
         requirementsFrame.add(requirementsChartPanel);
 		
         // Smells chart composite
-		smellsChartComposite = new Composite(rightComposite, SWT.EMBEDDED | SWT.FILL);
+		smellsChartComposite = new Composite(rightComposite, SWT.EMBEDDED | SWT.FILL | SWT.LEFT);
 		GridData chartCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.marginHeight = 10;
@@ -183,6 +201,7 @@ public class StatisticsView {
                 true,
                 false
         );
+        smellsChart.getPlot().setBackgroundPaint(null);
         ChartPanel smellsChartPanel = new ChartPanel(smellsChart);
         java.awt.Frame smellsFrame = SWT_AWT.new_Frame(smellsChartComposite);
         smellsFrame.add(smellsChartPanel);
@@ -238,8 +257,11 @@ public class StatisticsView {
 		}
 		
 		DefaultPieDataset<String> requirementDataset = new DefaultPieDataset<String>();
-        for (Map.Entry<String, Integer> entry : requirementMap.entrySet()) {
-        	requirementDataset.setValue(entry.getKey(), entry.getValue());
+        for (SeverityLevel severityLevel : Util.getOrderedSeverityLevels()) {
+        	String severityLevelString = severityLevel.toString();
+        	Integer value = requirementMap.get(severityLevelString);
+        	int v = value != null ? value : 0;
+        	requirementDataset.setValue(severityLevelString, v);
         }
         
 		int axisMax = 10;
