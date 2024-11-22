@@ -4,8 +4,10 @@ import se.addiva.nalabs_core.*;
 
 import java.util.Collection;
 
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,6 +32,16 @@ public class MainView extends ViewPart {
 		parent.addListener(SWT.Resize, arg0 -> {
 			resizeListener(parent);
 		});
+		
+		Label labelTitle = new Label(parent, SWT.NONE | SWT.TOP);
+		GridData labelGridData = new GridData();
+		labelGridData.heightHint = 40;
+		labelGridData.horizontalIndent = 10;
+		labelGridData.verticalIndent = 10;
+		labelTitle.setLayoutData(labelGridData);
+		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD).setHeight(16);
+		labelTitle.setFont(boldDescriptor.createFont(labelTitle.getDisplay()));
+		labelTitle.setText("Requirement Smell Detector");
 		
 		upperComposite = new Composite(parent, SWT.FILL);
 		GridData upperCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -72,7 +84,7 @@ public class MainView extends ViewPart {
 		GridData lowerCompositeData = (GridData) lowerComposite.getLayoutData();
 		GridData statisticsCompositeData = (GridData) statisticsComposite.getLayoutData();
 		GridData requirementViewerCompositeData = (GridData) requirementViewerComposite.getLayoutData();
-		upperCompositeData.heightHint = (int) (size.y * 0.5);
+		upperCompositeData.heightHint = (int) (size.y * 0.7);
 		lowerCompositeData.heightHint = size.y - upperCompositeData.heightHint;
 		statisticsCompositeData.widthHint = (int) (size.x * 0.5);
 		requirementViewerCompositeData.widthHint = size.x - statisticsCompositeData.widthHint;
