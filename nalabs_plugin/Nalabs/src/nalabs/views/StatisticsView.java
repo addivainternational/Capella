@@ -13,6 +13,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -71,6 +74,18 @@ public class StatisticsView {
 		leftComposite.setLayout(leftLayout);
 		leftComposite.setLayoutData(leftCompositeData);
 		
+		Composite upperLeftComposite = new Composite(leftComposite, SWT.FILL);
+		GridData upperLeftCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridLayout upperLeftCompositeLayout = new GridLayout();
+		upperLeftComposite.setLayout(upperLeftCompositeLayout);
+		upperLeftComposite.setLayoutData(upperLeftCompositeData);
+		
+		Composite lowerLeftComposite = new Composite(leftComposite, SWT.FILL);
+		GridData lowerLeftCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		FormLayout lowerLeftCompositeLayout = new FormLayout();
+		lowerLeftComposite.setLayout(lowerLeftCompositeLayout);
+		lowerLeftComposite.setLayoutData(lowerLeftCompositeData);
+		
 		rightComposite = new Composite(composite, SWT.FILL);
 		GridData rightCompositeData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		GridLayout rightLayout = new GridLayout();
@@ -78,41 +93,41 @@ public class StatisticsView {
 		rightComposite.setLayoutData(rightCompositeData);
 		
 		// Number of requirements
-		Label nRequirementsTextLabel = new Label(leftComposite, SWT.NONE);
+		Label nRequirementsTextLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData nRequirementsTextLabelData = new GridData();
 		nRequirementsTextLabel.setLayoutData(nRequirementsTextLabelData);
 		nRequirementsTextLabel.setText("Number of Requirements");
 		FontDescriptor boldnRequirementsTextLabelDescriptor = FontDescriptor.createFrom(nRequirementsTextLabel.getFont()).setStyle(SWT.BOLD);
 		nRequirementsTextLabel.setFont(boldnRequirementsTextLabelDescriptor.createFont(nRequirementsTextLabel.getDisplay()));
-		nRequirementsCountLabel = new Label(leftComposite, SWT.NONE);
+		nRequirementsCountLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData nRequirementsCountLabelData = new GridData();
 		nRequirementsCountLabelData.heightHint = 20;
 		nRequirementsCountLabelData.widthHint = 40;
 		nRequirementsCountLabel.setLayoutData(nRequirementsCountLabelData);
 		
 		// Number of smells
-		Label nSmellsTextLabel = new Label(leftComposite, SWT.NONE);
+		Label nSmellsTextLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData nSmellsTextLabelData = new GridData();
 		nSmellsTextLabelData.verticalIndent = 10;
 		nSmellsTextLabel.setLayoutData(nSmellsTextLabelData);
 		nSmellsTextLabel.setText("Number of Smells");
 		FontDescriptor boldnSmellsTextLabelDescriptor = FontDescriptor.createFrom(nSmellsTextLabel.getFont()).setStyle(SWT.BOLD);
 		nSmellsTextLabel.setFont(boldnSmellsTextLabelDescriptor.createFont(nSmellsTextLabel.getDisplay()));
-		nSmellsCountLabel = new Label(leftComposite, SWT.NONE);
+		nSmellsCountLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData nSmellsCountLabelData = new GridData();
 		nSmellsCountLabelData.heightHint = 20;
 		nSmellsCountLabelData.widthHint = 40;
 		nSmellsCountLabel.setLayoutData(nSmellsCountLabelData);
 		
 		// Most common smell type(s)
-		Label mostCommonSmellTypeLabel = new Label(leftComposite, SWT.NONE);
+		Label mostCommonSmellTypeLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData mostCommonSmellTypeLabelData = new GridData();
 		mostCommonSmellTypeLabelData.verticalIndent = 10;
 		mostCommonSmellTypeLabel.setLayoutData(mostCommonSmellTypeLabelData);
 		mostCommonSmellTypeLabel.setText("Most Common Smell Type(s)");
 		FontDescriptor boldMostCommonSmellTypeLabelDescriptor = FontDescriptor.createFrom(mostCommonSmellTypeLabel.getFont()).setStyle(SWT.BOLD);
 		mostCommonSmellTypeLabel.setFont(boldMostCommonSmellTypeLabelDescriptor.createFont(mostCommonSmellTypeLabel.getDisplay()));
-		mostCommonSmellTypeTextLabel = new Label(leftComposite, SWT.NONE);
+		mostCommonSmellTypeTextLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData mostCommonSmellTypeTextLabelData = new GridData();
 		mostCommonSmellTypeTextLabelData.heightHint = 20;
 		mostCommonSmellTypeTextLabelData.widthHint = 140;
@@ -121,14 +136,14 @@ public class StatisticsView {
 		mostCommonSmellTypeTextLabel.setLayoutData(mostCommonSmellTypeTextLabelData);
 		
 		// Most common smell(s)
-		Label mostCommonSmellLabel = new Label(leftComposite, SWT.NONE);
+		Label mostCommonSmellLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData mostCommonSmellLabelData = new GridData();
 		mostCommonSmellLabel.setLayoutData(mostCommonSmellLabelData);
 		mostCommonSmellLabelData.verticalIndent = 10;
 		mostCommonSmellLabel.setText("Most Common Smell(s)");
 		FontDescriptor boldMostCommonSmellLabelDescriptor = FontDescriptor.createFrom(mostCommonSmellLabel.getFont()).setStyle(SWT.BOLD);
 		mostCommonSmellLabel.setFont(boldMostCommonSmellLabelDescriptor.createFont(mostCommonSmellLabel.getDisplay()));
-		mostCommonSmellTextLabel = new Label(leftComposite, SWT.NONE);
+		mostCommonSmellTextLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData mostCommonSmellTextLabelData = new GridData();
 		mostCommonSmellTextLabelData.heightHint = 20;
 		mostCommonSmellTextLabelData.widthHint = 140;
@@ -137,10 +152,13 @@ public class StatisticsView {
 		mostCommonSmellTextLabel.setLayoutData(mostCommonSmellTextLabelData);
 		
 		// Smell type info
-		Button button = new Button(leftComposite, SWT.PUSH);
+		Button button = new Button(lowerLeftComposite, SWT.PUSH);
         button.setText("Smell Type Info");
+        FormData buttonData = new FormData();
+        buttonData.bottom = new FormAttachment(100, 0);	// position relative to bottom left
+        button.setLayoutData(buttonData);
         button.addListener(SWT.Selection, e -> {
-        	SmellTypeInfoView smellTypeInfo = new SmellTypeInfoView(leftComposite.getShell());
+        	SmellTypeInfoView smellTypeInfo = new SmellTypeInfoView(lowerLeftComposite.getShell());
     		if (smellTypeInfo.open() == SmellTypeInfoView.OK) {}
         });
 		
@@ -219,15 +237,13 @@ public class StatisticsView {
 	
 	private void resizeListener(Composite parent) {
 		org.eclipse.swt.graphics.Point size = parent.getSize();
-		GridData leftCompositeData = (GridData) leftComposite.getLayoutData();
 		GridData chartData = (GridData) smellsChartComposite.getLayoutData();
 		GridData leftData = (GridData) leftComposite.getLayoutData();
 		GridData rightData = (GridData) rightComposite.getLayoutData();
-		leftCompositeData.widthHint = (int) (size.x * 0.3);
-		chartData.widthHint = size.x - leftCompositeData.widthHint;
 		leftData.widthHint = (int) (size.x * 0.3);
+		chartData.widthHint = size.x - leftData.widthHint;
 		rightData.widthHint = size.x - leftData.widthHint;
-		leftComposite.setLayoutData(leftCompositeData);
+		leftComposite.setLayoutData(leftData);
 		smellsChartComposite.setLayoutData(chartData);
 	}
 	
