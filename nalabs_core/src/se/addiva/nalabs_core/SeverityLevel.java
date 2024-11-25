@@ -5,5 +5,23 @@ public enum SeverityLevel {
 	Low,
 	Moderate,
 	High,
-	Critical
+	Critical;
+	
+	@Override
+	public String toString() {
+	    switch (this.ordinal()) {
+	        case 0:
+	            return "No Smell";
+	        case 1:
+	            return "Low";
+	        case 2:
+	            return "Moderate";
+	        case 3:
+	            return "High";
+	        case 4:
+	        	return "Critical";
+	        default:
+	            return null;
+	    }
+	}
 }

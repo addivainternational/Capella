@@ -347,7 +347,7 @@ public class StatisticsView {
         piePlot.setSectionPaint("High", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.High)));
         piePlot.setSectionPaint("Moderate", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.Moderate)));
         piePlot.setSectionPaint("Low", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.Low)));
-        piePlot.setSectionPaint("None", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.None)));
+        piePlot.setSectionPaint("No Smell", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.None)));
         
         CategoryPlot categoryPlot = smellsChart.getCategoryPlot();
         categoryPlot.setDataset(dataset);

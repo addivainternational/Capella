@@ -1,9 +1,7 @@
 package nalabs.helpers;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.jfree.chart.plot.PiePlot;
 
 import se.addiva.nalabs_core.SeverityLevel;
 
@@ -20,7 +18,7 @@ public class Util {
 			case Low:
 				return new Color(Display.getCurrent(), 249, 214, 120);
 			default:
-				return Display.getCurrent().getSystemColor(SWT.COLOR_WHITE); 
+				return new Color(Display.getCurrent(), 152, 218, 116); 
 		}
 	}
 	
