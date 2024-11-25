@@ -212,7 +212,7 @@ public class StatisticsView {
                 "#Count",
                 new DefaultCategoryDataset(), 
                 PlotOrientation.VERTICAL,
-                true, 
+                false, 
                 true,
                 false
         );
