@@ -64,7 +64,7 @@ public class RequirementsTableView {
         searchText.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, true, false));
 
 		// Create requirements table
-		tableViewer = new TableViewer(parent, SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(parent, SWT.FULL_SELECTION | SWT.BORDER);
 		Table table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
