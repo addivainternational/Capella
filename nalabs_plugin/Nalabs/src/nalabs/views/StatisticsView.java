@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -180,11 +181,23 @@ public class StatisticsView {
             fileDialog.setText("Save Report...");
             fileDialog.setFilterExtensions(new String[] { "*.pdf" });
             fileDialog.setFilterNames(new String[] { "Pdf Files (*.pdf)" });
+            fileDialog.setOverwrite(true);
             
             // Open the dialog and retrieve the selected file path
             String selectedFile = fileDialog.open();
             if (selectedFile != null) {
-                Util.generateReport(composite, selectedFile);
+            	File f = new File(selectedFile);
+            	if(f.exists() && !f.isDirectory()) { 
+            		MessageBox messageBox = new MessageBox(lowerLeftComposite.getShell(), SWT.OK | SWT.CANCEL);
+            		messageBox.setText("Overwrite?");
+            		messageBox.setMessage("The file'" + selectedFile + "' already exists. Overwrite?");
+            		int response = messageBox.open();
+                    if (response == SWT.OK) {
+                    	Util.generateReport(composite, selectedFile);
+                    } 
+            	} else {
+            		Util.generateReport(composite, selectedFile);
+            	}
             }
         });
 		
