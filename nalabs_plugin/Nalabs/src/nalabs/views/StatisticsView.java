@@ -181,13 +181,14 @@ public class StatisticsView {
             fileDialog.setText("Save Report...");
             fileDialog.setFilterExtensions(new String[] { "*.pdf" });
             fileDialog.setFilterNames(new String[] { "Pdf Files (*.pdf)" });
-            fileDialog.setOverwrite(true);
+//            fileDialog.setOverwrite(true);	// NOT WORKING???
             
             // Open the dialog and retrieve the selected file path
             String selectedFile = fileDialog.open();
             if (selectedFile != null) {
             	File f = new File(selectedFile);
             	if(f.exists() && !f.isDirectory()) { 
+            		// Manually adding message box since setOverwrite seems buggy
             		MessageBox messageBox = new MessageBox(lowerLeftComposite.getShell(), SWT.OK | SWT.CANCEL);
             		messageBox.setText("Overwrite?");
             		messageBox.setMessage("The file'" + selectedFile + "' already exists. Overwrite?");
