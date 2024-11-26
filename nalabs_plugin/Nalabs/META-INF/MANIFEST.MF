@@ -13,4 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.ecore.edit;bundle-version="2.14.0"
 Automatic-Module-Name: Nalabs
 Bundle-ClassPath: bin/, lib/, lib/jfreechart-1.5.5.jar, lib/se.addiva.nalabs_core.jar, 
+ lib/kernel-7.1.4.jar, lib/layout-7.1.4.jar, lib/io-7.1.4.jar, lib/pdfa-7.1.4.jar, lib/pdftest-7.1.4.jar, 
+ lib/kernel-7.1.4-javadoc.jar, lib/layout-7.1.4-javadoc.jar, lib/io-7.1.4-javadoc.jar, lib/pdfa-7.1.4-javadoc.jar, lib/pdftest-7.1.4-javadoc.jar, 
+ lib/kernel-7.1.4-sources.jar, lib/layout-7.1.4-sources.jar, lib/io-7.1.4-sources.jar, lib/pdfa-7.1.4-sources.jar, lib/pdftest-7.1.4-sources.jar, 
+ lib/log4j-core-2.24.2.jar, lib/slf4j-api-2.0.9.jar, lib/slf4j-log4j12-1.7.5.jar
  .

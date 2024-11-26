@@ -10,5 +10,23 @@
 	<classpathentry kind="lib" path="bin" sourcepath="bin"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.5.5.jar"/>
 	<classpathentry kind="lib" path="/nalabs_core/se.addiva.nalabs_core.jar"/>
+	<classpathentry kind="lib" path="lib/kernel-7.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/layout-7.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/io-7.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/io-7.1.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/io-7.1.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/kernel-7.1.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/kernel-7.1.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/layout-7.1.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/layout-7.1.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/pdfa-7.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/pdfa-7.1.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/pdfa-7.1.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/pdftest-7.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/pdftest-7.1.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/pdftest-7.1.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-core-2.24.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.7.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
