@@ -4,6 +4,7 @@ import se.addiva.nalabs_core.*;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -46,6 +47,8 @@ public class RequirementsTableView {
 	private SelectedRequirementView selectedRequirementView;
 	private ISelectionChangedListener selectionChangedListener = null;
 	private GridData tableViewerData;
+	
+	private HashMap<SeverityLevel, Color> severityLevelColors = new HashMap<SeverityLevel, Color>();
 
 	public RequirementsTableView(Composite parent, SelectedRequirementView requirementView) {
 		
@@ -82,8 +85,20 @@ public class RequirementsTableView {
             }
         });
 		
+		severityLevelColors.put(SeverityLevel.Critical, nalabs.helpers.Util.getSeverityColor(SeverityLevel.Critical));
+		severityLevelColors.put(SeverityLevel.High, nalabs.helpers.Util.getSeverityColor(SeverityLevel.High));
+		severityLevelColors.put(SeverityLevel.Moderate, nalabs.helpers.Util.getSeverityColor(SeverityLevel.Moderate));
+		severityLevelColors.put(SeverityLevel.Low, nalabs.helpers.Util.getSeverityColor(SeverityLevel.Low));
+		severityLevelColors.put(SeverityLevel.None, nalabs.helpers.Util.getSeverityColor(SeverityLevel.None));
+		
 		// Handle initial sizing
 		resizeListener(parent);
+	}
+	
+	public void dispose() {
+		severityLevelColors.forEach((s, c) -> {
+			c.dispose();
+		});
 	}
 	
 	private void resizeListener(Composite parent) {
@@ -217,7 +232,7 @@ public class RequirementsTableView {
 			public void update(ViewerCell cell) {
 				Requirement r = (Requirement) cell.getElement();
 				cell.setText(r.severityLevel.toString());
-				cell.setBackground(nalabs.helpers.Util.getSeverityColor(r.severityLevel));
+				cell.setBackground(severityLevelColors.get(r.severityLevel));
 				if (r.severityLevel == SeverityLevel.Critical) {
 					cell.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 				} else {

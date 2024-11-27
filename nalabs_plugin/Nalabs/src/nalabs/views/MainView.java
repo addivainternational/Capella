@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
@@ -24,6 +25,8 @@ public class MainView extends ViewPart {
 	private Composite statisticsComposite;
 	private Composite requirementViewerComposite;
 	
+	private Font labelTitleFont;
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		// Create layout and composites
@@ -40,7 +43,8 @@ public class MainView extends ViewPart {
 		labelGridData.verticalIndent = 10;
 		labelTitle.setLayoutData(labelGridData);
 		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD).setHeight(16);
-		labelTitle.setFont(boldDescriptor.createFont(labelTitle.getDisplay()));
+		labelTitleFont = boldDescriptor.createFont(labelTitle.getDisplay());
+		labelTitle.setFont(labelTitleFont);
 		labelTitle.setText("Requirement Smell Detector");
 		
 		upperComposite = new Composite(parent, SWT.FILL);
@@ -65,6 +69,23 @@ public class MainView extends ViewPart {
 		
 		// Create view for the table of requirements
 		requirementsTableView = new RequirementsTableView(tableViewerComposite, selectedRequirementView);
+	}
+	
+	@Override 
+	public void dispose() {
+		if (labelTitleFont != null) {
+    		labelTitleFont.dispose();
+    	}
+		if (statisticsView != null) {
+			statisticsView.dispose();
+		}
+		if (selectedRequirementView != null) {
+			selectedRequirementView.dispose();
+		}
+		if (requirementsTableView != null) {
+			requirementsTableView.dispose();
+		}
+		super.dispose();
 	}
 
 

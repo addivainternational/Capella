@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.graphics.Font;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -61,6 +62,11 @@ public class StatisticsView {
 	private JFreeChart requirementsChart = null;
 	private JFreeChart smellsChart = null;
 	
+	private Font nRequirementsTextLabelFont;
+	private Font nSmellsTextLabelFont;
+	private Font mostCommonSmellTypeLabelFont;
+	private Font mostCommonSmellLabelFont;
+	
 	public StatisticsView(Composite parent) {
 		composite = parent;
 		
@@ -101,7 +107,8 @@ public class StatisticsView {
 		nRequirementsTextLabel.setLayoutData(nRequirementsTextLabelData);
 		nRequirementsTextLabel.setText("Number of Requirements");
 		FontDescriptor boldnRequirementsTextLabelDescriptor = FontDescriptor.createFrom(nRequirementsTextLabel.getFont()).setStyle(SWT.BOLD);
-		nRequirementsTextLabel.setFont(boldnRequirementsTextLabelDescriptor.createFont(nRequirementsTextLabel.getDisplay()));
+		nRequirementsTextLabelFont = boldnRequirementsTextLabelDescriptor.createFont(nRequirementsTextLabel.getDisplay());
+		nRequirementsTextLabel.setFont(nRequirementsTextLabelFont);
 		nRequirementsCountLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData nRequirementsCountLabelData = new GridData();
 		nRequirementsCountLabelData.heightHint = 20;
@@ -115,7 +122,8 @@ public class StatisticsView {
 		nSmellsTextLabel.setLayoutData(nSmellsTextLabelData);
 		nSmellsTextLabel.setText("Number of Smells");
 		FontDescriptor boldnSmellsTextLabelDescriptor = FontDescriptor.createFrom(nSmellsTextLabel.getFont()).setStyle(SWT.BOLD);
-		nSmellsTextLabel.setFont(boldnSmellsTextLabelDescriptor.createFont(nSmellsTextLabel.getDisplay()));
+		nSmellsTextLabelFont = boldnSmellsTextLabelDescriptor.createFont(nSmellsTextLabel.getDisplay());
+		nSmellsTextLabel.setFont(nSmellsTextLabelFont);
 		nSmellsCountLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData nSmellsCountLabelData = new GridData();
 		nSmellsCountLabelData.heightHint = 20;
@@ -129,7 +137,8 @@ public class StatisticsView {
 		mostCommonSmellTypeLabel.setLayoutData(mostCommonSmellTypeLabelData);
 		mostCommonSmellTypeLabel.setText("Most Common Smell Type(s)");
 		FontDescriptor boldMostCommonSmellTypeLabelDescriptor = FontDescriptor.createFrom(mostCommonSmellTypeLabel.getFont()).setStyle(SWT.BOLD);
-		mostCommonSmellTypeLabel.setFont(boldMostCommonSmellTypeLabelDescriptor.createFont(mostCommonSmellTypeLabel.getDisplay()));
+		mostCommonSmellTypeLabelFont = boldMostCommonSmellTypeLabelDescriptor.createFont(mostCommonSmellTypeLabel.getDisplay());
+		mostCommonSmellTypeLabel.setFont(mostCommonSmellTypeLabelFont);
 		mostCommonSmellTypeTextLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData mostCommonSmellTypeTextLabelData = new GridData();
 		mostCommonSmellTypeTextLabelData.heightHint = 20;
@@ -145,7 +154,8 @@ public class StatisticsView {
 		mostCommonSmellLabelData.verticalIndent = 10;
 		mostCommonSmellLabel.setText("Most Common Smell(s)");
 		FontDescriptor boldMostCommonSmellLabelDescriptor = FontDescriptor.createFrom(mostCommonSmellLabel.getFont()).setStyle(SWT.BOLD);
-		mostCommonSmellLabel.setFont(boldMostCommonSmellLabelDescriptor.createFont(mostCommonSmellLabel.getDisplay()));
+		mostCommonSmellLabelFont = boldMostCommonSmellLabelDescriptor.createFont(mostCommonSmellLabel.getDisplay());
+		mostCommonSmellLabel.setFont(mostCommonSmellLabelFont);
 		mostCommonSmellTextLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData mostCommonSmellTextLabelData = new GridData();
 		mostCommonSmellTextLabelData.heightHint = 20;
@@ -181,7 +191,6 @@ public class StatisticsView {
             fileDialog.setText("Save Report...");
             fileDialog.setFilterExtensions(new String[] { "*.pdf" });
             fileDialog.setFilterNames(new String[] { "Pdf Files (*.pdf)" });
-//            fileDialog.setOverwrite(true);	// NOT WORKING???
             
             // Open the dialog and retrieve the selected file path
             String selectedFile = fileDialog.open();
@@ -233,8 +242,8 @@ public class StatisticsView {
 		requirementsChart.getPlot().setBackgroundPaint(null);
 		requirementsChart.getPlot().setOutlinePaint(new Color(0,0,0,0));
         ChartPanel requirementsChartPanel = new ChartPanel(requirementsChart); 
-        java.awt.Frame requirementsFrame = SWT_AWT.new_Frame(requirementsChartComposite);
-        requirementsFrame.add(requirementsChartPanel);
+        java.awt.Frame requirementsChartCompositeFrame = SWT_AWT.new_Frame(requirementsChartComposite);
+        requirementsChartCompositeFrame.add(requirementsChartPanel);
 		
         // Smells chart composite
 		smellsChartComposite = new Composite(rightComposite, SWT.EMBEDDED | SWT.FILL | SWT.LEFT);
@@ -273,6 +282,21 @@ public class StatisticsView {
         parent.addListener(SWT.Resize, arg0 -> {
 			resizeListener(parent);
 		});
+	}
+	
+	public void dispose() {
+		if (nRequirementsTextLabelFont != null) {
+			nRequirementsTextLabelFont.dispose();
+		}
+		if (nSmellsTextLabelFont != null) {
+			nSmellsTextLabelFont.dispose();
+		}
+		if (mostCommonSmellTypeLabelFont != null) {
+			mostCommonSmellTypeLabelFont.dispose();
+		}
+		if (mostCommonSmellLabelFont != null) {
+			mostCommonSmellLabelFont.dispose();
+		}
 	}
 	
 	private void resizeListener(Composite parent) {
@@ -383,11 +407,11 @@ public class StatisticsView {
         @SuppressWarnings("unchecked")
         PiePlot<String> piePlot = (PiePlot<String>)requirementsChart.getPlot();
         piePlot.setDataset(requirementDataset);
-        piePlot.setSectionPaint("Critical", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.Critical)));
-        piePlot.setSectionPaint("High", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.High)));
-        piePlot.setSectionPaint("Moderate", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.Moderate)));
-        piePlot.setSectionPaint("Low", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.Low)));
-        piePlot.setSectionPaint("No Smell", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.None)));
+        setAwtColorFromSeverity(piePlot, SeverityLevel.Critical);
+        setAwtColorFromSeverity(piePlot, SeverityLevel.High);
+        setAwtColorFromSeverity(piePlot, SeverityLevel.Moderate);
+        setAwtColorFromSeverity(piePlot, SeverityLevel.Low);
+        setAwtColorFromSeverity(piePlot, SeverityLevel.None);
         
         CategoryPlot categoryPlot = smellsChart.getCategoryPlot();
         categoryPlot.setDataset(dataset);
@@ -396,10 +420,17 @@ public class StatisticsView {
         BarRenderer r = (BarRenderer)smellsChart.getCategoryPlot().getRenderer();
         org.eclipse.swt.graphics.Color smellColor = nalabs.helpers.Util.getSmellColor();
         Color awtColor = Util.convertToAwtColor(smellColor);
+        smellColor.dispose();
         r.setSeriesPaint(0, awtColor);
         
         NumberAxis rangeAxis = (NumberAxis) ((CategoryPlot)smellsChart.getPlot()).getRangeAxis();
         rangeAxis.setRange(0, axisMax);
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	}
+	
+	private void setAwtColorFromSeverity(PiePlot<String> piePlot, SeverityLevel severityLevel) {
+        org.eclipse.swt.graphics.Color color = Util.getSeverityColor(severityLevel);
+        piePlot.setSectionPaint(severityLevel.toString(), Util.convertToAwtColor(color));
+        color.dispose();
 	}
 }

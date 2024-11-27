@@ -3,6 +3,7 @@ package nalabs.views;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -15,6 +16,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -44,6 +46,14 @@ public class SelectedRequirementView {
 	private Label wordCountValue;
 	private Label nSmellsValue;
 	private TableViewer smellsTable;
+	
+	private Font labelTitleFont;
+	private Font ariScoreTitleFont;
+	private Font wordCountTitleFont;
+	private Font nSmellsTitleFont;
+	
+	private HashMap<SeverityLevel, Color> severityLevelColors = new HashMap<SeverityLevel, Color>();
+	private Color smellColor;
 
 	public SelectedRequirementView(Composite parent) {
 
@@ -76,7 +86,8 @@ public class SelectedRequirementView {
 		labelGridData.heightHint = 30;
 		labelTitle.setLayoutData(labelGridData);
 		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD);
-		labelTitle.setFont(boldDescriptor.createFont(labelTitle.getDisplay()));
+		labelTitleFont = boldDescriptor.createFont(labelTitle.getDisplay());
+		labelTitle.setFont(labelTitleFont);
 		labelTitle.setText("Selected Requirement");
 		requirementText = new StyledText(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData textGridData = new GridData();
@@ -91,7 +102,8 @@ public class SelectedRequirementView {
 		ariScoreTitleData.heightHint = 30;
 		ariScoreTitle.setLayoutData(ariScoreTitleData);
 		FontDescriptor boldAriScoreTitleDescriptor = FontDescriptor.createFrom(ariScoreTitle.getFont()).setStyle(SWT.BOLD);
-		ariScoreTitle.setFont(boldAriScoreTitleDescriptor.createFont(ariScoreTitle.getDisplay()));
+		ariScoreTitleFont = boldAriScoreTitleDescriptor.createFont(ariScoreTitle.getDisplay());
+		ariScoreTitle.setFont(ariScoreTitleFont);
 		ariScoreTitle.setText("ARI Score");
 		ariScoreValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData ariScoreValueGridData = new GridData();
@@ -106,7 +118,8 @@ public class SelectedRequirementView {
 		wordCountTitleData.heightHint = 30;
 		wordCountTitle.setLayoutData(wordCountTitleData);
 		FontDescriptor boldWordCountTitleDescriptor = FontDescriptor.createFrom(wordCountTitle.getFont()).setStyle(SWT.BOLD);
-		wordCountTitle.setFont(boldWordCountTitleDescriptor.createFont(wordCountTitle.getDisplay()));
+		wordCountTitleFont = boldWordCountTitleDescriptor.createFont(wordCountTitle.getDisplay());
+		wordCountTitle.setFont(wordCountTitleFont);
 		wordCountTitle.setText("Word Count");
 		wordCountValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData wordCountValueGridData = new GridData();
@@ -121,7 +134,8 @@ public class SelectedRequirementView {
 		nSmellsTitleData.heightHint = 30;
 		nSmellsTitle.setLayoutData(nSmellsTitleData);
 		FontDescriptor boldnSmellsTitleDescriptor = FontDescriptor.createFrom(nSmellsTitle.getFont()).setStyle(SWT.BOLD);
-		nSmellsTitle.setFont(boldnSmellsTitleDescriptor.createFont(nSmellsTitle.getDisplay()));
+		nSmellsTitleFont = boldnSmellsTitleDescriptor.createFont(nSmellsTitle.getDisplay());
+		nSmellsTitle.setFont(nSmellsTitleFont);
 		nSmellsTitle.setText("Number of Smells");
 		nSmellsValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData nSmellsValueGridData = new GridData();
@@ -144,6 +158,35 @@ public class SelectedRequirementView {
 		parent.setLayoutData(smellsTableData);
 		
 		addCustomTooltipSupport(smellsTable);
+		
+		severityLevelColors.put(SeverityLevel.Critical, nalabs.helpers.Util.getSeverityColor(SeverityLevel.Critical));
+		severityLevelColors.put(SeverityLevel.High, nalabs.helpers.Util.getSeverityColor(SeverityLevel.High));
+		severityLevelColors.put(SeverityLevel.Moderate, nalabs.helpers.Util.getSeverityColor(SeverityLevel.Moderate));
+		severityLevelColors.put(SeverityLevel.Low, nalabs.helpers.Util.getSeverityColor(SeverityLevel.Low));
+		severityLevelColors.put(SeverityLevel.None, nalabs.helpers.Util.getSeverityColor(SeverityLevel.None));
+		
+		smellColor = Util.getSmellColor();
+	}
+	
+	public void dispose() {
+		if (labelTitleFont != null) {
+			labelTitleFont.dispose();
+		}
+		if (ariScoreTitleFont != null) {
+			ariScoreTitleFont.dispose();
+		}
+		if (wordCountTitleFont != null) {
+			wordCountTitleFont.dispose();
+		}
+		if (nSmellsTitleFont != null) {
+			nSmellsTitleFont.dispose();
+		}
+		if (smellColor != null) {
+			smellColor.dispose();
+		}
+		severityLevelColors.forEach((s, c) -> {
+			c.dispose();
+		});
 	}
 
 	public Composite getComposite() {
@@ -190,7 +233,7 @@ public class SelectedRequirementView {
 	}
 	
 	private void setSmellMatchHighlightState(SmellMatch smellMatch, boolean on) {
-		Color color = on ? Util.getSmellColor() : Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
+		Color color = on ? smellColor : Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 		setSmellHighlightColorInRequirementText(smellMatch, color);
 	}
 	
@@ -262,7 +305,7 @@ public class SelectedRequirementView {
 			public void update(ViewerCell cell) {
 				SmellEntry e = (SmellEntry) cell.getElement();
 				cell.setText(e.severityLevel.toString());
-				cell.setBackground(nalabs.helpers.Util.getSeverityColor(e.severityLevel));
+				cell.setBackground(severityLevelColors.get(e.severityLevel));
 				if (e.severityLevel == SeverityLevel.Critical) {
 					cell.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 				} else {
