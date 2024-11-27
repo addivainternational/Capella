@@ -8,6 +8,8 @@ import java.util.Collection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -40,6 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.awt.Color;
 import java.awt.SystemColor;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -160,6 +163,43 @@ public class StatisticsView {
         button.addListener(SWT.Selection, e -> {
         	SmellTypeInfoView smellTypeInfo = new SmellTypeInfoView(lowerLeftComposite.getShell());
     		if (smellTypeInfo.open() == SmellTypeInfoView.OK) {}
+        });
+        
+        // Generate report
+        Button reportButton = new Button(lowerLeftComposite, SWT.PUSH);
+        reportButton.setText("Generate Report");
+        FormData reportButtonData = new FormData();
+        reportButtonData.left = new FormAttachment(0, 100);
+        reportButtonData.bottom = new FormAttachment(100, 0);	// position relative to bottom left
+        reportButton.setLayoutData(reportButtonData);
+        reportButton.addListener(SWT.Selection, e -> {
+        	
+        	// Create file dialog
+        	FileDialog fileDialog = new FileDialog(lowerLeftComposite.getShell(), SWT.OPEN);
+        	String userHome = System.getProperty("user.home");
+            fileDialog.setFilterPath(userHome);
+            fileDialog.setText("Save Report...");
+            fileDialog.setFilterExtensions(new String[] { "*.pdf" });
+            fileDialog.setFilterNames(new String[] { "Pdf Files (*.pdf)" });
+//            fileDialog.setOverwrite(true);	// NOT WORKING???
+            
+            // Open the dialog and retrieve the selected file path
+            String selectedFile = fileDialog.open();
+            if (selectedFile != null) {
+            	File f = new File(selectedFile);
+            	if(f.exists() && !f.isDirectory()) { 
+            		// Manually adding message box since setOverwrite seems buggy
+            		MessageBox messageBox = new MessageBox(lowerLeftComposite.getShell(), SWT.OK | SWT.CANCEL);
+            		messageBox.setText("Overwrite?");
+            		messageBox.setMessage("The file'" + selectedFile + "' already exists. Overwrite?");
+            		int response = messageBox.open();
+                    if (response == SWT.OK) {
+                    	Util.generateReport(composite, selectedFile);
+                    } 
+            	} else {
+            		Util.generateReport(composite, selectedFile);
+            	}
+            }
         });
 		
 		// Requirements chart composite
@@ -347,7 +387,7 @@ public class StatisticsView {
         piePlot.setSectionPaint("High", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.High)));
         piePlot.setSectionPaint("Moderate", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.Moderate)));
         piePlot.setSectionPaint("Low", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.Low)));
-        piePlot.setSectionPaint("None", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.None)));
+        piePlot.setSectionPaint("No Smell", Util.convertToAwtColor(Util.getSeverityColor(SeverityLevel.None)));
         
         CategoryPlot categoryPlot = smellsChart.getCategoryPlot();
         categoryPlot.setDataset(dataset);
