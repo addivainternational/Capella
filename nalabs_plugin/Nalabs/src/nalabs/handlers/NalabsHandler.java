@@ -29,6 +29,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NalabsHandler extends AbstractHandler {
+	
+	private MainView reqView;
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -61,13 +63,22 @@ public class NalabsHandler extends AbstractHandler {
 		
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         try {
-        	MainView reqView = (MainView) page.showView("nqdin29hbfwpifgpnpw09fgew30"); // Use the ID of your view
+        	reqView = (MainView) page.showView("nqdin29hbfwpifgpnpw09fgew30"); // Use the ID of your view
             reqView.setRequirementData(nalabRequirements);
         } catch (PartInitException e) {
             e.printStackTrace();
         }
 		
 		return null;
+	}
+	
+	@Override 
+	public void dispose() {
+		
+		if (reqView != null) {
+			reqView.dispose();
+		}
+		super.dispose();
 	}
 	
 	private boolean hasValidRequirementText(Requirement requirement, boolean useDefaultTextField) {

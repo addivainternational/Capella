@@ -3,6 +3,7 @@ package nalabs.views;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -15,6 +16,7 @@ public class StartupSelectionView extends Dialog {
 
 	private boolean useDefaultTextField;
 	private Button textButton;
+	private Font labelTitleFont;
 	
     public StartupSelectionView(Shell parentShell) {
         super(parentShell);
@@ -33,7 +35,8 @@ public class StartupSelectionView extends Dialog {
 		labelGridData.heightHint = 40;
 		labelTitle.setLayoutData(labelGridData);
 		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD).setHeight(16);
-		labelTitle.setFont(boldDescriptor.createFont(labelTitle.getDisplay()));
+		labelTitleFont = boldDescriptor.createFont(labelTitle.getDisplay());
+		labelTitle.setFont(labelTitleFont);
 		labelTitle.setText("Welcome to the Requirement Smell Detector");
 		
 		Label infoLabel = new Label(container, SWT.NONE);
@@ -62,6 +65,9 @@ public class StartupSelectionView extends Dialog {
     @Override 
     public boolean close() {
     	useDefaultTextField = textButton.getSelection();
+    	if (labelTitleFont != null) {
+    		labelTitleFont.dispose();
+    	}
     	return super.close();
     }
     
