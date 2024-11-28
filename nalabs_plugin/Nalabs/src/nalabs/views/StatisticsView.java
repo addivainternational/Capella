@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -54,6 +56,9 @@ public class StatisticsView {
 	private Composite rightComposite;
 	private Composite requirementsChartComposite;
 	private Composite smellsChartComposite;
+	
+	private Label projectNameLabel;
+	private Label nTotalRequirementsCountLabel;
 	private Label nRequirementsCountLabel;
 	private Label nSmellsCountLabel;
 	private Label mostCommonSmellTypeTextLabel;
@@ -62,10 +67,14 @@ public class StatisticsView {
 	private JFreeChart requirementsChart = null;
 	private JFreeChart smellsChart = null;
 	
+	private Font projectNameLabelFont;
+	private Font nTotalRequirementsTextLabelFont;
 	private Font nRequirementsTextLabelFont;
 	private Font nSmellsTextLabelFont;
 	private Font mostCommonSmellTypeLabelFont;
 	private Font mostCommonSmellLabelFont;
+	
+	private ProjectInfo currentProjectInfo;
 	
 	public StatisticsView(Composite parent) {
 		composite = parent;
@@ -101,11 +110,41 @@ public class StatisticsView {
 		rightComposite.setLayout(rightLayout);
 		rightComposite.setLayoutData(rightCompositeData);
 		
-		// Number of requirements
+		// Project name
+		Label projectNameTitleLabel = new Label(upperLeftComposite, SWT.NONE);
+		GridData projectNameTitleLabelData = new GridData();
+		projectNameTitleLabel.setLayoutData(projectNameTitleLabelData);
+		projectNameTitleLabel.setText("Project Name");
+		FontDescriptor projectNameTitleLabelDescriptor = FontDescriptor.createFrom(projectNameTitleLabel.getFont()).setStyle(SWT.BOLD);
+		projectNameLabelFont = projectNameTitleLabelDescriptor.createFont(projectNameTitleLabel.getDisplay());
+		projectNameTitleLabel.setFont(projectNameLabelFont);
+		projectNameLabel = new Label(upperLeftComposite, SWT.NONE);
+		GridData projectNameLabelData = new GridData();
+		projectNameLabelData.heightHint = 20;
+		projectNameLabelData.widthHint = 250;
+		projectNameLabel.setLayoutData(projectNameLabelData);
+		
+		// Total number of requirements in project
+		Label nTotalRequirementsTextLabel = new Label(upperLeftComposite, SWT.NONE);
+		GridData nTotalRequirementsTextLabelData = new GridData();
+		nTotalRequirementsTextLabelData.verticalIndent = 10;
+		nTotalRequirementsTextLabel.setLayoutData(nTotalRequirementsTextLabelData);
+		nTotalRequirementsTextLabel.setText("Total Requirements in Project");
+		FontDescriptor nTotalRequirementsTextLabelDescriptor = FontDescriptor.createFrom(nTotalRequirementsTextLabel.getFont()).setStyle(SWT.BOLD);
+		nTotalRequirementsTextLabelFont = nTotalRequirementsTextLabelDescriptor.createFont(nTotalRequirementsTextLabel.getDisplay());
+		nTotalRequirementsTextLabel.setFont(nTotalRequirementsTextLabelFont);
+		nTotalRequirementsCountLabel = new Label(upperLeftComposite, SWT.NONE);
+		GridData nTotalRequirementsCountLabelData = new GridData();
+		nTotalRequirementsCountLabelData.heightHint = 20;
+		nTotalRequirementsCountLabelData.widthHint = 40;
+		nTotalRequirementsCountLabel.setLayoutData(nTotalRequirementsCountLabelData);
+		
+		// Number of selected requirements
 		Label nRequirementsTextLabel = new Label(upperLeftComposite, SWT.NONE);
 		GridData nRequirementsTextLabelData = new GridData();
+		nRequirementsTextLabelData.verticalIndent = 10;
 		nRequirementsTextLabel.setLayoutData(nRequirementsTextLabelData);
-		nRequirementsTextLabel.setText("Number of Requirements");
+		nRequirementsTextLabel.setText("Number of Selected Requirements");
 		FontDescriptor boldnRequirementsTextLabelDescriptor = FontDescriptor.createFrom(nRequirementsTextLabel.getFont()).setStyle(SWT.BOLD);
 		nRequirementsTextLabelFont = boldnRequirementsTextLabelDescriptor.createFont(nRequirementsTextLabel.getDisplay());
 		nRequirementsTextLabel.setFont(nRequirementsTextLabelFont);
@@ -312,6 +351,14 @@ public class StatisticsView {
 	}
 	
 	public void setRequirementData(Collection<Requirement> requirements) {
+		
+		currentProjectInfo = Util.getCurrentProjectInfo();
+		Resource capellaModel = Util.loadCapellaModel(currentProjectInfo);
+		Collection<org.polarsys.kitalpha.vp.requirements.Requirements.Requirement> allRequirements = 
+				Util.getKitalphaRequirements(capellaModel);
+		
+		projectNameLabel.setText(currentProjectInfo.project.getName());
+		nTotalRequirementsCountLabel.setText(Integer.toString(allRequirements.size()));
 
 		int nRequirements = requirements.size();
 		

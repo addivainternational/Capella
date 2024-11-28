@@ -88,7 +88,7 @@ public class SelectedRequirementView {
 		FontDescriptor boldDescriptor = FontDescriptor.createFrom(labelTitle.getFont()).setStyle(SWT.BOLD);
 		labelTitleFont = boldDescriptor.createFont(labelTitle.getDisplay());
 		labelTitle.setFont(labelTitleFont);
-		labelTitle.setText("Selected Requirement");
+		labelTitle.setText("Requirement Text");
 		requirementText = new StyledText(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData textGridData = new GridData();
 		textGridData.widthHint = 500;

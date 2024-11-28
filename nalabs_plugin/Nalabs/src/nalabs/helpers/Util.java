@@ -1,23 +1,125 @@
 package nalabs.helpers;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
 
 import se.addiva.nalabs_core.SeverityLevel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
+import org.polarsys.kitalpha.vp.requirements.Requirements.Module;
+import org.polarsys.kitalpha.vp.requirements.Requirements.Requirement;
+import org.polarsys.capella.core.data.capellamodeller.Project;
+
+import java.util.Collection;
+import java.util.ArrayList;
 
 public class Util {
+	
+	public static ProjectInfo getCurrentProjectInfo() {
+		
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchPage activePage = window.getActivePage();
+		IEditorPart activeEditor = activePage.getActiveEditor();
+
+		if (activeEditor != null) {
+		   IEditorInput input = activeEditor.getEditorInput();
+		   IProject project = input.getAdapter(IProject.class);
+		   if (project == null) {
+		      IResource r = input.getAdapter(IResource.class);
+		      if (r != null) {
+		         return new ProjectInfo() {
+		        	 {
+		        		 resource = r;
+		        		 project = r.getProject();
+		        	 }
+		         };
+		      }
+		   }
+		}
+		
+		return null;
+	}
+	
+	public static Resource loadCapellaModel(ProjectInfo projectInfo) {
+	    // Assuming the model file is located at the default location in the project
+	    String modelFilePath = projectInfo.project.getLocation().toString() + "/" + projectInfo.resource.getProjectRelativePath();
+	    URI uri = URI.createFileURI(modelFilePath);
+
+	    ResourceSet resourceSet = new ResourceSetImpl();
+	    Resource resource = resourceSet.getResource(uri, true);
+
+	    return resource;
+	}
+	
+	public static Collection<Requirement> getKitalphaRequirements(Resource resource) {
+		Collection<Requirement> requirements = new ArrayList<Requirement>();
+	    if (resource != null) {
+	        // Iterate over all objects in the resource
+	        TreeIterator<EObject> allContents = resource.getAllContents();
+	        while (allContents.hasNext()) {
+	            EObject obj = allContents.next();
+	            
+	            EObject eObj = CapellaAdapterHelper.resolveSemanticObject(obj);
+
+	            // Check if the object is a Kitalpha Requirement
+	            if (eObj instanceof Requirement) {
+	                Requirement requirement = (Requirement) eObj;
+	                requirements.add(requirement);
+	            } else if(eObj instanceof Module) {
+		        	EList<Requirement> ownedRequirements = ((Module)eObj).getOwnedRequirements();
+		        	requirements.addAll(ownedRequirements);
+		        }
+	        }
+	    }
+	    return requirements;
+	}
+	
+	public static Collection<Requirement> getProjectRequirements(Project project) {
+		Collection<Requirement> requirements = new ArrayList<Requirement>();
+		// Traverse the model to find Requirement packages and individual requirements
+		TreeIterator<EObject> iterator = project.eAllContents();
+		while(iterator.hasNext()) {
+			Object object = iterator.next();
+			if (object instanceof Requirement) {
+				requirements.add((Requirement)object);
+	        }
+	        else if(object instanceof Module) {
+	        	EList<Requirement> ownedRequirements = ((Module)object).getOwnedRequirements();
+	        	requirements.addAll(ownedRequirements);
+	        }
+		}
+		return requirements;
+	}
 	
 	public static void generateReport(Composite composite, String outputPath) {
         Display display = Display.getDefault();
@@ -40,13 +142,18 @@ public class Util {
             com.itextpdf.io.image.ImageData imageData = ImageDataFactory.create(imageByteArray);
             com.itextpdf.layout.element.Image itextImage = new com.itextpdf.layout.element.Image(imageData);
             
+            // Get current date and time 
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = currentDateTime.format(formatter);
+            
             // Create pdf document, and insert itext image into the pdf 
             writer = new PdfWriter(outputPath);
             pdf = new PdfDocument(writer);
             document = new Document(pdf);
+            document.add(new Paragraph(formattedDateTime).setTextAlignment(TextAlignment.RIGHT).setFontSize(10).setItalic());
+            itextImage.setAutoScale(true);
             document.add(itextImage);
-            
-            pdf.getFirstPage().setModified();
 
             // Dispose of the image
             swtImage.dispose();
