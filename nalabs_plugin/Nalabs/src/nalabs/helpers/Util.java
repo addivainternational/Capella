@@ -9,7 +9,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Image;
@@ -21,6 +21,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -188,6 +189,11 @@ public class Util {
         return baos.toByteArray();
     }
 	
+	public static Image getAriCategoryImage(String fileName) {
+		ImageDescriptor imgDesc = AbstractUIPlugin.imageDescriptorFromPlugin("Nalabs", "icons/" + fileName);
+		return imgDesc.createImage();
+	}
+
 	public static Color getSeverityColor(SeverityLevel severityLevel) {
 		switch (severityLevel) {
 			case Critical:

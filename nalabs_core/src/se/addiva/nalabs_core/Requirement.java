@@ -11,7 +11,7 @@ public class Requirement {
 
     public String id;
     public String text;
-    public double ariScore;
+    public AriScore ariScore;
     public WordCountResult wordCount;
     public int totalSmells = 0;
     public SeverityLevel severityLevel = SeverityLevel.None;

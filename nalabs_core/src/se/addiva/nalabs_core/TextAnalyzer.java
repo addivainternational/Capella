@@ -1,6 +1,8 @@
 package se.addiva.nalabs_core;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class TextAnalyzer
 {
@@ -36,30 +38,25 @@ public class TextAnalyzer
         return analysis;
     }
 
-    private static double CalculateARIScore(String text)
-    {
+    private static AriScore CalculateARIScore(String text) {
         String[] sentences = (String[])Arrays.stream(text.trim().split("\\."))
         		.filter(n -> !n.isEmpty() && n != " " && n.length() > 1)
         		.toArray(String[]::new);     
-
-        String[] words = (String[])Arrays.stream(text.trim().split(" |\n"))
-            .filter(n -> !n.isEmpty() && n != " ")
-            .toArray(String[]::new);
-
-        double sum = 0;
-
-        for (String s : sentences)
-        {
-            sum += s.split(" ").length;
+        
+        double nWords = 0;
+        double nCharacters = 0;
+        for (String s : sentences) {
+        	List<String> sentenceWords = Arrays.asList(s.split(" "));
+        	nWords += sentenceWords.size();
+        	for (String word : sentenceWords) {
+        		nCharacters += word.length();
+        	}
         }
 
-        double wordSum = 0;
-
-        for (String s : words)
-        {
-            wordSum += s.length();
-        }
-
-        return sum / sentences.length + 9 * (wordSum / words.length);
+        double nSentences = sentences.length;
+        double pTech = -1.5;
+        
+        // Modified ARI formula
+        return new AriScore(3.5 * (nCharacters / nWords) + 0.4 * (nWords / nSentences) - 21.43 + pTech);
     }
 }

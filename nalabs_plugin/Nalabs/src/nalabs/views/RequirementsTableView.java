@@ -192,13 +192,13 @@ public class RequirementsTableView {
 		});
 
 		// AriScore
-		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2], (Requirement req) -> req.ariScore, 
+		TableViewerColumn colAriScore = createTableViewerColumn(titles[2], bounds[2], (Requirement req) -> req.ariScore.getValue(), 
 				Comparator.comparingDouble(reqAriScore -> reqAriScore));
 		colAriScore.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public void update(ViewerCell cell) {
 				Requirement r = (Requirement) cell.getElement();
-				cell.setText(String.format("%.2f", r.ariScore));
+				cell.setText(String.format("%.2f", r.ariScore.getValue()));
 			}
 		});
 		

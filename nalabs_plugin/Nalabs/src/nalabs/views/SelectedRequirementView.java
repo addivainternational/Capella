@@ -17,7 +17,9 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Display;
@@ -25,6 +27,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
 
 import nalabs.helpers.Util;
 
@@ -43,19 +48,30 @@ public class SelectedRequirementView {
 	private Composite composite;
 	private StyledText requirementText;
 	private Label ariScoreValue;
+	private Label ariScoreCategory;
 	private Label wordCountValue;
 	private Label nSmellsValue;
 	private TableViewer smellsTable;
+	
+	private Label ariScoreImageLabel;
+	org.eclipse.swt.widgets.ToolTip ariScoreCategoryToolTip;
 	
 	private Font labelTitleFont;
 	private Font ariScoreTitleFont;
 	private Font wordCountTitleFont;
 	private Font nSmellsTitleFont;
 	
+	private HashMap<AriCategory, Image> ariCategoryImages = new HashMap<AriCategory, Image>();
 	private HashMap<SeverityLevel, Color> severityLevelColors = new HashMap<SeverityLevel, Color>();
+	private HashMap<AriCategory, AriCategoryInfo> categoryInfoMap;
 	private Color smellColor;
 
 	public SelectedRequirementView(Composite parent) {
+		
+		ariCategoryImages.put(AriCategory.Basic, Util.getAriCategoryImage("star_1.png"));
+		ariCategoryImages.put(AriCategory.General, Util.getAriCategoryImage("star_2.png"));
+		ariCategoryImages.put(AriCategory.Technical, Util.getAriCategoryImage("star_3.png"));
+		ariCategoryImages.put(AriCategory.Advanced, Util.getAriCategoryImage("star_4.png"));
 
 		composite = parent;
 		composite.setLayout(new GridLayout(2, false));
@@ -96,24 +112,66 @@ public class SelectedRequirementView {
 		requirementText.setLayoutData(textGridData);
 		
 		// ARI Score
+		Rectangle categoryImageRectangle = ariCategoryImages.get(AriCategory.Basic).getBounds();	// Get height needed by actual image component 
+		int categoryImageHeight = categoryImageRectangle.height;
 		Label ariScoreTitle = new Label(basicInfoComposite, SWT.BOTTOM);
 		GridData ariScoreTitleData = new GridData();
 		ariScoreTitleData.widthHint = 220;
-		ariScoreTitleData.heightHint = 30;
+		ariScoreTitleData.heightHint = categoryImageHeight;
 		ariScoreTitle.setLayoutData(ariScoreTitleData);
 		FontDescriptor boldAriScoreTitleDescriptor = FontDescriptor.createFrom(ariScoreTitle.getFont()).setStyle(SWT.BOLD);
 		ariScoreTitleFont = boldAriScoreTitleDescriptor.createFont(ariScoreTitle.getDisplay());
 		ariScoreTitle.setFont(ariScoreTitleFont);
 		ariScoreTitle.setText("ARI Score");
-		ariScoreValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
+		Composite ariScoreComposite = new Composite(basicInfoComposite, SWT.FILL);
+		GridData ariScoreCompositeData = new GridData();
+		ariScoreCompositeData.horizontalIndent = 0;
+		GridLayout ariScoreCompositeLayout = new GridLayout(3, false);
+		ariScoreCompositeLayout.marginLeft = 0;
+		ariScoreComposite.setLayout(ariScoreCompositeLayout);
+		ariScoreComposite.setLayoutData(ariScoreCompositeData);
+		ariScoreValue = new Label(ariScoreComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData ariScoreValueGridData = new GridData();
-		ariScoreValueGridData.widthHint = 100;
-		ariScoreValueGridData.heightHint = 30;
+		ariScoreValueGridData.widthHint = 60;
+		ariScoreValueGridData.heightHint = categoryImageHeight;
 		ariScoreValue.setLayoutData(ariScoreValueGridData);
+		ariScoreImageLabel = new Label(ariScoreComposite, SWT.NONE);
+		GridData ariScoreImageLabelData = new GridData();
+		ariScoreImageLabelData.widthHint = 100;
+		ariScoreImageLabelData.heightHint = categoryImageHeight;
+		ariScoreImageLabelData.horizontalAlignment = SWT.LEFT;
+		ariScoreImageLabelData.verticalAlignment = SWT.CENTER;
+		ariScoreImageLabel.setLayoutData(ariScoreImageLabelData);
+		ariScoreCategory = new Label(ariScoreComposite, SWT.LEFT | SWT.BOTTOM);
+		GridData ariScoreCategoryData = new GridData();
+		ariScoreCategoryData.widthHint = 200;
+		ariScoreCategoryData.heightHint = categoryImageHeight;
+		ariScoreCategory.setLayoutData(ariScoreCategoryData);
+		ariScoreCategoryToolTip = new org.eclipse.swt.widgets.ToolTip(ariScoreComposite.getShell(), SWT.NONE);
+		ariScoreCategoryToolTip.setAutoHide(false);
+
+        // Add hover listener to show ToolTip
+		ariScoreCategory.addMouseTrackListener(new MouseTrackAdapter() {
+            @Override
+            public void mouseEnter(MouseEvent e) {
+            	if (!ariScoreCategoryToolTip.getText().isEmpty()) {
+	            	ariScoreCategoryToolTip.setVisible(true);
+	            	ariScoreCategoryToolTip.setLocation(Display.getCurrent().map(ariScoreCategory, null, e.x + 20, e.y + 20));
+            	}
+            }
+
+            @Override
+            public void mouseExit(MouseEvent e) {
+            	if (!ariScoreCategoryToolTip.getText().isEmpty()) {
+            		ariScoreCategoryToolTip.setVisible(false);
+            	}
+            }
+        });
 		
 		// Word Count
 		Label wordCountTitle = new Label(basicInfoComposite, SWT.BOTTOM);
 		GridData wordCountTitleData = new GridData();
+		wordCountTitleData.verticalIndent = 15;
 		wordCountTitleData.widthHint = 220;
 		wordCountTitleData.heightHint = 30;
 		wordCountTitle.setLayoutData(wordCountTitleData);
@@ -123,6 +181,7 @@ public class SelectedRequirementView {
 		wordCountTitle.setText("Word Count");
 		wordCountValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData wordCountValueGridData = new GridData();
+		wordCountValueGridData.verticalIndent = 15;
 		wordCountValueGridData.widthHint = 100;
 		wordCountValueGridData.heightHint = 30;
 		wordCountValue.setLayoutData(wordCountValueGridData);
@@ -130,6 +189,7 @@ public class SelectedRequirementView {
 		// Number of Smells
 		Label nSmellsTitle = new Label(basicInfoComposite, SWT.BOTTOM);
 		GridData nSmellsTitleData = new GridData();
+		nSmellsTitleData.verticalIndent = 10;
 		nSmellsTitleData.widthHint = 220;
 		nSmellsTitleData.heightHint = 30;
 		nSmellsTitle.setLayoutData(nSmellsTitleData);
@@ -139,6 +199,7 @@ public class SelectedRequirementView {
 		nSmellsTitle.setText("Number of Smells");
 		nSmellsValue = new Label(basicInfoComposite, SWT.LEFT | SWT.BOTTOM);
 		GridData nSmellsValueGridData = new GridData();
+		nSmellsValueGridData.verticalIndent = 10;
 		nSmellsValueGridData.widthHint = 100;
 		nSmellsValueGridData.heightHint = 30;
 		nSmellsValue.setLayoutData(nSmellsValueGridData);
@@ -166,6 +227,8 @@ public class SelectedRequirementView {
 		severityLevelColors.put(SeverityLevel.None, nalabs.helpers.Util.getSeverityColor(SeverityLevel.None));
 		
 		smellColor = Util.getSmellColor();
+		
+		categoryInfoMap = AriScore.getCategoryInfoMap();
 	}
 	
 	public void dispose() {
@@ -184,6 +247,9 @@ public class SelectedRequirementView {
 		if (smellColor != null) {
 			smellColor.dispose();
 		}
+		ariCategoryImages.forEach((c, i) -> {
+			i.dispose();
+		});
 		severityLevelColors.forEach((s, c) -> {
 			c.dispose();
 		});
@@ -199,7 +265,13 @@ public class SelectedRequirementView {
 			return;
 		}
 		requirementText.setText(this.requirement.text);
-		ariScoreValue.setText(String.format("%.2f", requirement.ariScore));
+		AriCategory ariCategory = requirement.ariScore.getCategory();
+		double ariValue = requirement.ariScore.getValue();
+		Image ariScoreImage = ariCategoryImages.get(ariCategory);
+		ariScoreImageLabel.setImage(ariScoreImage);
+		ariScoreValue.setText(String.format("%.2f", ariValue));
+		ariScoreCategory.setText("(" + ariCategory.toString() + ")");
+		ariScoreCategoryToolTip.setText(categoryInfoMap.get(ariCategory).getDescription());
 		wordCountValue.setText(Integer.toString(this.requirement.wordCount.totalCount));
 		List<SmellEntry> entries = new ArrayList<SmellEntry>();
 		for (AnalyzeResult result : this.requirement.getSmellResults()) {

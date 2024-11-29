@@ -3,7 +3,7 @@ package se.addiva.nalabs_core;
 import java.util.function.Consumer;
 
 public class TextAnalysis {
-    public double ARI;
+    public AriScore ARI;
     
     public WordCountResult wordCount;
 
