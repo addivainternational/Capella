@@ -2,8 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/nalabs_plugin/UpdateSite/features
-/nalabs_plugin/UpdateSite/plugins
 **/Debug
 **/obj
 **/bin
