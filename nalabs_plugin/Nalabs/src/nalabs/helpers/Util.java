@@ -1,8 +1,9 @@
 package nalabs.helpers;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -10,17 +11,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -39,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Module;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Requirement;
+import org.polarsys.kitalpha.vp.requirements.Requirements.impl.RequirementImpl;
 import org.polarsys.capella.core.data.capellamodeller.Project;
 
 import java.util.Collection;
@@ -46,41 +44,33 @@ import java.util.ArrayList;
 
 public class Util {
 	
-	public static ProjectInfo getCurrentProjectInfo() {
-		
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		IWorkbenchPage activePage = window.getActivePage();
-		IEditorPart activeEditor = activePage.getActiveEditor();
+	public static ProjectInfo getCapellaProjectInfoForSelection(IStructuredSelection selection) {
 
-		if (activeEditor != null) {
-		   IEditorInput input = activeEditor.getEditorInput();
-		   IProject project = input.getAdapter(IProject.class);
-		   if (project == null) {
-		      IResource r = input.getAdapter(IResource.class);
-		      if (r != null) {
-		         return new ProjectInfo() {
-		        	 {
-		        		 resource = r;
-		        		 project = r.getProject();
-		        	 }
-		         };
-		      }
-		   }
-		}
-		
-		return null;
-	}
-	
-	public static Resource loadCapellaModel(ProjectInfo projectInfo) {
-	    // Assuming the model file is located at the default location in the project
-	    String modelFilePath = projectInfo.project.getLocation().toString() + "/" + projectInfo.resource.getProjectRelativePath();
-	    URI uri = URI.createFileURI(modelFilePath);
+        if (selection != null && !selection.isEmpty()) {
+            // Get the first element from the selection
+        	RequirementImpl firstElement = (RequirementImpl)selection.getFirstElement();
 
-	    ResourceSet resourceSet = new ResourceSetImpl();
-	    Resource resource = resourceSet.getResource(uri, true);
+        	Resource elementResource = firstElement.eResource();
+        	
+        	URI uri = elementResource.getURI();
+        	
+        	IProject p = null;
+        	if (uri.isPlatformResource()) {
+	        	String platformString = uri.toPlatformString(true);
+	        	IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new org.eclipse.core.runtime.Path(platformString));
+	            if (file != null) {
+	                p = file.getProject();
+	            }
+        	}
 
-	    return resource;
-	}
+    	    ResourceSet resourceSet = new ResourceSetImpl();
+    	    Resource r = resourceSet.getResource(uri, true);
+
+    	    return new ProjectInfo(p, r);
+        }
+
+        return null;
+    }
 	
 	public static Collection<Requirement> getKitalphaRequirements(Resource resource) {
 		Collection<Requirement> requirements = new ArrayList<Requirement>();

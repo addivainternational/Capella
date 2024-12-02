@@ -1,18 +1,26 @@
 package nalabs.handlers;
 
 import nalabs.views.MainView;
+import nalabs.helpers.ProjectInfo;
 import nalabs.views.InitialWarningPopup;
 import nalabs.views.StartupSelectionView;
+import nalabs.helpers.Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.common.util.EList;
-
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -20,8 +28,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Module;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Requirement;
-
+import org.polarsys.kitalpha.vp.requirements.Requirements.impl.RequirementImpl;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -39,6 +48,7 @@ public class NalabsHandler extends AbstractHandler {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 
 		Collection<Requirement> requirements = getRequirements(selection);
+		ProjectInfo projectInfo = Util.getCapellaProjectInfoForSelection(selection);
 		
 		IShellProvider shellProvider = PlatformUI.getWorkbench().getModalDialogShellProvider();
 		StartupSelectionView startupSelectionView = new StartupSelectionView(shellProvider.getShell());
@@ -62,9 +72,10 @@ public class NalabsHandler extends AbstractHandler {
 		Collection<se.addiva.nalabs_core.Requirement> nalabRequirements = analyzeRequirements(correctRequirements, useDefaultTextField);
 		
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		
         try {
         	reqView = (MainView) page.showView("nqdin29hbfwpifgpnpw09fgew30"); // Use the ID of your view
-            reqView.setRequirementData(nalabRequirements);
+            reqView.setRequirementData(nalabRequirements, projectInfo);
         } catch (PartInitException e) {
             e.printStackTrace();
         }

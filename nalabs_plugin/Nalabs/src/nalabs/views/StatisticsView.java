@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.resource.FontDescriptor;
@@ -350,12 +352,11 @@ public class StatisticsView {
 		smellsChartComposite.setLayoutData(chartData);
 	}
 	
-	public void setRequirementData(Collection<Requirement> requirements) {
+	public void setRequirementData(Collection<Requirement> requirements, ProjectInfo projectInfo) throws ExecutionException {
 		
-		currentProjectInfo = Util.getCurrentProjectInfo();
-		Resource capellaModel = Util.loadCapellaModel(currentProjectInfo);
+		currentProjectInfo = projectInfo;
 		Collection<org.polarsys.kitalpha.vp.requirements.Requirements.Requirement> allRequirements = 
-				Util.getKitalphaRequirements(capellaModel);
+				Util.getKitalphaRequirements(projectInfo.resource);
 		
 		projectNameLabel.setText(currentProjectInfo.project.getName());
 		nTotalRequirementsCountLabel.setText(Integer.toString(allRequirements.size()));
