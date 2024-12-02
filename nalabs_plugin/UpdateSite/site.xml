@@ -3,5 +3,5 @@
    <description name="NALABS Update Site">
       
    </description>
-   <feature url="features/NALABSFeature_1.0.0.202410301029.jar" id="NALABSFeature" version="1.0.0.202410301029"/>
+   <feature url="features/NALABSFeature_1.0.0.202412021028.jar" id="NALABSFeature" version="1.0.0.202412021028"/>
 </site>
