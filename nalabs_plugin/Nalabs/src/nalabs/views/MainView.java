@@ -1,23 +1,19 @@
 package nalabs.views;
 
-import se.addiva.nalabs_core.*;
-
 import java.util.Collection;
 
-import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 
 import nalabs.helpers.ProjectInfo;
-
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import se.addiva.nalabs_core.Requirement;
 
 public class MainView extends ViewPart {
 

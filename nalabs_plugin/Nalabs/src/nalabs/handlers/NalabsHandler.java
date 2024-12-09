@@ -1,41 +1,34 @@
 package nalabs.handlers;
 
-import nalabs.views.MainView;
-import nalabs.helpers.ProjectInfo;
-import nalabs.views.InitialWarningPopup;
-import nalabs.views.StartupSelectionView;
-import nalabs.helpers.Util;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.IllegalFormatException;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.*;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Module;
 import org.polarsys.kitalpha.vp.requirements.Requirements.Requirement;
-import org.polarsys.kitalpha.vp.requirements.Requirements.impl.RequirementImpl;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import nalabs.helpers.ProjectInfo;
+import nalabs.helpers.Util;
+import nalabs.views.InitialWarningPopup;
+import nalabs.views.MainView;
+import nalabs.views.StartupSelectionView;
 
 public class NalabsHandler extends AbstractHandler {
 	

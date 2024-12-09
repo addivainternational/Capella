@@ -4,13 +4,13 @@ Bundle-Name: Nalabs
 Bundle-SymbolicName: Nalabs;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.ui,
- org.polarsys.capella.common.model.helpers;bundle-version="7.0.0",
- org.polarsys.capella.core.model.handler;bundle-version="7.0.0",
- org.polarsys.kitalpha.vp.requirements.model;bundle-version="0.14.0",
- org.polarsys.kitalpha.vp.requirements;bundle-version="0.14.0",
- org.polarsys.capella.core.model.helpers;bundle-version="7.0.0",
- org.eclipse.emf;bundle-version="2.9.0",
- org.eclipse.emf.ecore.edit;bundle-version="2.14.0"
+ org.polarsys.capella.common.model.helpers,
+ org.polarsys.capella.core.model.handler,
+ org.polarsys.kitalpha.vp.requirements.model,
+ org.polarsys.kitalpha.vp.requirements,
+ org.polarsys.capella.core.model.helpers,
+ org.eclipse.emf,
+ org.eclipse.emf.ecore.edit
 Automatic-Module-Name: Nalabs
 Bundle-ClassPath: bin/, lib/, lib/jfreechart-1.5.5.jar, lib/se.addiva.nalabs_core.jar, 
  lib/kernel-7.1.4.jar, lib/layout-7.1.4.jar, lib/io-7.1.4.jar, lib/pdfa-7.1.4.jar, lib/pdftest-7.1.4.jar, 

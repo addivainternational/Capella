@@ -1,4 +1,4 @@
-﻿package se.addiva.nalabs_core;
+package se.addiva.nalabs_core;
 
 public class ReferenceInternal extends MetricBase {
 	@Override

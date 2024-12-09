@@ -1,4 +1,4 @@
-﻿package se.addiva.nalabs_core;
+package se.addiva.nalabs_core;
 
 public class WeaknessMetric extends MetricBase {
 	@Override
