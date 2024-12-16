@@ -13,11 +13,9 @@ Repository contents:
 
 # Pre-requisites
 * Java JDK 19
-  * Capella can only be coaxed to use JRE 19.
+  * The plugin code will only work with JDK 19.
   * Download JDK 19 from here: [JDK 19](https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html). 
-    Use the 19 version, not 19.0.1 or 19.0.2
-* Jextract
-  *[jextract v 19](https://jdk.java.net/jextract/19/)
+    Use the 19 version, NOT 19.0.1 or 19.0.2
 * Capella Studio
   * [Capella Studio 7.0.0](https://www.eclipse.org/downloads/download.php?file=/capella/studio/products/releases/7.0.0)
 * Capella
@@ -25,13 +23,7 @@ Repository contents:
     * Capella comes with JRE 17 installed in the install folder/jre. Remove or rename it to force Capella to start with the current JRE (which should be JRE 19)
     * Edit the capella.ini file, in the capella folder:
       * Change this setting to be: -Dpde.jreProfile=JavaSE-19
-      * Add the following to the end of the ini:
-      ```
-      --enable-preview 
-      --enable-native-access=ALL-UNNAMED
-      ```
-      to enable the Java preview functionality to execute (needed by the interop code)
-  * [Capella Requirement Plugin](https://download.eclipse.org/capella/addons/requirements/updates/releases/0.14.0)
+  * [Capella Requirement Plugin](https://download.eclipse.org/capella/addons/requirements/updates/releases/0.14.0) is needed for the Requirements in Capella.
 
 # Installation process for nalabs_core
 
@@ -40,17 +32,13 @@ To rebuild the JAR for nalabs_core, do as follows: In Capella, right-click on th
 To use this file from nalabs_plugin, make sure the generated JAR file has been copied to `nalabs_plugin/Nalabs/lib/`.
 
 # Installation process for nalabs_plugin
-To install and run the plug-in in Capella (only tested on Windows x64)
+To install and run the plug-in in Capella
+1. Install and configure Cappella as described above in the Pre-requisites section
 1. Copy the UpdateSite to some folder on the computer.
+   1. If you have the update site in a ZIP-file, expand it to a folder and use that folder instead.
 2. Start Capella.
 3. Install the Capella Requirements add in.
-4. Right-click for example on the `Logical Architecture` box in your Capella project and select `Add Capella Element...`->`Capella Types folder`. Click on the `[Capella Types folder]` that was just generated and create `Requirement Type`.  
-   1. Add a String attribute to your Requirement type.
-      1. Long Name: Nalabs Analysis
-      2. Type: String
-   2. Open a Mass Editing View on the attribute and set:
-      1. ReqIFIdentifier: NALABS
-5. Make sure any Requirements created in your Capella project have the Requirement type you just created. To manually create a Requirement, do as follows:
+5. To manually create a Requirement, do as follows:
    1. If there is no `Capella Module`, create one (`Add Capella Element...`->`Capella Module`).
    2. In the `[Capella Module]`, right-click and create a `Requirement`.
    3. Double-click the created Requirement, give it a `Long name`, and set the necessary requirement description in the `Text` tab.
@@ -64,10 +52,8 @@ To install and run the plug-in in Capella (only tested on Windows x64)
       5. Restart Capella when prompted to.
 7. You should now have a NALABS menu in the menu bar.
    1. Select one or more Requirements and select the NALABS -> Analyze Requirement command.
-   2. The "NALABS Analysis" attribute should now appear on the analyzed requirements, with the analysis result.
 
 # Debugging
-
 In order to debug the nalabs_plugin, start Capella Studio, and select the `nalabs_plugin` folder as your Workspace. Next, open the nalabs_plugin project, then select `Run` in the menu and `Debug Configurations...`. Next, select `Eclipse Application` and the `Arguments` tab. In that tab, add `-data "<project_workspace>"` to `Program Arguments`, and `--enable-preview --enable-native-access=ALL-UNNAMED` to `VM Arguments`. Then select `Apply`. Now you can debug the plugin.
 
 # Using the plugin
